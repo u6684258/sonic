@@ -4,7 +4,6 @@
 {-# LANGUAGE TypeFamilies #-}
 module Sonic.Constraints
   ( rPoly
-  , rPolyRaw
   , sPoly
   , tPoly
   , kPoly
@@ -13,7 +12,7 @@ module Sonic.Constraints
 import Protolude hiding (head, Semiring)
 import Bulletproofs.ArithmeticCircuit (Assignment(..), GateWeights(..))
 import Data.List (zipWith4, head, (!!))
-import Data.Pairing.BN254 (Fr)
+import Data.Pairing.BLS12381 (Fr)
 import Data.Poly.Sparse.Laurent (VLaurent, monomial)
 import Data.Semiring (Semiring)
 import qualified GHC.Exts
@@ -27,17 +26,6 @@ rPoly
   -> BiVLaurent f
 rPoly Assignment{..} =
   GHC.Exts.fromList $ concat (zipWith4 f aL aR aO [1..])
-  where
-    f ai bi ci i = [(i, monomial i ai), (-i, monomial (-i) bi), (-i - n, monomial (-i - n) ci)]
-    n = length aL
-
-rPolyRaw
-  :: (Eq f, Semiring f)
-  => Assignment f
-  -> Int 
-  -> BiVLaurent f
-rPolyRaw Assignment{..} position =
-  GHC.Exts.fromList $ concat (zipWith4 f aL aR aO [1,2..position])
   where
     f ai bi ci i = [(i, monomial i ai), (-i, monomial (-i) bi), (-i - n, monomial (-i - n) ci)]
     n = length aL

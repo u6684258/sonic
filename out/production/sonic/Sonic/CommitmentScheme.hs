@@ -11,7 +11,7 @@ import qualified Data.Vector as V
 import Data.Curve (Curve(..), mul)
 import Data.Euclidean (divide)
 import Data.Maybe (fromJust)
-import Data.Pairing.BN254 (Fr, G1, GT, BN254, pairing)
+import Data.Pairing.BLS12381 (Fr, G1, GT, BLS12381, pairing)
 import Data.Poly.Sparse.Laurent (VLaurent, eval, monomial)
 import qualified GHC.Exts
 import Sonic.SRS (SRS(..))
@@ -21,7 +21,7 @@ commitPoly
   :: SRS           -- srs
   -> Int           -- max
   -> VLaurent Fr   -- f(X)
-  -> G1 BN254   -- F
+  -> G1 BLS12381   -- F
 commitPoly SRS{..} maxm fX
   = foldl' (\acc (e, v)  -> acc <> if e > 0
              then (index "commitPoly: gPositiveAlphaX" gPositiveAlphaX (e - 1)) `mul` v      -- {g^{alpha*X^{d-max}*f(X) : X<0}
@@ -37,7 +37,7 @@ openPoly
   :: SRS                 -- srs
   -> Fr                  -- z
   -> VLaurent Fr         -- f(X)
-  -> (Fr, G1 BN254)   -- (f(z), W)
+  -> (Fr, G1 BLS12381)   -- (f(z), W)
 openPoly SRS{..} z fX = (fz, w)
   where
     fz = eval fX z -- f(z)
@@ -51,14 +51,14 @@ openPoly SRS{..} z fX = (fz, w)
 pcV
   :: SRS                -- srs
   -> Int                -- max
-  -> G1 BN254        -- F
+  -> G1 BLS12381        -- F
   -> Fr                 -- z
-  -> (Fr, G1 BN254)  -- (f(z), W)
+  -> (Fr, G1 BLS12381)  -- (f(z), W)
   -> Bool               -- 0|1
 pcV SRS{..} maxm commitment z (v, w)
   = eA <> eB == eC
   where
-    eA, eB, eC :: GT BN254
+    eA, eB, eC :: GT BLS12381
     eA = pairing w (hPositiveAlphaX V.! 1)                                     -- e(W, h^{alpha*x})
     eB = pairing ((gen `mul` v) <> (w `mul` negate z)) (hPositiveAlphaX V.! 0) -- e(g^v W^{-z}, h^{alpha})
     eC = pairing commitment hxi                                                -- e(F, h^{x^{-d+max}})

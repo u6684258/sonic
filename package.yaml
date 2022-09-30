@@ -54,6 +54,7 @@ library:
     - Sonic.SRS
     - Sonic.Signature
     - Sonic.Utils
+    - Sonic.Circuits
   source-dirs:
     - src
 

@@ -4,7 +4,6 @@ module Sonic.Utils
   , evalY
   , fromX
   , fromY
-  -- , save_to_file
   ) where
 
 import Protolude
@@ -26,6 +25,3 @@ fromX = uncurry toLaurent . fmap (toPoly . ((<$>) . (<$>) . monomial) 0 . unPoly
 
 fromY :: GaloisField k => VLaurent k -> BiVLaurent k
 fromY = monomial 0
-
--- save_to_file ::   -> FilePath -> IO ()
--- save_to_file editor f = writeFile f $ show editor

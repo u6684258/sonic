@@ -35,6 +35,7 @@ library
     Sonic.Signature
     Sonic.SRS
     Sonic.Utils
+    Sonic.Circuits
 
   hs-source-dirs:     src
   other-modules:      Paths_sonic

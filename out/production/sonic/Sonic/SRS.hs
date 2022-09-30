@@ -6,19 +6,19 @@ import Protolude
 import qualified Data.Vector as V
 import Data.Field.Galois (pow)
 import Data.Curve (Curve(..), mul)
-import Data.Pairing.BN254 (Fr, G1, G2, GT, BN254, pairing)
+import Data.Pairing.BLS12381 (Fr, G1, G2, GT, BLS12381, pairing)
 
 data SRS = SRS
   { srsD :: Int
-  , gNegativeX :: V.Vector (G1 BN254)
-  , gPositiveX :: V.Vector (G1 BN254)
-  , hNegativeX :: V.Vector (G2 BN254)
-  , hPositiveX :: V.Vector (G2 BN254)
-  , gNegativeAlphaX :: V.Vector (G1 BN254)
-  , gPositiveAlphaX :: V.Vector (G1 BN254)
-  , hNegativeAlphaX :: V.Vector (G2 BN254)
-  , hPositiveAlphaX :: V.Vector (G2 BN254)
-  , srsPairing :: GT BN254
+  , gNegativeX :: V.Vector (G1 BLS12381)
+  , gPositiveX :: V.Vector (G1 BLS12381)
+  , hNegativeX :: V.Vector (G2 BLS12381)
+  , hPositiveX :: V.Vector (G2 BLS12381)
+  , gNegativeAlphaX :: V.Vector (G1 BLS12381)
+  , gPositiveAlphaX :: V.Vector (G1 BLS12381)
+  , hNegativeAlphaX :: V.Vector (G2 BLS12381)
+  , hPositiveAlphaX :: V.Vector (G2 BLS12381)
+  , srsPairing :: GT BLS12381
   }
 
 -- | Create a new Structured Reference String (SRS)

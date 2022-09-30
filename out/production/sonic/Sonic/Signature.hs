@@ -13,17 +13,17 @@ import Protolude
 import Control.Monad.Random (MonadRandom)
 import Data.Field.Galois (rnd)
 import Data.List (zip3)
-import Data.Pairing.BN254 (Fr, G1, BN254)
+import Data.Pairing.BLS12381 (Fr, G1, BLS12381)
 import Data.Poly.Sparse.Laurent (eval)
 import Sonic.Utils (BiVLaurent, evalX, evalY)
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV)
 import Sonic.SRS (SRS(..))
 
 data HscProof = HscProof
-  { hscS :: [(G1 BN254, (Fr, G1 BN254))]
-  , hscW :: [(Fr, G1 BN254, G1 BN254)]
-  , hscQv :: G1 BN254
-  , hscC :: G1 BN254
+  { hscS :: [(G1 BLS12381, (Fr, G1 BLS12381))]
+  , hscW :: [(Fr, G1 BLS12381, G1 BLS12381)]
+  , hscQv :: G1 BLS12381
+  , hscC :: G1 BLS12381
   , hscU :: Fr
   , hscV :: Fr
   } deriving (Eq, Show, Generic, NFData)
