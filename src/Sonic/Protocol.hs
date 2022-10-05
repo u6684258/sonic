@@ -20,18 +20,23 @@ import Data.Poly.Sparse.Laurent (monomial, eval)
 import qualified GHC.Exts
 
 import Sonic.SRS (SRS(..))
-import Sonic.Constraints (rPoly, sPoly, tPoly, kPoly)
+import Sonic.Constraints (rPoly, rPolyRaw, sPoly, tPoly, kPoly)
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV)
 import Sonic.Signature (HscProof(..), hscProve, hscVerify)
 import Sonic.Utils (evalY, BiVLaurent)
 
 data Proof = Proof
   { prR :: G1 BN254
+  , prRRaw :: G1 BN254
   , prT :: G1 BN254
   , prA :: Fr
   , prWa :: G1 BN254
+  , prARaw :: Fr
+  , prWaRaw :: G1 BN254
   , prB :: Fr
   , prWb :: G1 BN254
+  , prBRaw :: Fr
+  , prWbRaw :: G1 BN254
   , prWt :: G1 BN254
   , prS :: Fr
   , prHscProof :: HscProof
@@ -127,9 +132,11 @@ prove srsRaw srsLocal assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
     let sumcXY :: BiVLaurent Fr             -- \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
         sumcXY = GHC.Exts.fromList $
           zipWith (\i cni -> (negate (2 * n + i), monomial (negate (2 * n + i)) cni)) [1..] cns
-        polyR' = rPoly assignment + sumcXY  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
-        commitR = commitPoly srsLocal (fromIntegral n) (evalY 1 polyR') -- R <- Commit(bp,srs,n,r(X,1))
-
+        polyRRaw = rPolyRaw assignment 1  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
+        polyR' = rPoly assignment + sumcXY 
+        polyRLocal = polyR' - polyRRaw
+        commitR = commitPoly srsLocal (fromIntegral n) (evalY 1 polyRLocal) -- R <- Commit(bp,srs,n,r(X,1))
+        commitRRaw = commitPoly srsRaw (fromIntegral n) (evalY 1 polyRRaw)
     -- zkV_1(info, R) -> y
     y <- rnd
 
@@ -144,9 +151,11 @@ prove srsRaw srsLocal assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
     z <- rnd
 
     -- zkP_3(z) -> (a, W_a, b, W_b_, W_t, s, sc)
-    let (a, wa) = openPoly srsLocal z (evalY 1 polyR')        -- (a=r(z,1),W_a) <- Open(R,z,r(X,1))
-        (b, wb) = openPoly srsLocal (y * z) (evalY 1 polyR')  -- (b=r(z,y),W_b) <- Open(R,yz,r(X,1))
-        (_, wt) = openPoly srsLocal z (evalY y tXY)            -- (a=r(z,1),W_a) <- Open(T,z,t(X,y))
+    let (aLocal, waLocal) = openPoly srsLocal z (evalY 1 polyRLocal)        -- (a=r(z,1),W_a) <- Open(R,z,r(X,1))
+        (aRaw, waRaw) = openPoly srsRaw z (evalY 1 polyRRaw)        -- (a=r(z,1),W_a) <- Open(R,z,r(X,1))
+        (bLocal, wbLocal) = openPoly srsLocal (y * z) (evalY 1 polyRLocal)  -- (b=r(z,y),W_b) <- Open(R,yz,r(X,1))
+        (bRaw, wbRaw) = openPoly srsRaw (y * z) (evalY 1 polyRRaw)  -- (b=r(z,y),W_b) <- Open(R,yz,r(X,1))
+        (_, wt) = openPoly srsLocal z (evalY y tXY)            -- (_=r(z,1),W_a) <- Open(T,z,t(X,y))
 
     let szy = eval (evalY y sXY) z                        -- s=s(z,y)
     ys <- replicateM m rnd
@@ -155,11 +164,16 @@ prove srsRaw srsLocal assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
     hscProof <- hscProve srsLocal sXY yzs
     pure ( Proof
            { prR = commitR
+           , prRRaw = commitRRaw
            , prT = commitT
-           , prA = a
-           , prWa = wa
-           , prB = b
-           , prWb = wb
+           , prA = aLocal
+           , prWa = waLocal
+           , prARaw = aRaw
+           , prWaRaw = waRaw
+           , prB = bLocal
+           , prWb = wbLocal
+           , prBRaw = bRaw
+           , prWbRaw = wbRaw
            , prWt = wt
            , prS = szy
            , prHscProof = hscProof
@@ -178,18 +192,21 @@ prove srsRaw srsLocal assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
 
 verify
   :: SRS
+  -> SRS
   -> ArithCircuit Fr
   -> Proof
   -> Fr
   -> Fr
   -> [(Fr, Fr)]
   -> Bool
-verify srs@SRS{..} ArithCircuit{..} Proof{..} y z yzs
-  = let t = prA * (prB + prS) - eval kY y
-        checks = [ hscVerify srs sXY yzs prHscProof
-                 , pcV srs (fromIntegral n) prR z (prA, prWa)
-                 , pcV srs (fromIntegral n) prR (y * z) (prB, prWb)
-                 , pcV srs srsD prT z (t, prWt)
+verify srsRaw srsLocal ArithCircuit{..} Proof{..} y z yzs
+  = let t = (prA+prARaw) * ((prB+prBRaw) + prS) - eval kY y
+        checks = [ hscVerify srsLocal sXY yzs prHscProof
+                 , pcV srsRaw (fromIntegral n) prRRaw z (prARaw, prWaRaw)
+                 , pcV srsLocal (fromIntegral n) prR z (prA, prWa)
+                 , pcV srsRaw (fromIntegral n) prRRaw (y * z) (prBRaw, prWbRaw)
+                 , pcV srsLocal (fromIntegral n) prR (y * z) (prB, prWb)
+                 , pcV srsLocal (srsD srsLocal) prT z (t, prWt)
                 ]
     in and checks
   where

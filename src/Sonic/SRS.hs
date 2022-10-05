@@ -19,7 +19,7 @@ data SRS = SRS
   , hNegativeAlphaX :: V.Vector (G2 BN254)
   , hPositiveAlphaX :: V.Vector (G2 BN254)
   , srsPairing :: GT BN254
-  }
+  } deriving (Show)
 
 -- | Create a new Structured Reference String (SRS)
 -- 'd' should be large enough to support the circuit depth 'n'.

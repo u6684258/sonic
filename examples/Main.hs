@@ -11,29 +11,36 @@ import Sonic.SRS as SRS
 import Sonic.Protocol
 import Sonic.Circuits
 
--- sonicProtocol :: ArithCircuit Fr -> Assignment Fr -> Fr -> IO Bool
--- sonicProtocol circuit assignment x = do
---   -- Setup for an SRS
---   srs <- SRS.new <$> randomD n <*> pure x <*> rnd
---   -- Prover
---   (proof, rndOracle@RndOracle{..}) <- prove srs assignment circuit
+-- sonicProtocol :: SRS 
+--   -> SRS 
+--   -> Proof 
+--   -> RndOracle 
+--   -> ArithCircuit Fr 
+--   -> Assignment Fr 
+--   -> Fr 
+--   -> IO Bool
+-- sonicProtocol srsRaw srsLocal proof rndOracle@RndOracle{..} circuit assignment x = do
 --   -- Verifier
---   pure $ verify srs circuit proof rndOracleY rndOracleZ rndOracleYZs
---   where
---     -- n: Number of multiplication constraints
---     n = length $ aL assignment
---     randomD n = getRandomR (7 * n, 100 * n)
+--   pure $ verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs
 
-testCode:: ArithCircuit Fr -> Assignment Fr -> Fr -> IO ()
-testCode circuit assignment x = do
+
+outputProof:: ArithCircuit Fr -> Assignment Fr -> Fr -> IO ()
+outputProof circuit assignment x = do
   -- Setup for an SRS
   srsRaw <- SRS.new <$> randomD n <*> pure x <*> rnd
   srsLocal <- SRS.new <$> randomD n <*> pure x <*> rnd
   -- Prover
-  (proof, rndOracle) <- prove srsRaw srsLocal assignment circuit
+  (proof, rndOracle@RndOracle{..}) <- prove srsRaw srsLocal assignment circuit
 
-  putText $ "proof: " <> show proof
-  putText $ "rnds: " <> show rndOracle
+  -- putText $ "proof: " <> show proof
+  -- putText $ "rnds: " <> show rndOracle
+
+  putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
+  
+  writeFile "proof.txt" $ show $ proof
+  writeFile "rndOracle.txt" $ show $ rndOracle
+  writeFile "srsRaw.txt" $ show $ srsRaw
+  writeFile "srsLocal.txt" $ show $ srsLocal
   where
     -- n: Number of multiplication constraints
     n = length $ aL assignment
@@ -43,12 +50,12 @@ testCode circuit assignment x = do
 runExample :: IO ()
 runExample = do
   pX <- rnd
+  pY <- rnd
   pZ <- rnd
-  let (arithCircuit, assignment@Assignment{..}) = arithCircuitExample pX pZ
+  let (arithCircuit, assignment@Assignment{..}) = arithCircuitExample [pX,pY] pZ
   -- success <- sonicProtocol arithCircuit assignment pX
   -- putText $ "Success: " <> show success
-  testCode arithCircuit assignment pX
-  -- putText $ "proof: " <> show proof
+  outputProof arithCircuit assignment pX
 
 main :: IO ()
 main = runExample

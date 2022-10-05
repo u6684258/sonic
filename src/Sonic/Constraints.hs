@@ -5,6 +5,7 @@
 module Sonic.Constraints
   ( rPoly
   , rPolyRaw
+  , rPolyLocal
   , sPoly
   , tPoly
   , kPoly
@@ -12,7 +13,7 @@ module Sonic.Constraints
 
 import Protolude hiding (head, Semiring)
 import Bulletproofs.ArithmeticCircuit (Assignment(..), GateWeights(..))
-import Data.List (zipWith4, head, (!!))
+import Data.List (zipWith, zipWith3, zipWith4, head, (!!))
 import Data.Pairing.BN254 (Fr)
 import Data.Poly.Sparse.Laurent (VLaurent, monomial)
 import Data.Semiring (Semiring)
@@ -37,9 +38,20 @@ rPolyRaw
   -> Int 
   -> BiVLaurent f
 rPolyRaw Assignment{..} position =
-  GHC.Exts.fromList $ concat (zipWith4 f aL aR aO [1,2..position])
+  GHC.Exts.fromList $ concat (zipWith f_a aL [1..position])
+  where
+    f_a ai i = [(i, monomial i ai)]
+
+rPolyLocal
+  :: (Eq f, Semiring f)
+  => Assignment f
+  -> Int 
+  -> BiVLaurent f
+rPolyLocal Assignment{..} position =
+  GHC.Exts.fromList $ concat ((zipWith3 f_bc aR aO [1..position]) ++ (zipWith4 f aL aR aO [position..]) )
   where
     f ai bi ci i = [(i, monomial i ai), (-i, monomial (-i) bi), (-i - n, monomial (-i - n) ci)]
+    f_bc bi ci i = [(-i, monomial (-i) bi), (-i - n, monomial (-i - n) ci)]
     n = length aL
 
 -- s(X,Y) = \sum_{i=1}^n (u_i(Y)X^{-i} + v_i(Y)X^i + w_i(Y)X^{i+n})

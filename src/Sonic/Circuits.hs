@@ -20,9 +20,30 @@ import Data.Pairing.BN254 (Fr)
 --
 -- 4 input values (m = 4)
 
-arithCircuitExample :: Fr -> Fr -> (ArithCircuit Fr, Assignment Fr)
-arithCircuitExample x z =
-  let wL = [[0, 0]
+-- T = 1
+-- N = 1
+
+arithCircuitExample :: [Fr] -> Fr -> (ArithCircuit Fr, Assignment Fr)
+arithCircuitExample aUpper z =
+  let bUpper = [ 0, 
+                  0
+            ]
+      cUpper = zipWith (*) aUpper bUpper
+
+      aMiddle = aUpper++[ 0
+            ]
+
+      bMiddle = (take 1 aUpper) ++ 
+                  [ 0,
+                  0
+            ]
+      cMiddle = zipWith (*) aMiddle bMiddle
+
+      cAll = cUpper ++ cMiddle
+      
+      c:_ = cAll
+      
+      wL = [[0, 0]
            ,[1, 0]
            ,[0, 1]
            ,[0, 0]
@@ -42,16 +63,16 @@ arithCircuitExample x z =
            ]
 
       cs = [  0
-            , 4-z
-            , 9-z
-            , 9-z
-            , 4-z
+            , 4-c
+            , 9-c
+            , 9-c
+            , 4-c
             ]
-      aL = [  4 - z
-            , 9 - z
+      aL = [  4 - c
+            , 9 - c
             ]
-      aR = [  9 - z
-            , 4 - z
+      aR = [  9 - c
+            , 4 - c
             ]
             
       aO = zipWith (*) aL aR
