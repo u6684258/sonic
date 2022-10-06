@@ -67,6 +67,9 @@ library
     , protolude       >=0.2.3    && <0.3
     , semirings       >=0.5.1    && <0.6
     , vector          >=0.12.0.0 && <0.13
+    , text            >=2.0.0    && <3.0.0
+    , split           >=0.2.0.0  && <0.2.4.0
+    , time            >=1.10.0   && <1.13.0
 
 executable sonic-example
   main-is:            Main.hs
@@ -107,6 +110,9 @@ executable sonic-example
     , tasty-hunit       >=0.10.0.0 && <0.11
     , tasty-quickcheck  >=0.10.0.0 && <0.11
     , vector            >=0.12.0.0 && <0.13
+    , text            >=2.0.0    && <3.0.0
+    , split           >=0.2.0.0  && <0.2.4.0
+    , time            >=1.10.0   && <1.13.0
 
 test-suite sonic-test
   type:               exitcode-stdio-1.0

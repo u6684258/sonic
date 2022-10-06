@@ -66,7 +66,7 @@ sPoly GateWeights{..}
     uiY, viY, wiY :: Int -> VLaurent f
     uiY i = xiY i wL  -- u_i(Y) = \sum_{q=1}^Q (Y^{q+n} u_{q,i})
     viY i = xiY i wR  -- v_i(Y) = \sum_{q=1}^Q (Y^{q+n} v_{q,i}
-    wiY i = monomial (-i) (-1) + monomial i (-1) + xiY i wO -- w_i(Y) = -Y^{i} - Y^{-i} + \sum_{q=1}^Q (Y^{q+n} u_{q,i}
+    wiY i = monomial (-i) (-1) + monomial i (-1) + xiY i wO -- w_i(Y) = -Y^{i} - Y^{-i} + \sum_{q=1}^Q (Y^{q+n} w_{q,i}
 
     xiY :: Int -> [[f]] -> VLaurent f
     xiY i xL = foldl' (fxqi i) 0 (zip [1..] xL)

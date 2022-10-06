@@ -20,63 +20,52 @@ import Data.Pairing.BN254 (Fr)
 --
 -- 4 input values (m = 4)
 
+-- wL = [[0, 0]
+--       ,[1, 0]
+--       ,[0, 1]
+--       ,[0, 0]
+--       ,[0, 0]
+--       ]
+-- wR = [[0, 0]
+--       ,[0, 0]
+--       ,[0, 0]
+--       ,[1, 0]
+--       ,[0, 1]
+--       ]
+-- wO = [[1, -1]
+--       ,[0, 0]
+--       ,[0, 0]
+--       ,[0, 0]
+--       ,[0, 0]
+--       ]
+-- cs = [  0
+--       , 4-pZ
+--       , 9-pZ
+--       , 9-pZ
+--       , 4-pZ
+--       ]
+-- aL = [  4 - pZ
+--       , 9 - pZ
+--       ]
+-- aR = [  9 - pZ
+--       , 4 - pZ
+--       ]
+      
+-- aO = zipWith (*) aL aR
+
 -- T = 1
 -- N = 1
 
-arithCircuitExample :: [Fr] -> Fr -> (ArithCircuit Fr, Assignment Fr)
-arithCircuitExample aUpper z =
-  let bUpper = [ 0, 
-                  0
-            ]
-      cUpper = zipWith (*) aUpper bUpper
-
-      aMiddle = aUpper++[ 0
-            ]
-
-      bMiddle = (take 1 aUpper) ++ 
-                  [ 0,
-                  0
-            ]
-      cMiddle = zipWith (*) aMiddle bMiddle
-
-      cAll = cUpper ++ cMiddle
-      
-      c:_ = cAll
-      
-      wL = [[0, 0]
-           ,[1, 0]
-           ,[0, 1]
-           ,[0, 0]
-           ,[0, 0]
-           ]
-      wR = [[0, 0]
-           ,[0, 0]
-           ,[0, 0]
-           ,[1, 0]
-           ,[0, 1]
-           ]
-      wO = [[1, -1]
-           ,[0, 0]
-           ,[0, 0]
-           ,[0, 0]
-           ,[0, 0]
-           ]
-
-      cs = [  0
-            , 4-c
-            , 9-c
-            , 9-c
-            , 4-c
-            ]
-      aL = [  4 - c
-            , 9 - c
-            ]
-      aR = [  9 - c
-            , 4 - c
-            ]
-            
-      aO = zipWith (*) aL aR
-      gateWeights = GateWeights wL wR wO
+arithCircuitExample :: [[Fr]]
+                  -> [[Fr]] 
+                  -> [[Fr]] 
+                  -> [Fr]
+                  -> [Fr]
+                  -> [Fr]
+                  -> [Fr]
+                  -> (ArithCircuit Fr, Assignment Fr)
+arithCircuitExample wL wR wO cs aL aR aO =
+  let gateWeights = GateWeights wL wR wO
       assignment = Assignment aL aR aO
       circuit = ArithCircuit gateWeights witness cs
   in (circuit, assignment)
