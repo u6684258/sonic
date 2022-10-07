@@ -61,10 +61,11 @@ prove
   :: MonadRandom m
   => SRS
   -> SRS
+  -> Int
   -> Assignment Fr
   -> ArithCircuit Fr
   -> m (Proof, RndOracle, VerifierData)
-prove srsRaw srsLocal assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
+prove srsRaw srsLocal upSize assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
   if srsD srsLocal < 7*n
     then panic $ "Parameter d is not large enough: " <> show (srsD srsLocal) <> " should be greater than " <>  show (7*n)
     else do
@@ -73,7 +74,7 @@ prove srsRaw srsLocal assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
     let sumcXY :: BiVLaurent Fr             -- \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
         sumcXY = GHC.Exts.fromList $
           zipWith (\i cni -> (negate (2 * n + i), monomial (negate (2 * n + i)) cni)) [1..] cns
-        polyRRaw = rPolyRaw assignment 1  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
+        polyRRaw = rPolyRaw assignment upSize  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
         polyR' = rPoly assignment + sumcXY 
         polyRLocal = polyR' - polyRRaw
         commitR = commitPoly srsLocal (fromIntegral n) (evalY 1 polyRLocal) -- R <- Commit(bp,srs,n,r(X,1))

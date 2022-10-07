@@ -2,10 +2,10 @@
 module Main where
 
 import Protolude
-import Control.Monad.Random (getRandomR)
+-- import Control.Monad.Random (getRandomR)
 import Bulletproofs.ArithmeticCircuit
 import Data.Pairing.BN254 (Fr)
-import Data.Field.Galois (rnd)
+-- import Data.Field.Galois (rnd)
 import Data.List.Split (divvy)
 
 import Sonic.SRS as SRS
@@ -34,17 +34,26 @@ import Data.Time
 --   pure $ verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs
 
 
-outputProof:: ArithCircuit Fr -> Assignment Fr -> Fr -> IO ()
-outputProof circuit assignment x = do
+outputProof:: ArithCircuit Fr -> Assignment Fr -> Fr -> Fr -> Fr -> Fr -> IO ()
+outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   -- Setup for an SRS
-  srsRaw <- SRS.new <$> randomD n <*> pure x <*> rnd
-  srsLocal <- SRS.new <$> randomD n <*> pure x <*> rnd
+
+  srsRaw <- SRS.new <$> pure n <*> pure pXRaw <*> pure alphaRaw
+  srsLocal <- SRS.new <$> pure n <*> pure pXLocal <*> pure alphaLocal
+
+  print $ alphaRaw
+  print $ alphaLocal
+  print $ (srsD srsRaw)
+  print $ (srsD srsLocal)
+  print $ pXRaw
+  print $ pXLocal
   -- Prover
   start <- getCurrentTime
-  (proof, rndOracle@RndOracle{..}, verifierData) <- prove srsRaw srsLocal assignment circuit
+  (proof, rndOracle@RndOracle{..}, verifierData) <- prove srsRaw srsLocal 2 assignment circuit
   stop <- getCurrentTime
   -- putText $ "proof: " <> show proof
   -- putText $ "rnds: " <> show rndOracle
+
 
   putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
   print $ diffUTCTime stop start
@@ -56,13 +65,17 @@ outputProof circuit assignment x = do
   writeFile "output/verifierData.txt" $ show $ verifierData
   where
     -- n: Number of multiplication constraints
-    n = length $ aL assignment
-    randomD n = getRandomR (7 * n, 100 * n)
+    n = (length $ aL assignment) * 10
+    
 
 
 runExample :: IO ()
 runExample = do
-  pX <- rnd
+
+  let alphaRaw = 4537460542209314651160888417413866091249215769242027952878258319870902529429
+      alphaLocal = 10318208573435976958553514324035131570702768863559211839926632048062238413316
+      pXRaw = 4518563069472097478295524977775021906947577384653869551543466909390271555451
+      pXLocal = 19708723214916757413126173169122466312825114221484651297201668130676937834219
 
   wLS <- fmap Text.words (Text.readFile "input/sample_wL.txt")
   wRS <- fmap Text.words (Text.readFile "input/sample_wR.txt")
@@ -85,7 +98,7 @@ runExample = do
       (arithCircuit, assignment) = arithCircuitExample wL wR wO cs aL aR aO
   -- success <- sonicProtocol arithCircuit assignment pX
   -- putText $ "Success: " <> show success
-  outputProof arithCircuit assignment pX
+  outputProof arithCircuit assignment pXRaw pXLocal alphaRaw alphaLocal
 
 
 
