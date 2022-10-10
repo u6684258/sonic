@@ -53,11 +53,12 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   stop <- getCurrentTime
   -- putText $ "proof: " <> show proof
   -- putText $ "rnds: " <> show rndOracle
-
-
-  putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
   print $ diffUTCTime stop start
 
+  startVer <- getCurrentTime
+  putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
+  stopVer <- getCurrentTime
+  print $ diffUTCTime stopVer startVer
   writeFile "output/proof.txt" $ show $ proof
   writeFile "output/rndOracle.txt" $ show $ rndOracle
   writeFile "output/srsRaw.txt" $ show $ srsRaw
@@ -77,13 +78,13 @@ runExample = do
       pXRaw = 4518563069472097478295524977775021906947577384653869551543466909390271555451
       pXLocal = 19708723214916757413126173169122466312825114221484651297201668130676937834219
 
-  wLS <- fmap Text.words (Text.readFile "input/sample_wL.txt")
-  wRS <- fmap Text.words (Text.readFile "input/sample_wR.txt")
-  wOS <- fmap Text.words (Text.readFile "input/sample_wO.txt")
-  csS <- fmap Text.words (Text.readFile "input/sample_cs.txt")
-  aLS <- fmap Text.words (Text.readFile "input/sample_aL.txt")
-  aRS <- fmap Text.words (Text.readFile "input/sample_aR.txt")
-  aOS <- fmap Text.words (Text.readFile "input/sample_aO.txt")
+  wLS <- fmap Text.words (Text.readFile "input/wL.txt")
+  wRS <- fmap Text.words (Text.readFile "input/wR.txt")
+  wOS <- fmap Text.words (Text.readFile "input/wO.txt")
+  csS <- fmap Text.words (Text.readFile "input/cs.txt")
+  aLS <- fmap Text.words (Text.readFile "input/aL.txt")
+  aRS <- fmap Text.words (Text.readFile "input/aR.txt")
+  aOS <- fmap Text.words (Text.readFile "input/aO.txt")
   let wLL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wLS))
       wRL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wRS))
       wOL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wOS))
@@ -91,9 +92,9 @@ runExample = do
       aL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aLS))
       aR = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aRS))
       aO = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aOS))
-      wL = divvy 2 2 wLL
-      wR = divvy 2 2 wRL
-      wO = divvy 2 2 wOL
+      wL = divvy 50 50 wLL
+      wR = divvy 50 50 wRL
+      wO = divvy 50 50 wOL
 
       (arithCircuit, assignment) = arithCircuitExample wL wR wO cs aL aR aO
   -- success <- sonicProtocol arithCircuit assignment pX
