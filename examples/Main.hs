@@ -92,9 +92,13 @@ runExample = do
       aL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aLS))
       aR = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aRS))
       aO = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aOS))
-      wL = divvy 50 50 wLL
-      wR = divvy 50 50 wRL
-      wO = divvy 50 50 wOL
+      inputSize = 380
+      -- wL = divvy 50 50 wLL
+      -- wR = divvy 50 50 wRL
+      -- wO = divvy 50 50 wOL
+      wL = divvy inputSize inputSize wLL
+      wR = divvy inputSize inputSize wRL
+      wO = divvy inputSize inputSize wOL
 
       (arithCircuit, assignment) = arithCircuitExample wL wR wO cs aL aR aO
   -- success <- sonicProtocol arithCircuit assignment pX

@@ -8,9 +8,17 @@ swir = swir - swir.min()
 
 sample_f = nir[50,:2]
 sample_l = swir[50,:2]
+a1 = nir[100,:2]
+b1 = swir[100,:2]
 
-np.save("input/inputData/sample_f.npy", sample_f)
-np.save("input/inputData/sample_l.npy", sample_l)
+# np.save("input/inputData/sample_f.npy", sample_f)
+# np.save("input/inputData/sample_l.npy", sample_l)
+
+np.save("input/inputData/a0.npy", sample_f)
+np.save("input/inputData/b0.npy", sample_l)
+np.save("input/inputData/a1.npy", a1)
+np.save("input/inputData/b1.npy", b1)
+
 print("Data request successful")
 
 

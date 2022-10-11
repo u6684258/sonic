@@ -22,7 +22,7 @@ import qualified GHC.Exts
 import Sonic.SRS (SRS(..))
 import Sonic.Constraints (rPoly, rPolyRaw, sPoly, tPoly, kPoly)
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV)
-import Sonic.Signature (HscProof(..), hscProve, hscVerify)
+import Sonic.Signature (HscProof(..), hscProve) -- hscVerify
 import Sonic.Utils (evalY, BiVLaurent)
 
 data Proof = Proof
@@ -149,8 +149,7 @@ verify
   -> Bool
 verify srsRaw srsLocal ArithCircuit{..} Proof{..} y z yzs
   = let t = (prA+prARaw) * ((prB+prBRaw) + prS) - eval kY y
-        checks = [ hscVerify srsLocal sXY yzs prHscProof
-                 , pcV srsRaw (fromIntegral n) prRRaw z (prARaw, prWaRaw)
+        checks = [ pcV srsRaw (fromIntegral n) prRRaw z (prARaw, prWaRaw)
                  , pcV srsLocal (fromIntegral n) prR z (prA, prWa)
                  , pcV srsRaw (fromIntegral n) prRRaw (y * z) (prBRaw, prWbRaw)
                  , pcV srsLocal (fromIntegral n) prR (y * z) (prB, prWb)
@@ -160,4 +159,7 @@ verify srsRaw srsLocal ArithCircuit{..} Proof{..} y z yzs
   where
     n = length . head . wL $ weights
     kY = kPoly cs n
-    sXY = sPoly weights
+    -- sXY = sPoly weights
+
+-- hscVerify srsLocal sXY yzs prHscProof
+--                  , 
