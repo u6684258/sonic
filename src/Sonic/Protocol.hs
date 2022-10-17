@@ -4,7 +4,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveAnyClass #-}
 module Sonic.Protocol
-  ( Proof
+  ( Proof(..)
   , RndOracle(..)
   , prove
   , verify
@@ -22,7 +22,7 @@ import qualified GHC.Exts
 import Sonic.SRS (SRS(..))
 import Sonic.Constraints (rPoly, rPolyRaw, sPoly, tPoly, kPoly)
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV)
-import Sonic.Signature (HscProof(..), hscProve) -- hscVerify
+import Sonic.Signature (HscProof(..), hscProve, hscVerify) -- 
 import Sonic.Utils (evalY, BiVLaurent)
 
 data Proof = Proof
@@ -66,7 +66,7 @@ prove
   -> ArithCircuit Fr
   -> m (Proof, RndOracle, VerifierData)
 prove srsRaw srsLocal upSize assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
-  if srsD srsLocal < 7*n
+  if srsD srsLocal < 2*n
     then panic $ "Parameter d is not large enough: " <> show (srsD srsLocal) <> " should be greater than " <>  show (7*n)
     else do
     -- zkP_1(info,a,b,c) -> R
@@ -97,7 +97,7 @@ prove srsRaw srsLocal upSize assignment@Assignment{..} arithCircuit@ArithCircuit
         (aRaw, waRaw) = openPoly srsRaw z (evalY 1 polyRRaw)        -- (a=r(z,1),W_a) <- Open(R,z,r(X,1))
         (bLocal, wbLocal) = openPoly srsLocal (y * z) (evalY 1 polyRLocal)  -- (b=r(z,y),W_b) <- Open(R,yz,r(X,1))
         (bRaw, wbRaw) = openPoly srsRaw (y * z) (evalY 1 polyRRaw)  -- (b=r(z,y),W_b) <- Open(R,yz,r(X,1))
-        (_, wt) = openPoly srsLocal z (evalY y tXY)            -- (_=r(z,1),W_a) <- Open(T,z,t(X,y))
+        (_, wt) = openPoly srsLocal z (evalY y tXY)            -- (_=t(z,y),W_a) <- Open(T,z,t(X,y))
 
     let szy = eval (evalY y sXY) z                        -- s=s(z,y)
     ys <- replicateM m rnd
@@ -136,7 +136,8 @@ prove srsRaw srsLocal upSize assignment@Assignment{..} arithCircuit@ArithCircuit
     n :: Int
     n = length aL
     m :: Int
-    m = length . wL $ weights
+    -- m = length . wL $ weights
+    m = 1
 
 verify
   :: SRS
@@ -154,12 +155,13 @@ verify srsRaw srsLocal ArithCircuit{..} Proof{..} y z yzs
                  , pcV srsRaw (fromIntegral n) prRRaw (y * z) (prBRaw, prWbRaw)
                  , pcV srsLocal (fromIntegral n) prR (y * z) (prB, prWb)
                  , pcV srsLocal (srsD srsLocal) prT z (t, prWt)
+                 , hscVerify srsLocal sXY yzs prHscProof
                 ]
     in and checks
   where
     n = length . head . wL $ weights
     kY = kPoly cs n
-    -- sXY = sPoly weights
+    sXY = sPoly weights
 
--- hscVerify srsLocal sXY yzs prHscProof
+-- 
 --                  , 

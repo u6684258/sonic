@@ -1,12 +1,11 @@
 import numpy as np
 
-N = 2
-T = 1
-M = 32
-d = 3
-
 
 def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
+    N = 2
+    T = 1
+    M = 32
+    # d = 3
     D1 = []
     D2 = []
     K = []
@@ -300,8 +299,8 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
 
 
 def bushfire(a0, b0, a1, b1, sig, epi, cd):
-
-
+    N = 2
+    M = 16
     D0 = cd * (a0-b0) // (a0+b0)
     r0 = cd * (a0-b0) - D0 * (a0+b0)
     D1 = cd * (a1-b1) // (a1+b1)
@@ -323,13 +322,13 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
     
     assert((C >= 0).all())
 
-    Bis = [np.array([int(x) for x in format(C[i], '032b')]) for i in range(len(C))]
+    Bis = [np.array([int(x) for x in format(C[i], f'0{M}b')]) for i in range(len(C))]
     # print(Bis)
-    Bs = np.array([int(x) for x in format(sdepi, '032b')])
-    Br = [np.array([int(x) for x in format(r0[i], '032b')]) for i in range(len(r0))] +\
-            [np.array([int(x) for x in format(r1[i], '032b')]) for i in range(len(r1))]
-    Bdr = [np.array([int(x) for x in format((a0+b0)[i]-r0[i], '032b')]) for i in range(len(r0))] +\
-            [np.array([int(x) for x in format((a1+b1)[i]-r1[i], '032b')]) for i in range(len(r1))]
+    Bs = np.array([int(x) for x in format(sdepi, f'0{M}b')])
+    Br = [np.array([int(x) for x in format(r0[i], f'0{M}b')]) for i in range(len(r0))] +\
+            [np.array([int(x) for x in format(r1[i], f'0{M}b')]) for i in range(len(r1))]
+    Bdr = [np.array([int(x) for x in format((a0+b0)[i]-r0[i], f'0{M}b')]) for i in range(len(r0))] +\
+            [np.array([int(x) for x in format((a1+b1)[i]-r1[i], f'0{M}b')]) for i in range(len(r1))]
 
     a_upper = np.concatenate([a0, b0, a1, b1]).astype(int)
     b_upper = np.zeros_like(a_upper).astype(int)
@@ -400,6 +399,8 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
     a = np.concatenate([a_upper, a_middle, a_lower])
     b = np.concatenate([b_upper, b_middle, b_lower])
     c = np.concatenate([c_upper, c_middle, c_lower])
+
+    assert(((a * b).astype(int)  == c).all())
     
     # Q1
     K_1 = []
@@ -412,9 +413,9 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
         u1 = np.zeros_like(a)
         v1 = np.zeros_like(b)
         w1 = np.zeros_like(c)
-        u1[i] = 1
-        u1[N+i] = 1
-        v1[4*N+i] = -1
+        # u1[i] = 1
+        # u1[N+i] = 1
+        # v1[4*N+i] = -1
         K_1.append(k1)
         u_1.append(u1)
         v_1.append(v1)
@@ -682,12 +683,9 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
             K_1, u_1, v_1, w_1)
 
 
-
-
 # sample_f = np.load("input/inputData/sample_f.npy").astype("int")
 # sample_l = np.load("input/inputData/sample_l.npy").astype("int")
-
-
+# d = 3
 # a, b, c, K, u, v, w = solar_energy([sample_f], [sample_l], 
 #                         np.ones_like(sample_f), 
 #                         np.ones_like(sample_f), 
