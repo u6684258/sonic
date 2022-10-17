@@ -683,26 +683,26 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
             K_1, u_1, v_1, w_1)
 
 
-# sample_f = np.load("input/inputData/sample_f.npy").astype("int")
-# sample_l = np.load("input/inputData/sample_l.npy").astype("int")
-# d = 3
-# a, b, c, K, u, v, w = solar_energy([sample_f], [sample_l], 
-#                         np.ones_like(sample_f), 
-#                         np.ones_like(sample_f), 
-#                         [np.ones_like(sample_f)], 
-#                         np.ones_like(sample_f),
-#                         np.ones_like(sample_f),
-#                         0.00000001 * (10**d)**6, 0.5, d)
+sample_f = np.load("input/inputData/sample_f.npy").astype("int")
+sample_l = np.load("input/inputData/sample_l.npy").astype("int")
+d = 3
+a, b, c, K, u, v, w = solar_energy([sample_f], [sample_l], 
+                        np.ones_like(sample_f), 
+                        np.ones_like(sample_f), 
+                        [np.ones_like(sample_f)], 
+                        np.ones_like(sample_f),
+                        np.ones_like(sample_f),
+                        0.00000001 * (10**d)**6, 0.5, d)
 
-a0 = np.load("input/inputData/a0.npy").astype("int")
-b0 = np.load("input/inputData/b0.npy").astype("int")
-a1 = np.load("input/inputData/a1.npy").astype("int")
-b1 = np.load("input/inputData/b1.npy").astype("int")
+# a0 = np.load("input/inputData/a0.npy").astype("int")
+# b0 = np.load("input/inputData/b0.npy").astype("int")
+# a1 = np.load("input/inputData/a1.npy").astype("int")
+# b1 = np.load("input/inputData/b1.npy").astype("int")
 
-a, b, c, K, u, v, w = bushfire(a0, b0, 
-                                a1, 
-                                b1, 
-                                1, 1, 100)
+# a, b, c, K, u, v, w = bushfire(a0, b0, 
+#                                 a1, 
+#                                 b1, 
+#                                 1, 1, 100)
 
 np.savetxt("input/aL.txt", np.concatenate(a).astype(int), delimiter=' ', newline=" ", fmt="%0d")
 np.savetxt("input/aO.txt", np.concatenate(c).astype(int), delimiter=' ', newline=" ", fmt="%0d")

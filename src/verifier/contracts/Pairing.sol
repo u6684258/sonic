@@ -118,7 +118,6 @@ library Pairing {
         uint256[1] memory out;
         bool success;
         uint256 len = inputSize * 0x20;
-        require(len % 192 == 0);
         // solium-disable-next-line security/no-inline-assembly
         assembly {
             success := staticcall(sub(gas(), 2000), 0x8, add(input, 0x20), len, out, 0x20)
@@ -130,42 +129,48 @@ library Pairing {
         return out[0] != 0;
         // return true;
     }
-    // function pairing(
-    //     G1Point memory a1,
-    //     G2Point memory a2,
-    //     G1Point memory b1,
-    //     G2Point memory b2
-    // ) internal view returns (bool) {
-
-    //     G1Point[2] memory p1 = [a1, b1];
-    //     G2Point[2] memory p2 = [a2, b2];
-
-    //     uint256 inputSize = 12;
-    //     uint256[] memory input = new uint256[](inputSize);
-
-    //     for (uint256 i = 0; i < 2; i++) {
-    //         uint256 j = i * 6;
-    //         input[j + 0] = p1[i].X;
-    //         input[j + 1] = p1[i].Y;
-    //         input[j + 2] = p2[i].X[0];
-    //         input[j + 3] = p2[i].X[1];
-    //         input[j + 4] = p2[i].Y[0];
-    //         input[j + 5] = p2[i].Y[1];
+    /// return the result of computing the pairing check
+	/// e(p1[0], p2[0]) *  .... * e(p1[n], p2[n]) == 1
+	/// For example pairing([P1(), P1().negate()], [P2(), P2()]) should
+	/// return true.
+	// function pairing(G1Point[] memory p1, G2Point[] memory p2) internal returns (bool) {
+	// 	require(p1.length == p2.length);
+	// 	uint elements = p1.length;
+	// 	uint inputSize = elements * 6;
+	// 	uint[] memory input = new uint[](inputSize);
+	// 	for (uint i = 0; i < elements; i++)
+	// 	{
+	// 		input[i * 6 + 0] = p1[i].X;
+	// 		input[i * 6 + 1] = p1[i].Y;
+	// 		input[i * 6 + 2] = p2[i].X[0];
+	// 		input[i * 6 + 3] = p2[i].X[1];
+	// 		input[i * 6 + 4] = p2[i].Y[0];
+	// 		input[i * 6 + 5] = p2[i].Y[1];
+	// 	}
+	// 	uint[1] memory out;
+	// 	bool success;
+	// 	assembly {
+	// 		success := call(not(0), 8, 0, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)
     //     }
-
-    //     uint256[1] memory out;
-    //     bool success;
-
-    //     // solium-disable-next-line security/no-inline-assembly
-    //     assembly {
-    //         success := staticcall(sub(gas(), 2000), 8, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)
-    //         // Use "invalid" to make gas estimation work
-    //         switch success case 0 { invalid() }
-    //     }
-
-    //     require(success, "pairing-opcode-failed");
-
-    //     return out[0] != 0;
-    // }
+	// 	require(success);
+	// 	return out[0] != 0;
+    //     // return false;
+	// }
+    
+    // function pairingProd3(
+	// 		G1Point memory a1, G2Point memory a2,
+	// 		G1Point memory b1, G2Point memory b2,
+	// 		G1Point memory c1, G2Point memory c2
+	// ) internal returns (bool) {
+	// 	G1Point[] memory p1 = new G1Point[](3);
+	// 	G2Point[] memory p2 = new G2Point[](3);
+	// 	p1[0] = a1;
+	// 	p1[1] = b1;
+	// 	p1[2] = c1;
+	// 	p2[0] = a2;
+	// 	p2[1] = b2;
+	// 	p2[2] = c2;
+	// 	return pairing(p1, p2);
+	// }
 }
 

@@ -24,9 +24,13 @@ data PcVOutput = PcVOutput
   , idx :: Fr
   , value :: Fr
   , proof :: G1 BN254
-  , hxi :: G2 BN254
-  , hax0 :: G2 BN254
-  , hax1 :: G2 BN254
+  , hxeC :: G2 BN254
+  , haxeA :: G2 BN254
+  , haxeB :: G2 BN254
+  , eBLeft1 :: G1 BN254
+  , eBLeft2 :: G1 BN254
+  , eB :: G1 BN254
+  , result :: Bool
   } deriving (Eq, Show)
 
 -- Commit(info, f(X)) -> F:
@@ -95,14 +99,27 @@ pcVShow SRS{..} maxm commitment z (v, w)
   , idx = z
   , value = v
   , proof = w
-  , hxi = hxi
-  , hax0 = eA
-  , hax1 = eB
+  , hxeC = hxi
+  , haxeA = haxeA
+  , haxeB = haxeB
+  , eBLeft1 = eBLeft1
+  , eBLeft2 = eBLeft2
+  , eB = eB
+  , result = efinalA <> efinalB == efinalC
   }
   where
-    eA, eB, hxi :: G2 BN254
-    eA = hPositiveAlphaX V.! 1                 -- h^{alpha*x}
-    eB = hPositiveAlphaX V.! 0                  -- h^{alpha}
+    haxeA, haxeB, hxi :: G2 BN254
+    eBLeft1, eBLeft2, eB :: G1 BN254
+    efinalA, efinalB, efinalC :: GT BN254
+    haxeA = hPositiveAlphaX V.! 1                 -- h^{alpha*x}
+    haxeB = hPositiveAlphaX V.! 0                  -- h^{alpha}
+    eBLeft1 = gen `mul` v
+    eBLeft2 = w `mul` negate z
+    eB = eBLeft1 <> eBLeft2 
+    
+    efinalA = pairing w (hPositiveAlphaX V.! 1) 
+    efinalB = pairing ((gen `mul` v) <> (w `mul` negate z)) (hPositiveAlphaX V.! 0)
+    efinalC = pairing commitment hxi 
     difference = -srsD + maxm                        -- -d+max
     hxi = if difference >= 0                         -- h^{x^{-d+max}}
           then index "pcV: hPositiveX" hPositiveX difference

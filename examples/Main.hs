@@ -11,7 +11,7 @@ import Data.List.Split (divvy)
 import Sonic.SRS as SRS
 import Sonic.Protocol
 import Sonic.Circuits
-import Sonic.CommitmentScheme (pcVShow)
+import Sonic.CommitmentScheme (pcVShow, pcV)
 
 import qualified Data.Text    as Text
 import qualified Data.Text.IO as Text
@@ -59,15 +59,12 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   stop <- getCurrentTime
   print $ diffUTCTime stop start
 
-  
-
   startVer <- getCurrentTime
   putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
   stopVer <- getCurrentTime
   print $ diffUTCTime stopVer startVer
 
-  putText $ show (pcVShow srsRaw (fromIntegral n) prRRaw rndOracleZ (prARaw, prWaRaw))
-
+  putText $ show (pcVShow srsRaw (fromIntegral nexample) prRRaw rndOracleZ (prARaw, prWaRaw))
   print $ "writing proof"
   writeFile "output/proof.txt" $ show $ proof
   print $ "writing rndOracle"
@@ -77,6 +74,7 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   where
     -- n: Number of multiplication constraints
     n = (length $ aL assignment) * 5 + 1
+    nexample = 50
     
 
 
@@ -109,7 +107,7 @@ runExample = do
       aL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aLS))
       aR = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aRS))
       aO = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aOS))
-      inputSize = 204
+      inputSize = 50
       -- wL = divvy 50 50 wLL
       -- wR = divvy 50 50 wRL
       -- wO = divvy 50 50 wOL
