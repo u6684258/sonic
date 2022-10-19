@@ -11,7 +11,9 @@ import Data.List.Split (divvy)
 import Sonic.SRS as SRS
 import Sonic.Protocol
 import Sonic.Circuits
-import Sonic.CommitmentScheme (pcVShow, pcV)
+-- import Sonic.CommitmentScheme (pcVShow)
+import Sonic.Signature (hscVerifyShow)
+import Sonic.Constraints (sPoly)
 
 import qualified Data.Text    as Text
 import qualified Data.Text.IO as Text
@@ -64,7 +66,11 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   stopVer <- getCurrentTime
   print $ diffUTCTime stopVer startVer
 
-  putText $ show (pcVShow srsRaw (fromIntegral nexample) prRRaw rndOracleZ (prARaw, prWaRaw))
+  putText $ show (hscVerifyShow srsLocal sXY rndOracleYZs prHscProof)
+
+  -- putText $ show (pcVShow srsRaw (fromIntegral nexample) prRRaw rndOracleZ (prARaw, prWaRaw))
+  print $ "writing verify Hxi String"
+  writeFile "output/verifyHxiString.txt" $ show (getverifyHxiString srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
   print $ "writing proof"
   writeFile "output/proof.txt" $ show $ proof
   print $ "writing rndOracle"
@@ -74,7 +80,8 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   where
     -- n: Number of multiplication constraints
     n = (length $ aL assignment) * 5 + 1
-    nexample = 50
+    -- nexample = 50
+    sXY = sPoly (weights circuit)
     
 
 

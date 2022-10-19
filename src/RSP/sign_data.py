@@ -31,23 +31,29 @@ with open("output/proof.txt") as f:
     proof = f.read()
     substr = proof.split("prRRaw = A (P ")[1].split("), prT = A (P ")[0]
     pair = substr.split(") (P ")
+    print(pair)
     # pair = proof[193: 269] + proof[274: 351]
 # print(pair)
-k = '0x' + keccak.new(data=(pair[0]+pair[1]).encode(), digest_bits=256).hexdigest()
+# k = '0x' + keccak.new(data=(pair[0]+pair[1]).encode(), digest_bits=256).hexdigest()
 # print(k)
-GenPoint = Point(Gx, Gy, curve=secp256k1)
+# GenPoint = Point(Gx, Gy, curve=secp256k1)
+# print(GenPoint)
+# SK=999888777666555444333222111
+# VK = SK * GenPoint
+# print(VK)
+# randomNum = 936462993105
+# XY1 = randomNum * GenPoint
+# r = XY1.x % N
+# s = ((int(k, 16) + r * SK) * modinv(randomNum, N)) % N
+# w = modinv(s, N)
 
-SK=999888777666555444333222111
-VK = SK * GenPoint
-randomNum = 936462993105
-XY1 = randomNum * GenPoint
-r = XY1.x % N
-s = ((int(k, 16) + r * SK) * modinv(randomNum, N)) % N
+# print(f"signature on commitment of rRaw:= \n    r: {r} \n    s^-1: {w}")
 
-print(f"signature on commitment of rRaw:= \n    r: {r} \n    s: {s}")
+# u1 = int(k, 16) * w % N
+# u2 = r * w % N
+# XY2 = u1 * GenPoint + u2 * VK
+# print(u1)
+# print(u2)
+# print(u1 * GenPoint)
 
-w = modinv(s, N)
-u1 = int(k, 16) * w % N
-u2 = r * w % N
-XY2 = u1 * GenPoint + u2 * VK
-print(f"signature verification success: {r == XY2.x % N}")
+# print(f"signature verification success: {r == XY2.x % N}")

@@ -4,6 +4,7 @@ pragma solidity >=0.4.22 <0.9.0;
 library Pairing {
 
     uint256 constant PRIME_Q = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
+    uint256 constant BABYJUB_P = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
 
     struct G1Point {
         uint256 X;
@@ -129,48 +130,5 @@ library Pairing {
         return out[0] != 0;
         // return true;
     }
-    /// return the result of computing the pairing check
-	/// e(p1[0], p2[0]) *  .... * e(p1[n], p2[n]) == 1
-	/// For example pairing([P1(), P1().negate()], [P2(), P2()]) should
-	/// return true.
-	// function pairing(G1Point[] memory p1, G2Point[] memory p2) internal returns (bool) {
-	// 	require(p1.length == p2.length);
-	// 	uint elements = p1.length;
-	// 	uint inputSize = elements * 6;
-	// 	uint[] memory input = new uint[](inputSize);
-	// 	for (uint i = 0; i < elements; i++)
-	// 	{
-	// 		input[i * 6 + 0] = p1[i].X;
-	// 		input[i * 6 + 1] = p1[i].Y;
-	// 		input[i * 6 + 2] = p2[i].X[0];
-	// 		input[i * 6 + 3] = p2[i].X[1];
-	// 		input[i * 6 + 4] = p2[i].Y[0];
-	// 		input[i * 6 + 5] = p2[i].Y[1];
-	// 	}
-	// 	uint[1] memory out;
-	// 	bool success;
-	// 	assembly {
-	// 		success := call(not(0), 8, 0, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)
-    //     }
-	// 	require(success);
-	// 	return out[0] != 0;
-    //     // return false;
-	// }
-    
-    // function pairingProd3(
-	// 		G1Point memory a1, G2Point memory a2,
-	// 		G1Point memory b1, G2Point memory b2,
-	// 		G1Point memory c1, G2Point memory c2
-	// ) internal returns (bool) {
-	// 	G1Point[] memory p1 = new G1Point[](3);
-	// 	G2Point[] memory p2 = new G2Point[](3);
-	// 	p1[0] = a1;
-	// 	p1[1] = b1;
-	// 	p1[2] = c1;
-	// 	p2[0] = a2;
-	// 	p2[1] = b2;
-	// 	p2[2] = c2;
-	// 	return pairing(p1, p2);
-	// }
 }
 

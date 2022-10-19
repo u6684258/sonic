@@ -7,6 +7,7 @@ module Sonic.Signature
   ( HscProof(..)
   , hscProve
   , hscVerify
+  , hscVerifyShow
   ) where
 
 import Protolude
@@ -27,6 +28,10 @@ data HscProof = HscProof
   , hscU :: Fr
   , hscV :: Fr
   } deriving (Eq, Show, Generic, NFData)
+
+-- data HscVerifyShow = HscVerifyShow
+--   { suv  :: Fr
+--   } deriving (Eq, Show)
 
 -- Common input: info = bp, srs, {z_j, y_j}_{j=1}^m, s(X,Y)
 hscProve
@@ -88,3 +93,12 @@ hscVerify srs@SRS{..} sXY yzs proof@HscProof{..}
                         ) True (zip3 yzs hscS hscW)
         check = pcV srs srsD hscC hscV (sv, hscQv) -- check pcV(bp,srs,C,d,v,(s_v,Q_v))
     in check && checks
+
+hscVerifyShow
+  :: SRS
+  -> BiVLaurent Fr     -- S(X,Y)
+  -> [(Fr, Fr)]        -- {(y_j, z_j)}_{j=1}^m
+  -> HscProof
+  -> Fr
+hscVerifyShow srs@SRS{..} sXY yzs proof@HscProof{..}
+  = eval (evalY hscV sXY) hscU 

@@ -6,6 +6,7 @@ module Sonic.CommitmentScheme
   , pcV
   , PcVOutput
   , pcVShow
+  , pcVGetHxi
   ) where
 
 import Protolude hiding (quot)
@@ -124,6 +125,19 @@ pcVShow SRS{..} maxm commitment z (v, w)
     hxi = if difference >= 0                         -- h^{x^{-d+max}}
           then index "pcV: hPositiveX" hPositiveX difference
           else index "pcV: hNegativeX" hNegativeX (abs difference - 1)
+
+pcVGetHxi
+  :: SRS                -- srs
+  -> Int                -- max
+  -> G2 BN254          
+pcVGetHxi SRS{..} maxm
+  = hxi 
+  where
+    difference = -srsD + maxm                        -- -d+max
+    hxi = if difference >= 0                         -- h^{x^{-d+max}}
+          then index "pcV: hPositiveX" hPositiveX difference
+          else index "pcV: hNegativeX" hNegativeX (abs difference - 1)
+
 
 index :: Text -> V.Vector a -> Int -> a
 index annot v e = fromMaybe err (v V.!? e)
