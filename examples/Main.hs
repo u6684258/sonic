@@ -12,8 +12,8 @@ import Sonic.SRS as SRS
 import Sonic.Protocol
 import Sonic.Circuits
 -- import Sonic.CommitmentScheme (pcVShow)
-import Sonic.Signature (hscVerifyShow)
-import Sonic.Constraints (sPoly)
+-- import Sonic.Signature (hscVerifyShow)
+-- import Sonic.Constraints (sPoly)
 
 import qualified Data.Text    as Text
 import qualified Data.Text.IO as Text
@@ -54,34 +54,35 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   -- print $ pXRaw
   -- print $ pXLocal
   -- Prover
+  print $ "generating proof:"
   start <- getCurrentTime
-  (proof@Proof{..}, rndOracle@RndOracle{..}, verifierData) <- prove srsRaw srsLocal 4 assignment circuit
+  (proof@Proof{..}, rndOracle@RndOracle{..}) <- prove srsRaw srsLocal 4 assignment circuit
   putText $ "proof: " <> show proof
   -- putText $ "rnds: " <> show rndOracle
   stop <- getCurrentTime
   print $ diffUTCTime stop start
-
+  print $ "verifying proof:"
   startVer <- getCurrentTime
-  putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
+  putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZ rndOracleyOld rndOracleyNew)
   stopVer <- getCurrentTime
   print $ diffUTCTime stopVer startVer
 
-  putText $ show (hscVerifyShow srsLocal sXY rndOracleYZs prHscProof)
+  -- putText $ show (hscVerifyShow srsLocal sXY rndOracleYZs prHscProof)
 
   -- putText $ show (pcVShow srsRaw (fromIntegral nexample) prRRaw rndOracleZ (prARaw, prWaRaw))
-  print $ "writing verify Hxi String"
-  writeFile "output/verifyHxiString.txt" $ show (getverifyHxiString srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
+  -- print $ "writing verify Hxi String"
+  -- writeFile "output/verifyHxiString.txt" $ show (getverifyHxiString srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
   print $ "writing proof"
   writeFile "output/proof.txt" $ show $ proof
   print $ "writing rndOracle"
   writeFile "output/rndOracle.txt" $ show $ rndOracle
-  print $ "writing verifier data"
-  writeFile "output/verifierData.txt" $ show $ verifierData
+  -- print $ "writing verifier data"
+  -- writeFile "output/verifierData.txt" $ show $ verifierData
   where
     -- n: Number of multiplication constraints
-    n = (length $ aL assignment) * 5 + 1
+    n = (length $ aL assignment) * 7
     -- nexample = 50
-    sXY = sPoly (weights circuit)
+    -- sXY = sPoly (weights circuit)
     
 
 
@@ -114,7 +115,7 @@ runExample = do
       aL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aLS))
       aR = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aRS))
       aO = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aOS))
-      inputSize = 50
+      inputSize = 5970
       -- wL = divvy 50 50 wLL
       -- wR = divvy 50 50 wRL
       -- wO = divvy 50 50 wOL

@@ -5,11 +5,11 @@ nir = np.load("data/nir.npy").astype("int")
 swir = np.load("data/swir.npy").astype("int")
 nir = nir - nir.min()
 swir = swir - swir.min()
-
-sample_f = nir[50,:2]
-sample_l = swir[50,:2]
-a1 = nir[100,:2]
-b1 = swir[100,:2]
+size = 64
+sample_f = nir[50,:size]
+sample_l = swir[50,:size]
+a1 = nir[100,:size]
+b1 = swir[100,:size]
 
 # np.save("input/inputData/sample_f.npy", sample_f)
 # np.save("input/inputData/sample_l.npy", sample_l)

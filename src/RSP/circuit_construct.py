@@ -10,6 +10,8 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
     D2 = []
     K = []
     D3 = []
+    Pt = []
+    PCoeff = []
     for t in range(len(fts)):
         D1t = fts[t] * lts[t]
         # print(D1t)
@@ -21,6 +23,9 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
         D2.append(D2t)
         K.append(Kt)
         D3.append(D3t)
+        P = G_p * S_GT * G_ct[t]
+        Pt.append(P)
+        PCoeff.append((10**d)**3 * np.ones_like(D2t) * P + P * sig_1)
     D4 = np.sum(D3, axis=0)
     D5 = D4 * S_GT
     D6 = D5 * G_p
@@ -29,8 +34,13 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
     print(f"G={G}")
     print(f"index={d_index}")
     B = np.array([int(x) for x in format(d_index, '032b')])
-    print(B.shape)
-    a_upper = np.concatenate(fts + lts).astype(int)
+    print(f"bit length: {B.shape}")
+
+    k_final = np.sum(np.concatenate(PCoeff))
+
+
+
+    a_upper = np.concatenate(lts + fts).astype(int)
     b_upper = np.zeros_like(a_upper).astype(int)
     c_upper = np.zeros_like(a_upper).astype(int)
 
@@ -39,53 +49,32 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
     assert(c_upper.shape[0] == N*(2*T))
     assert(((a_upper * b_upper).astype(int)  == c_upper).all())
 
-    a_middle = np.concatenate(fts +
-                                D1 +
-                                K +
-                                K +
-                                [D4,
-                                D5,
-                                B]
+    a_middle = np.concatenate(lts +
+                                [B] +
+                                [[G]]
                             ).astype(int)
 
-    b_middle = np.concatenate(lts +
-                                [sig_0 for _ in range(T)] +
-                                [np.ones(T*N)] +
-                                G_ct +
-                                [S_GT,
-                                G_p,
-                                1 - B]
+    b_middle = np.concatenate(fts +
+                                [1 - B] + 
+                                [[0]]
                             ).astype(int)
     c_middle = np.concatenate(D1 +
-                                D2 +
-                                K +
-                                D3 +
-                                [D5,
-                                D6,
-                                np.zeros(M)]
+                                [np.zeros(M)] +
+                                [[0]]
                             ).astype(int)
 
-    assert(a_middle.shape[0] == N*(4*T+2)+M)
-    assert(b_middle.shape[0] == N*(4*T+2)+M)
-    assert(c_middle.shape[0] == N*(4*T+2)+M)
+    assert(a_middle.shape[0] == N*(T)+M+1)
+    assert(b_middle.shape[0] == N*(T)+M+1)
+    assert(c_middle.shape[0]  == N*(T)+M+1)
     assert(((a_middle * b_middle).astype(int)  == c_middle).all())
     # print(a_middle)
     # print(b_middle)
     # print(c_middle)
     # print((a_middle * b_middle  // (10**d)).astype(int))
 
-    a_lower = np.array([G, d_index]).astype(int)
-    b_lower = np.zeros_like(a_lower).astype(int)
-    c_lower = np.zeros_like(a_lower).astype(int)
-
-    assert(a_lower.shape[0] == 2)
-    assert(b_lower.shape[0] == 2)
-    assert(c_lower.shape[0] == 2)
-    assert(((a_lower * b_lower).astype(int)  == c_lower).all())
-
-    a = np.concatenate([a_upper, a_middle, a_lower])
-    b = np.concatenate([b_upper, b_middle, b_lower])
-    c = np.concatenate([c_upper, c_middle, c_lower])
+    a = np.concatenate([a_upper, a_middle])
+    b = np.concatenate([b_upper, b_middle])
+    c = np.concatenate([c_upper, c_middle])
     # Q1
     K_1 = []
     u_1 = []
@@ -97,8 +86,8 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
         u1 = np.zeros_like(a)
         v1 = np.zeros_like(b)
         w1 = np.zeros_like(c)
-        u1[i] = -1
-        u1[2*N*T + i] = 1
+        u1[i] = 1
+        u1[2*N*T + i] = -1
         K_1.append(k1)
         u_1.append(u1)
         v_1.append(v1)
@@ -108,162 +97,21 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
         u1 = np.zeros_like(a)
         v1 = np.zeros_like(b)
         w1 = np.zeros_like(c)
-        u1[N*T + i] = -1
-        v1[2*N*T + i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-        # copy D1
-        k1 = 0
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        u1[3*N*T + i] = -1
-        w1[2*N*T + i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-        # copy D2 and 1 - D2 + sigma_1
-        k1 = (10**d)**3+sig_1[i]
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        u1[4*N*T + i] = 1
-        w1[3*N*T + i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-        # copy Kt
-        k1 = 0
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        u1[5*N*T + i] = -1
-        w1[4*N*T + i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-    for i in range(N):
-        # copy D5
-        k1 = 0
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        u1[6*N*T + N + i] = -1
-        w1[6*N*T + i] = 1
+        u1[N*T + i] = 1
+        v1[2*N*T + i] = -1
         K_1.append(k1)
         u_1.append(u1)
         v_1.append(v1)
         w_1.append(w1)
 
-    # Q2
-    for i in range(N):
-        # check D4 == sum D3t
-        k1 = 0
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        u1[6*N*T + i] = -1
-        w1[5*N*T + i * T: 5*N*T + (i+1) * T] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-    
-    # Q3
-    for i in range(N):
-        # check constants sigma_0
-        k1 = sig_0[i]
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        for j in range(T):
-            v1[3*N*T + i + j*N] = 1
-            K_1.append(k1)
-            u_1.append(u1)
-            v_1.append(v1)
-            w_1.append(w1)
-        # check constants 1
-        k1 = 1
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        for j in range(T):
-            v1[4*N*T + i + j*N] = 1
-            K_1.append(k1)
-            u_1.append(u1)
-            v_1.append(v1)
-            w_1.append(w1)
-        # check constants G_ct
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        for j in range(T):
-            k1 = G_ct[j][i]
-            v1[4*N*T + i + j*N] = 1
-            K_1.append(k1)
-            u_1.append(u1)
-            v_1.append(v1)
-            w_1.append(w1)
-        # check constants S_Gt
-        k1 = S_GT[i]
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        v1[6*N*T + i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-        # check constants G_p
-        k1 = G_p[i]
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        v1[6*N*T+N + i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-
-    # Q4
-    # check G == sum D6
-    k1 = 0
-    u1 = np.zeros_like(a)
-    v1 = np.zeros_like(b)
-    w1 = np.zeros_like(c)
-    u1[6*N*T + 2*N + M] = -1
-    w1[6*N*T + N: 6*N*T + 2*N] = 1
-    K_1.append(k1)
-    u_1.append(u1)
-    v_1.append(v1)
-    w_1.append(w1)
-
-    # Q5
-    # check G_e * epsilon - G
+    # Q6
+    # check G_e * epsilon = 2 * B + G
     k1 = G_e * epi
     u1 = np.zeros_like(a)
     v1 = np.zeros_like(b)
     w1 = np.zeros_like(c)
     u1[-1] = 1
-    u1[-2] = 1
-    K_1.append(k1)
-    u_1.append(u1)
-    v_1.append(v1)
-    w_1.append(w1)
-
-    # Q6
-    # check G_e * epsilon - G = 2 * B
-    k1 = 0
-    u1 = np.zeros_like(a)
-    v1 = np.zeros_like(b)
-    w1 = np.zeros_like(c)
-    u1[-1] = -1
-    u1[6*N*T+2*N:6*N*T+2*N+M] = np.array([2**(M-i-1) for i in range(M)])
+    u1[3*N*T:3*N*T+M] = np.array([2**(M-i-1) for i in range(M)])
     K_1.append(k1)
     u_1.append(u1)
     v_1.append(v1)
@@ -276,12 +124,26 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
         u1 = np.zeros_like(a)
         v1 = np.zeros_like(b)
         w1 = np.zeros_like(c)
-        u1[6*N*T+2*N+i] =1
-        v1[6*N*T+2*N+i] =1
+        u1[3*N*T+i] =1
+        v1[3*N*T+i] =1
         K_1.append(k1)
         u_1.append(u1)
         v_1.append(v1)
         w_1.append(w1)
+
+    # Q6
+    # check G_e * epsilon = 2 * B + G
+    k1 = k_final
+    u1 = np.zeros_like(a)
+    v1 = np.zeros_like(b)
+    w1 = np.zeros_like(c)
+    u1[-1] = 1
+    for t in range(T):
+        w1[2*N*T+t*N:2*N*T+(t+1)*N] = Pt[t]*sig_0
+    K_1.append(k1)
+    u_1.append(u1)
+    v_1.append(v1)
+    w_1.append(w1)
     
     for i in range(len(K_1)):
         # print(i)
@@ -293,14 +155,19 @@ def solar_energy(fts, lts, sig_0, sig_1, G_ct, S_GT, G_p, G_e, epi, d):
 
         assert(K_1[i]==u_1[i]@a+v_1[i]@b+w_1[i]@c)
 
+    print(np.concatenate([a_upper, a_middle]).shape)
+    print(np.array(K_1).shape)  
 
-    return ([a_upper, a_middle, a_lower], [b_upper, b_middle, b_lower], [c_upper, c_middle, c_lower], 
+
+    return ([a_upper, a_middle], [b_upper, b_middle], [c_upper, c_middle], 
             K_1, u_1, v_1, w_1)
 
 
 def bushfire(a0, b0, a1, b1, sig, epi, cd):
-    N = 2
+
+    N = 64
     M = 16
+
     D0 = cd * (a0-b0) // (a0+b0)
     r0 = cd * (a0-b0) - D0 * (a0+b0)
     D1 = cd * (a1-b1) // (a1+b1)
@@ -321,6 +188,8 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
     sdepi = s - epi
     
     assert((C >= 0).all())
+    print(f"G={s}")
+    print(f"index={sdepi}")
 
     Bis = [np.array([int(x) for x in format(C[i], f'0{M}b')]) for i in range(len(C))]
     # print(Bis)
@@ -380,12 +249,6 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
     assert(b_middle.shape[0] == 9*N+5*N*M+M)
     assert(c_middle.shape[0] == 9*N+5*N*M+M)
     assert(((a_middle * b_middle).astype(int)  == c_middle).all())
-    # for i in range(len(a_middle)):
-    #     print(i)
-    #     # print(a_middle)
-    #     # print(b_middle)
-    #     print(c_middle[i])
-    #     print((a_middle[i] * b_middle[i]).astype(int))
 
     a_lower = np.array([s, sdepi]).astype(int)
     b_lower = np.zeros_like(a_lower).astype(int)
@@ -413,9 +276,9 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
         u1 = np.zeros_like(a)
         v1 = np.zeros_like(b)
         w1 = np.zeros_like(c)
-        # u1[i] = 1
-        # u1[N+i] = 1
-        # v1[4*N+i] = -1
+        u1[i] = 1
+        u1[N+i] = 1
+        v1[4*N+i] = -1
         K_1.append(k1)
         u_1.append(u1)
         v_1.append(v1)
@@ -590,41 +453,6 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
     v_1.append(v1)
     w_1.append(w1)
 
-    #Q15
-    for i in range(N):
-        k1 = 1
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        v1[6*N+i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-
-    #Q16
-    for i in range(N):
-        k1 = 0
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        w1[7*N+i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-    #Q17
-    for i in range(M*N+M):
-        k1 = 0
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        w1[9*N+i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
-
     #Q18
     for i in range(4*M*N):
         k1 = 1
@@ -651,58 +479,37 @@ def bushfire(a0, b0, a1, b1, sig, epi, cd):
         v_1.append(v1)
         w_1.append(w1)
 
-    #Q20
-    for i in range(4*M*N):
-        k1 = 0
-        u1 = np.zeros_like(a)
-        v1 = np.zeros_like(b)
-        w1 = np.zeros_like(c)
-        w1[13*N+M*N+M+i] = 1
-        K_1.append(k1)
-        u_1.append(u1)
-        v_1.append(v1)
-        w_1.append(w1)
     
     for i in range(len(K_1)):
-        # print(i)
-        # print(f"K:{K_1[i]}")
-        # print(f"u:{u_1[i]@a}")
-        # print(f"v:{v_1[i]@b}")
-        # print(f"w:{w_1[i]@c}")
-        # print(u_1[i])
-        # print(a)
-        # # print(v_1[i])
-        # # print(b)
-        # print(w_1[i])
-        # print(c)
-
         assert(K_1[i]==u_1[i]@a+v_1[i]@b+w_1[i]@c)
 
+    print(f"length: {np.concatenate([a_upper, a_middle, a_lower]).shape}")
+    print(f"constraints: {np.array(K_1).shape}")  
 
     return ([a_upper, a_middle, a_lower], [b_upper, b_middle, b_lower], [c_upper, c_middle, c_lower], 
             K_1, u_1, v_1, w_1)
 
 
-sample_f = np.load("input/inputData/sample_f.npy").astype("int")
-sample_l = np.load("input/inputData/sample_l.npy").astype("int")
-d = 3
-a, b, c, K, u, v, w = solar_energy([sample_f], [sample_l], 
-                        np.ones_like(sample_f), 
-                        np.ones_like(sample_f), 
-                        [np.ones_like(sample_f)], 
-                        np.ones_like(sample_f),
-                        np.ones_like(sample_f),
-                        0.00000001 * (10**d)**6, 0.5, d)
+# sample_f = np.load("input/inputData/sample_f.npy").astype("int")
+# sample_l = np.load("input/inputData/sample_l.npy").astype("int")
+# d = 3
+# a, b, c, K, u, v, w = solar_energy([sample_f], [sample_l], 
+#                         np.ones_like(sample_f), 
+#                         np.ones_like(sample_f), 
+#                         [np.ones_like(sample_f)], 
+#                         np.ones_like(sample_f),
+#                         np.ones_like(sample_f),
+#                         0.00000001 * (10**d)**6, 0.5, d)
 
-# a0 = np.load("input/inputData/a0.npy").astype("int")
-# b0 = np.load("input/inputData/b0.npy").astype("int")
-# a1 = np.load("input/inputData/a1.npy").astype("int")
-# b1 = np.load("input/inputData/b1.npy").astype("int")
+a0 = np.load("input/inputData/a0.npy").astype("int")
+b0 = np.load("input/inputData/b0.npy").astype("int")
+a1 = np.load("input/inputData/a1.npy").astype("int")
+b1 = np.load("input/inputData/b1.npy").astype("int")
 
-# a, b, c, K, u, v, w = bushfire(a0, b0, 
-#                                 a1, 
-#                                 b1, 
-#                                 1, 1, 100)
+a, b, c, K, u, v, w = bushfire(a0, b0, 
+                                a1, 
+                                b1, 
+                                1, 1, 100)
 
 np.savetxt("input/aL.txt", np.concatenate(a).astype(int), delimiter=' ', newline=" ", fmt="%0d")
 np.savetxt("input/aO.txt", np.concatenate(c).astype(int), delimiter=' ', newline=" ", fmt="%0d")
