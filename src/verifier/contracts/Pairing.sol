@@ -95,18 +95,16 @@ library Pairing {
         G1Point memory a1,
         G2Point memory a2,
         G1Point memory b1,
-        G2Point memory b2,
-        G1Point memory c1,
-        G2Point memory c2
+        G2Point memory b2
     ) internal view returns (bool) {
 
-        G1Point[3] memory p1 = [a1, b1, c1];
-        G2Point[3] memory p2 = [a2, b2, c2];
+        G1Point[2] memory p1 = [a1, b1];
+        G2Point[2] memory p2 = [a2, b2];
 
-        uint256 inputSize = 18;
+        uint256 inputSize = 12;
         uint256[] memory input = new uint256[](inputSize);
 
-        for (uint256 i = 0; i < 3; i++) {
+        for (uint256 i = 0; i < 2; i++) {
             uint256 j = i * 6;
             input[j + 0] = p1[i].X;
             input[j + 1] = p1[i].Y;
@@ -118,17 +116,16 @@ library Pairing {
 
         uint256[1] memory out;
         bool success;
-        uint256 len = inputSize * 0x20;
+        // uint256 len = inputSize * 0x20;
         // solium-disable-next-line security/no-inline-assembly
         assembly {
-            success := staticcall(sub(gas(), 2000), 0x8, add(input, 0x20), len, out, 0x20)
+            success := staticcall(sub(gas(), 2000), 8, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)
             // Use "invalid" to make gas estimation work
             switch success case 0 { invalid() }
         }
         require(success, "pairing-opcode-failed");
 
         return out[0] != 0;
-        // return true;
     }
 }
 

@@ -15,7 +15,7 @@ contract Verifier is Constants {
 
     event verifyResult(bool result);
 
-        uint256[21] Proof = [
+    uint256[21] Proof = [
         uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
         uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225),
         uint256(20900429899291009073299289469660149716785596251491300692035681492016939179257),
@@ -43,6 +43,8 @@ contract Verifier is Constants {
         uint256(21356640755055926883299664242251323519715676831624930462071588778907420237277),
         uint256(21284924740537517593391635090683107806948436131904811688892120057033464016678)
     ];
+    // length of longest u,v,w, i.e. longest length of a,b,c, linear
+    uint256 N = 2994;
 
     uint256 evalK = uint256(11598511819595573397693757683043215863237090817957830497519701049476846220233);
     uint256 evalS = Proof[20];
@@ -85,14 +87,54 @@ contract Verifier is Constants {
     address addr = 0xE448992FdEaF94784bBD8f432d781C061D907985;
 
 
+    // Sonic version - Verify a single-point evaluation of a polynominal
+    // function verify(
+    //     Pairing.G1Point memory _commitment, // F
+    //     Pairing.G1Point memory _proof, // W
+    //     uint256 _index,  // z
+    //     uint256 _value,  // F(z) or v
+    //     uint proofIndex,
+    //     bool isT
+    // ) public view returns (bool) {
+    //     // Make sure each parameter is less than the prime q
+    //     require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
+    //     require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
+    //     require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
+    //     require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
+    //     require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
+    //     require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
+       
+    //     Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
+    //     Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(Constants.G1Gen(), _value), negProof);
+    //     Pairing.G1Point memory negCm = Pairing.negate(_commitment);
 
+    //     return Pairing.pairing(_proof, Constants.SRS_G2_hAlphaX1(proofIndex),
+    //                             mulProof, Constants.SRS_G2_hAlphaX0(proofIndex),
+    //                             negCm, Constants.SRS_G2_hAlphaXdMax(proofIndex, isT));
+    // }
+
+    // KZG version - Verify a single-point evaluation of a polynominal
+    /*
+     * Verifies a single-point evaluation of a polynominal using the KZG
+     * commitment scheme.
+     *    - p(X) is a polynominal
+     *    - _value = p(_index) 
+     *    - commitment = commit(p)
+     *    - proof = genProof(p, _index, _value)
+     * Returns true if and only if the following holds, and returns false
+     * otherwise:
+     *     e(commitment - commit([_value]), G2.g) == e(proof, commit([0, 1]) - zCommit)
+     * @param _commitment The KZG polynominal commitment.
+     * @param _proof The proof.
+     * @param _index The x-value at which to evaluate the polynominal.
+     * @param _value The result of the polynominal evaluation.
+     */
     function verify(
         Pairing.G1Point memory _commitment, // F
-        Pairing.G1Point memory _proof, // W
+        Pairing.G1Point memory _proof, // π
         uint256 _index,  // z
         uint256 _value,  // F(z) or v
-        uint proofIndex,
-        bool isT
+        uint proofIndex
     ) public view returns (bool) {
         // Make sure each parameter is less than the prime q
         require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
@@ -101,16 +143,31 @@ contract Verifier is Constants {
         require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
         require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
         require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
-       
-        Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
-        Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(Constants.G1Gen(), _value), negProof);
-        Pairing.G1Point memory negCm = Pairing.negate(_commitment);
 
-        return Pairing.pairing(_proof, Constants.SRS_G2_hAlphaX1(proofIndex),
-                                mulProof, Constants.SRS_G2_hAlphaX0(proofIndex),
-                                negCm, Constants.SRS_G2_hAlphaXdMax(proofIndex, isT));
-        // return false;
+        // Compute commitment - aCommitment
+        Pairing.G1Point memory commitmentMinusA = Pairing.plus(
+            _commitment,
+            Pairing.negate(
+                Pairing.mulScalar(Constants.G1Gen(), _value)
+            )
+        );
+
+        // Negate the proof
+        Pairing.G1Point memory negProof = Pairing.negate(_proof);
+
+        // Compute index * proof
+        Pairing.G1Point memory indexMulProof = Pairing.mulScalar(_proof, _index);
+
+        // Return true if and only if
+        // e((index * proof) + (commitment - aCommitment), G2.g) * e(-proof, xCommit) == 1
+        return Pairing.pairing(
+            Pairing.plus(indexMulProof, commitmentMinusA),
+            Constants.G2Gen(),
+            negProof,
+            Constants.SRS_G2_hAlphaX0(proofIndex)
+        );
     }
+
 
     function verifySonic(
         // uint256[21] memory Proof,
@@ -124,104 +181,117 @@ contract Verifier is Constants {
         // uint256 sy = evalXPoly();
 
         uint256 yz = mulmod(Randoms[0], Randoms[1], Pairing.BABYJUB_P);
+        // y^N for halo implementation style
+        // uint256 y_n = expMod(Randoms[1], N, BABYJUB_P);
+        // t for halo implementation style
+        // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
+        //                           addmod(addmod(Proof[12], 
+        //                                         Proof[15], Pairing.BABYJUB_P), 
+        //                                  evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
+        //                     mulmod((BABYJUB_P - evalK), y_n, BABYJUB_P),
+        //                     BABYJUB_P);
+
         uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
                                   addmod(addmod(Proof[12], 
                                                 Proof[15], Pairing.BABYJUB_P), 
                                          evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
-                            Pairing.BABYJUB_P - evalK, Pairing.BABYJUB_P);
+                            (BABYJUB_P - evalK), BABYJUB_P);
+
 
         bool verifySignature = recover(message, sig) == addr;
         bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
                       Pairing.G1Point(Proof[7], Proof[8]),
                       Randoms[1], 
                       Proof[6],
-                      0, false) &&
+                      0) &&
                 verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
                       Pairing.G1Point(Proof[13], Proof[14]),
                       yz,
                       Proof[12],
-                      0, false) &&
+                      0) &&
                 verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
                       Pairing.G1Point(Proof[10], Proof[11]),
                       Randoms[1],
                       Proof[9],
-                      1, false) &&
+                      1) &&
                 verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
                       Pairing.G1Point(Proof[16], Proof[17]),
                       yz,
                       Proof[15],
-                      1, false) &&
+                      1) &&
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                               
+                      0) &&                               
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+                      0) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+                      0) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+                      0) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+                      0) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+                      0) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+                      0) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
                  verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
                       t,
-                      0, true) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
-                verifySOCC() && verifySignature;
-        // bool result = true;
+                      0) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+                verifySignature &&
+                Proof[6] == Proof[7] && // c_old == s_old
+                Proof[8] == Proof[9] && // c_new == s_new
+                Proof[10] == Proof[11]; // c == s
         emit verifyResult(result);
         return result;
     }
+    // SCC
+    // function verifySOCC() public returns (bool) {
 
-    function verifySOCC() public returns (bool) {
-
-        bool verified = verify(Pairing.G1Point(SOCC_hscS[0], SOCC_hscS[1]), // pcV(bp,srs,S_j,d,z_j,(s_j,W_j)
-                      Pairing.G1Point(SOCC_hscS[3], SOCC_hscS[4]),
-                      Randoms[1], 
-                      SOCC_hscS[2],
-                      0, true) &&
-                      verify(Pairing.G1Point(SOCC_hscS[0], SOCC_hscS[1]), // pcV(bp,srs,S_j,d,u,(s'_j,W'_j))
-                      Pairing.G1Point(SOCC_hscW[1], SOCC_hscW[2]),
-                      u, 
-                      SOCC_hscW[0],
-                      0, true) &&
-                      verify(hscC,                                      // pcV(bp,srs,C,d,y_j,(s'_j,Q_j)
-                      Pairing.G1Point(SOCC_hscW[3], SOCC_hscW[4]),
-                      Randoms[0], 
-                      SOCC_hscW[0],
-                      0, true) &&
-                      verify(hscC,                                      // pcV(bp,srs,C,d,v,(s_uv,Q_v))
-                      hscQv,
-                      v, 
-                      s_uv,
-                      0, true);
-        emit verifyResult(verified);
-        return verified;
-    }
+    //     bool verified = verify(Pairing.G1Point(SOCC_hscS[0], SOCC_hscS[1]), // pcV(bp,srs,S_j,d,z_j,(s_j,W_j)
+    //                   Pairing.G1Point(SOCC_hscS[3], SOCC_hscS[4]),
+    //                   Randoms[1], 
+    //                   SOCC_hscS[2],
+    //                   0, true) &&
+    //                   verify(Pairing.G1Point(SOCC_hscS[0], SOCC_hscS[1]), // pcV(bp,srs,S_j,d,u,(s'_j,W'_j))
+    //                   Pairing.G1Point(SOCC_hscW[1], SOCC_hscW[2]),
+    //                   u, 
+    //                   SOCC_hscW[0],
+    //                   0, true) &&
+    //                   verify(hscC,                                      // pcV(bp,srs,C,d,y_j,(s'_j,Q_j)
+    //                   Pairing.G1Point(SOCC_hscW[3], SOCC_hscW[4]),
+    //                   Randoms[0], 
+    //                   SOCC_hscW[0],
+    //                   0, true) &&
+    //                   verify(hscC,                                      // pcV(bp,srs,C,d,v,(s_uv,Q_v))
+    //                   hscQv,
+    //                   v, 
+    //                   s_uv,
+    //                   0, true);
+    //     emit verifyResult(verified);
+    //     return verified;
+    // }
 
     /**
      * @dev Recover signer address from a message by using their signature
@@ -331,9 +401,10 @@ contract Verifier is Constants {
         return 1;
 
         uint256 r = 1;
-        uint256 bit = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+        uint256 bit = 57896044618658097711785492504343953926634992332820282019728792003956564819968; // 2 ^ 255
         assembly {
         for { } gt(bit, 0) { }{
+            // a touch of loop unrolling for 20% efficiency gain
             r := mulmod(mulmod(r, r, _pp), exp(_base, iszero(iszero(and(_exp, bit)))), _pp)
             r := mulmod(mulmod(r, r, _pp), exp(_base, iszero(iszero(and(_exp, div(bit, 2))))), _pp)
             r := mulmod(mulmod(r, r, _pp), exp(_base, iszero(iszero(and(_exp, div(bit, 4))))), _pp)
@@ -344,5 +415,6 @@ contract Verifier is Constants {
 
         return r;
     }
+    
 
 }
