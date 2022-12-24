@@ -39,6 +39,18 @@ contract Verifier is Constants {
         uint256(11142795172845103846997117758219330284910812886430955732663385421662518242916)
     ];
 
+    // The G2 generator
+    Pairing.G2Point g2Generator = Pairing.G2Point({
+        X: [ Constants.SRS_G2_X_0[0], Constants.SRS_G2_X_1[0] ],
+        Y: [ Constants.SRS_G2_Y_0[0], Constants.SRS_G2_Y_1[0] ]
+
+    });
+
+    Pairing.G2Point SRS_G2_1 = Pairing.G2Point({
+        X: [ Constants.SRS_G2_X_0[1], Constants.SRS_G2_X_1[1] ],
+        Y: [ Constants.SRS_G2_Y_0[1], Constants.SRS_G2_Y_1[1] ]
+    });
+
     uint256[2] Randoms = [
         uint256(21356640755055926883299664242251323519715676831624930462071588778907420237277),
         uint256(21284924740537517593391635090683107806948436131904811688892120057033464016678)
@@ -93,8 +105,8 @@ contract Verifier is Constants {
     //     Pairing.G1Point memory _proof, // W
     //     uint256 _index,  // z
     //     uint256 _value,  // F(z) or v
-    //     uint proofIndex,
-    //     bool isT
+    //     uint proofIndex
+    //     //bool isT
     // ) public view returns (bool) {
     //     // Make sure each parameter is less than the prime q
     //     require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
@@ -109,8 +121,8 @@ contract Verifier is Constants {
     //     Pairing.G1Point memory negCm = Pairing.negate(_commitment);
 
     //     return Pairing.pairing(_proof, Constants.SRS_G2_hAlphaX1(proofIndex),
-    //                             mulProof, Constants.SRS_G2_hAlphaX0(proofIndex),
-    //                             negCm, Constants.SRS_G2_hAlphaXdMax(proofIndex, isT));
+    //                             mulProof, Constants.SRS_G2_hAlphaX0(proofIndex));
+    //                             //negCm, Constants.SRS_G2_hAlphaXdMax(proofIndex, isT)
     // }
 
     // KZG version - Verify a single-point evaluation of a polynominal
@@ -133,8 +145,8 @@ contract Verifier is Constants {
         Pairing.G1Point memory _commitment, // F
         Pairing.G1Point memory _proof, // π
         uint256 _index,  // z
-        uint256 _value,  // F(z) or v
-        uint proofIndex
+        uint256 _value  // F(z) or v
+        //uint proofIndex
     ) public view returns (bool) {
         // Make sure each parameter is less than the prime q
         require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
@@ -162,9 +174,9 @@ contract Verifier is Constants {
         // e((index * proof) + (commitment - aCommitment), G2.g) * e(-proof, xCommit) == 1
         return Pairing.pairing(
             Pairing.plus(indexMulProof, commitmentMinusA),
-            Constants.G2Gen(),
+            g2Generator,
             negProof,
-            Constants.SRS_G2_hAlphaX0(proofIndex)
+            SRS_G2_1
         );
     }
 
@@ -202,63 +214,51 @@ contract Verifier is Constants {
         bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
                       Pairing.G1Point(Proof[7], Proof[8]),
                       Randoms[1], 
-                      Proof[6],
-                      0) &&
+                      Proof[6]) &&
                 verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
                       Pairing.G1Point(Proof[13], Proof[14]),
                       yz,
-                      Proof[12],
-                      0) &&
+                      Proof[12]) &&
                 verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
                       Pairing.G1Point(Proof[10], Proof[11]),
                       Randoms[1],
-                      Proof[9],
-                      1) &&
+                      Proof[9]) &&
                 verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
                       Pairing.G1Point(Proof[16], Proof[17]),
                       yz,
-                      Proof[15],
-                      1) &&
+                      Proof[15]) &&
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                               
+                      t) &&                               
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+                      t) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+                      t) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+                      t) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+                      t) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+                      t) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+                      t) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
                  verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t,
-                      0) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+                      t) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
                 verifySignature &&
                 Proof[6] == Proof[7] && // c_old == s_old
                 Proof[8] == Proof[9] && // c_new == s_new
