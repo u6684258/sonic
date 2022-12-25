@@ -211,58 +211,112 @@ contract Verifier is Constants {
 
 
         bool verifySignature = recover(message, sig) == addr;
+        // bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
+        //               Pairing.G1Point(Proof[7], Proof[8]),
+        //               Randoms[1], 
+        //               Proof[6]) &&
+        //         verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
+        //               Pairing.G1Point(Proof[13], Proof[14]),
+        //               yz,
+        //               Proof[12]) &&
+        //         verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
+        //               Pairing.G1Point(Proof[10], Proof[11]),
+        //               Randoms[1],
+        //               Proof[9]) &&
+        //         verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
+        //               Pairing.G1Point(Proof[16], Proof[17]),
+        //               yz,
+        //               Proof[15]) &&
+        //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                               
+        //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+        //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+        //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+        //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+        //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+        //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+        //          verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+        //               Pairing.G1Point(Proof[18], Proof[19]),
+        //               Randoms[1],
+        //               t) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+        //         verifySignature &&
+        //         Proof[6] == Proof[7] && // c_old == s_old
+        //         Proof[8] == Proof[9] && // c_new == s_new
+        //         Proof[10] == Proof[11]; // c == s
+
+        // estimate gas cost
         bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
                       Pairing.G1Point(Proof[7], Proof[8]),
                       Randoms[1], 
-                      Proof[6]) &&
-                verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
+                      Proof[6]);
+        result = verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
                       Pairing.G1Point(Proof[13], Proof[14]),
                       yz,
-                      Proof[12]) &&
-                verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
+                      Proof[12]);
+        result = verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
                       Pairing.G1Point(Proof[10], Proof[11]),
                       Randoms[1],
-                      Proof[9]) &&
-                verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
+                      Proof[9]);
+        result = verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
                       Pairing.G1Point(Proof[16], Proof[17]),
                       yz,
-                      Proof[15]) &&
-                verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      Proof[15]);
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                               
-                verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      t);                              
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
-                verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      t);                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
-                verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      t);                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
-                verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      t);                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
-                verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      t);                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
-                verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      t);                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
-                 verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+                      t);                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+        result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
-                verifySignature &&
-                Proof[6] == Proof[7] && // c_old == s_old
-                Proof[8] == Proof[9] && // c_new == s_new
-                Proof[10] == Proof[11]; // c == s
+                      t);                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+        result = verifySignature;
+        result = Proof[6] == Proof[7]; // c_old == s_old
+        result = Proof[8] == Proof[9]; // c_new == s_new
+        result = Proof[10] == Proof[11]; // c == s
         emit verifyResult(result);
         return result;
     }
