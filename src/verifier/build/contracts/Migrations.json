@@ -1914,12 +1914,12 @@
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x2e0cF2df4D0eB11019DEea0f4F8b7a6B76573EA1",
-      "transactionHash": "0x544eab9a7315dac4eb6247fd8972726349e79f5c3a4274971bb9ab0b97d70f4c"
+      "address": "0xd12254F36C032c966D4393B30F54d8063541cB9D",
+      "transactionHash": "0x15a153413db901627ce8a31f1364186d9d16597c8f53580d0bfc32d37cea0e59"
     }
   },
   "schemaVersion": "3.4.8",
-  "updatedAt": "2023-01-08T11:03:35.871Z",
+  "updatedAt": "2023-01-08T11:48:00.657Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

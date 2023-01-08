@@ -47,7 +47,7 @@ contract Verifier is Constants {
         uint256(21300179784197405894513072539865320928097398620497813074953097024203243212233) // beta
     ];
     // length of longest u,v,w, i.e. longest length of a,b,c, linear
-    uint256 N = 2994;
+    // uint256 N = 2994;
 
     uint256 evalK = uint256(11598511819595573397693757683043215863237090817957830497519701049476846220233);
     uint256 evalS = Proof[20];
@@ -227,7 +227,7 @@ contract Verifier is Constants {
         );
     }
 
-    // midified sonic verifier
+    // modified sonic verifier
     function verifySonic(
         // uint256[21] memory Proof,
         // uint256[2] memory Randoms
@@ -369,7 +369,7 @@ contract Verifier is Constants {
         return result;
     }
 
-    // improvement for batched commitments
+    // add improvement for batched commitments
     /*
     we check e<g^w[α],h^α> e<g^w[α]g^-z,h> == RHS
      */
@@ -435,11 +435,15 @@ contract Verifier is Constants {
         // first calculate the uppercase Pi product
         Pairing.G1Point memory product_result = Pairing.mulScalar(Pairing.plus(F[0], 
                                                                 Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma1[0] + gamma1[1] * Randoms[2]))), Z1);
+                                                                                addmod(gamma1[0], 
+                                                                                mulmod(gamma1[1], Randoms[2], BABYJUB_P), 
+                                                                                BABYJUB_P)))), Z1);
         product_result = Pairing.plus(product_result, 
                                     Pairing.mulScalar(Pairing.plus(F[1], 
                                                                 Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma2[0] + gamma2[1] * Randoms[2]))), Z2));
+                                                                                addmod(gamma2[0], 
+                                                                                mulmod(gamma2[1], Randoms[2], BABYJUB_P), 
+                                                                                BABYJUB_P)))), Z2));
         product_result = Pairing.plus(product_result, 
                                     Pairing.mulScalar(Pairing.plus(F[2], 
                                                                 Pairing.negate(Pairing.mulScalar(g, 
@@ -447,7 +451,10 @@ contract Verifier is Constants {
         product_result = Pairing.plus(product_result, 
                                     Pairing.mulScalar(Pairing.plus(F[3], 
                                                                 Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma4[0] + gamma4[1] * Randoms[2] + gamma4[2] * Randoms[2]^2))), Z4));
+                                                                                addmod(gamma4[0], 
+                                                                                mulmod(gamma4[1], 
+                                                                                mulmod(Randoms[2], Randoms[2], BABYJUB_P), 
+                                                                                BABYJUB_P), BABYJUB_P)))), Z4));
         product_result = Pairing.plus(product_result, 
                                     Pairing.mulScalar(Pairing.plus(F[4], 
                                                                 Pairing.negate(Pairing.mulScalar(g, 
@@ -470,7 +477,7 @@ contract Verifier is Constants {
                                                     Pairing.mulScalar(g,
                                                                     z_calculation(9)))));//zT[z]
 
-        // check e<g^w[α],h^α>e<g^w[α]g^-z,h> == RHS and other checks
+        // check e<g^w[α],h^α>e<g^w[α]g^-z,h> == RHS, then check others
         // bool result = Pairing.pairing_3point(
         //     pi[1],
         //     SRS_G2_2, // h^α, see above
@@ -485,7 +492,7 @@ contract Verifier is Constants {
         //     && Proof[10] == Proof[11]; // c == s
 
         // temporary code for estimating gas cost, the above is correct version
-        // check e<g^w[α],h^α>e<g^w[α]g^-z,h> == RHS and other checks
+        // check e<g^w[α],h^α>e<g^w[α]g^-z,h> == RHS, then check others
         bool result = Pairing.pairing_3point(
             pi[1],
             SRS_G2_2, // h^α, see above
