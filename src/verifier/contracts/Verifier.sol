@@ -451,10 +451,15 @@ contract Verifier is Constants {
         product_result = Pairing.plus(product_result, 
                                     Pairing.mulScalar(Pairing.plus(F[3], 
                                                                 Pairing.negate(Pairing.mulScalar(g, 
-                                                                                addmod(gamma4[0], 
-                                                                                mulmod(gamma4[1], 
-                                                                                mulmod(Randoms[2], Randoms[2], BABYJUB_P), 
-                                                                                BABYJUB_P), BABYJUB_P)))), Z4));
+                                                                                addmod(addmod(gamma4[0], 
+                                                                                mulmod(gamma4[1], Randoms[2], BABYJUB_P), 
+                                                                                BABYJUB_P),
+                                                                                mulmod(gamma4[2], 
+                                                                                mulmod(Randoms[2], Randoms[2], 
+                                                                                BABYJUB_P), 
+                                                                                BABYJUB_P),
+                                                                                BABYJUB_P)
+                                                                                ))), Z4));
         product_result = Pairing.plus(product_result, 
                                     Pairing.mulScalar(Pairing.plus(F[4], 
                                                                 Pairing.negate(Pairing.mulScalar(g, 
