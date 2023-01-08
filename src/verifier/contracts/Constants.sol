@@ -30,11 +30,11 @@ contract Constants {
     uint256 constant PRIME_Q = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
     uint256 constant BABYJUB_P = 21888242871839275222246405745257275088548364400416034343698204186575808495617;
 
-        // The G1 generator
+    // The G1 generator
     function G1Gen() pure internal returns (Pairing.G1Point memory) {
         return Pairing.G1Point(1, 2);
     }
-
+    // the G2Gen() doesn't work in verify() for unknown reason
     function G2Gen() pure internal returns (Pairing.G2Point memory) {
         return Pairing.G2Point(
             [10857046999023057135944570762232829481370756359578518086990519993285655852781,

@@ -127,5 +127,50 @@ library Pairing {
 
         return out[0] != 0;
     }
+
+    /* @return The result of computing the 3-point pairing check
+     *         e(p1[0], p2[0]) *  .... * e(p1[n], p2[n]) == 1
+     *         For example,
+     *         pairing([P1(), P1().negate()], [P2(), P2()]) should return true.
+     */
+    function pairing_3point(
+        G1Point memory a1,
+        G2Point memory a2,
+        G1Point memory b1,
+        G2Point memory b2,
+        G1Point memory c1,
+        G2Point memory c2
+    ) internal view returns (bool) {
+
+        G1Point[3] memory p1 = [a1, b1, c1];
+        G2Point[3] memory p2 = [a2, b2, c2];
+
+        uint256 inputSize = 18;
+        uint256[] memory input = new uint256[](inputSize);
+
+        for (uint256 i = 0; i < 3; i++) {
+            uint256 j = i * 6;
+            input[j + 0] = p1[i].X;
+            input[j + 1] = p1[i].Y;
+            input[j + 2] = p2[i].X[0];
+            input[j + 3] = p2[i].X[1];
+            input[j + 4] = p2[i].Y[0];
+            input[j + 5] = p2[i].Y[1];
+        }
+
+        uint256[1] memory out;
+        bool success;
+        //uint256 len = inputSize * 0x20;
+        // solium-disable-next-line security/no-inline-assembly
+        assembly {
+            success := staticcall(sub(gas(), 2000), 0x8, add(input, 0x20), mul(inputSize, 0x20), out, 0x20)
+            // Use "invalid" to make gas estimation work
+            switch success case 0 { invalid() }
+        }
+        require(success, "pairing-opcode-failed");
+
+        return out[0] != 0;
+        // return true;
+    }
 }
 
