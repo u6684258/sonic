@@ -18,6 +18,7 @@ dependencies:
   - protolude       >=0.2.3    && <0.3
   - semirings       >=0.5.1    && <0.6
   - vector          >=0.12.0.0 && <0.13
+  - deepseq         >=1.1.0.0 && <1.5.0.0
 
 default-extensions:
   - LambdaCase

@@ -20,6 +20,7 @@ import qualified Data.Text.IO as Text
 import Data.Text.Read (decimal, signed)
 
 import Data.Time
+-- import Control.DeepSeq (force)
 
 -- import qualified Data.ByteString
 -- import qualified Crypto.Hash.SHA256 as SHA256
@@ -40,30 +41,35 @@ import Data.Time
 outputProof:: ArithCircuit Fr -> Assignment Fr -> Fr -> Fr -> Fr -> Fr -> IO ()
 outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   -- Setup for an SRS
-
-  srsRaw <- SRS.new <$> pure n <*> pure pXRaw <*> pure alphaRaw
+  startSrs <- getCurrentTime
+  -- srsRaw <- SRS.new <$> pure n <*> pure pXRaw <*> pure alphaRaw
   srsLocal <- SRS.new <$> pure n <*> pure pXLocal <*> pure alphaLocal
 
-  -- print $ alphaRaw
+  print $ alphaRaw
+  print $ pXRaw
   -- print $ alphaLocal
-  print $ (srsD srsRaw)
+  -- print $ (srsD srsRaw)
   print $ (srsD srsLocal)
   print $ "writing SRSs"
-  writeFile "output/srsRaw.txt" $ show $ srsRaw
+  -- writeFile "output/srsRaw.txt" $ show $ srsRaw
   writeFile "output/srsLocal.txt" $ show $ srsLocal
+  stopSrs <- getCurrentTime
+  print $ diffUTCTime stopSrs startSrs
   -- print $ pXRaw
   -- print $ pXLocal
   -- Prover
+  (proofOutsourced, rndOracle1) <- proveOutsourced srsLocal srsLocal 4 assignment circuit
+  putText $ "proofOutsourced: " <> show proofOutsourced
   print $ "generating proof:"
   start <- getCurrentTime
-  (proof@Proof{..}, rndOracle@RndOracle{..}) <- prove srsRaw srsLocal 4 assignment circuit
+  (proof, rndOracle@RndOracle{..}, verifierData) <- prove srsLocal srsLocal 4 proofOutsourced rndOracle1 assignment circuit
   putText $ "proof: " <> show proof
-  -- putText $ "rnds: " <> show rndOracle
+  putText $ "polys: " <> show verifierData
   stop <- getCurrentTime
   print $ diffUTCTime stop start
   print $ "verifying proof:"
   startVer <- getCurrentTime
-  putText $ "success:" <> show (verify srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZ rndOracleyOld rndOracleyNew)
+  putText $ "success:" <> show (verify srsLocal srsLocal circuit proof proofOutsourced rndOracleY rndOracleZ rndOracleYZ)
   stopVer <- getCurrentTime
   print $ diffUTCTime stopVer startVer
 
@@ -80,7 +86,7 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   -- writeFile "output/verifierData.txt" $ show $ verifierData
   where
     -- n: Number of multiplication constraints
-    n = (length $ aL assignment) * 7
+    n = (length $ aL assignment) * 8
     -- nexample = 50
     -- sXY = sPoly (weights circuit)
     
@@ -101,13 +107,13 @@ runExample = do
       pXRaw = 12
       pXLocal = 13
 
-  wLS <- fmap Text.words (Text.readFile "input/wL.txt")
-  wRS <- fmap Text.words (Text.readFile "input/wR.txt")
-  wOS <- fmap Text.words (Text.readFile "input/wO.txt")
-  csS <- fmap Text.words (Text.readFile "input/cs.txt")
-  aLS <- fmap Text.words (Text.readFile "input/aL.txt")
-  aRS <- fmap Text.words (Text.readFile "input/aR.txt")
-  aOS <- fmap Text.words (Text.readFile "input/aO.txt")
+  wLS <- fmap Text.words (Text.readFile "input/sample_wL.txt")
+  wRS <- fmap Text.words (Text.readFile "input/sample_wR.txt")
+  wOS <- fmap Text.words (Text.readFile "input/sample_wO.txt")
+  csS <- fmap Text.words (Text.readFile "input/sample_cs.txt")
+  aLS <- fmap Text.words (Text.readFile "input/sample_aL.txt")
+  aRS <- fmap Text.words (Text.readFile "input/sample_aR.txt")
+  aOS <- fmap Text.words (Text.readFile "input/sample_aO.txt")
   let wLL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wLS))
       wRL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wRS))
       wOL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wOS))
@@ -115,7 +121,7 @@ runExample = do
       aL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aLS))
       aR = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aRS))
       aO = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aOS))
-      inputSize = 5970
+      inputSize = 2
       -- wL = divvy 50 50 wLL
       -- wR = divvy 50 50 wRL
       -- wO = divvy 50 50 wOL
