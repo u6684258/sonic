@@ -1,13 +1,9 @@
 -- Polynomial commitment scheme inspired by Kate et al.
 {-# LANGUAGE RecordWildCards #-}
 module Sonic.CommitmentScheme
-  ( commitPoly
-  , openPoly
-  , pcV
-  -- , PcVOutput
-  -- , pcVShow
-  -- , pcVGetHxi
-  -- , openPolyMulti
+  ( commitPolyMulti
+  , openPolyMulti
+  , pcVMulti
   ) where
 
 import Protolude hiding (quot)
@@ -187,4 +183,3 @@ index :: Text -> V.Vector a -> Int -> a
 index annot v e = fromMaybe err (v V.!? e)
   where
     err = panic $ annot <> " is not long enough: " <> show e <> " >= " <> show (V.length v)
-
