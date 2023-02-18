@@ -1,5 +1,10 @@
 // Modified from https://github.com/appliedzkp/semaphore/blob/master/contracts/sol/verifier.sol
 // SPDX-License-Identifier: MIT
+
+// please notice that current code may be temporary code for cost estimation, and right version is annotated
+// there's even two version of 'proof', one for batched one not, currently use the batched one
+// unannotate the other if run verifySonic
+
 pragma solidity >=0.4.22 <0.9.0;
 pragma experimental ABIEncoderV2;
 import "./Pairing.sol";
@@ -15,6 +20,8 @@ contract Verifier is Constants {
 
     event verifyResult(bool result);
     // description in F below
+
+    // temporarily use this for kzg-commitment version verifier and batched proof
     uint256[21] Proof = [
         uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
         uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225),
@@ -39,12 +46,38 @@ contract Verifier is Constants {
         uint256(11142795172845103846997117758219330284910812886430955732663385421662518242916)
     ];
 
-    uint256[5] Randoms = [
+    // temporarily this is for original sonic
+    // uint256[21] Proof = [
+    //     uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225),
+    //     uint256(20900429899291009073299289469660149716785596251491300692035681492016939179257),
+    //     uint256(17015433841169487450406840425175642150965883946544965612916879717959251917877),
+    //     uint256(433691023568696153828599652727177493671905883454953868604074871528381220097),
+    //     uint256(10320531664273889342578906132837836076031009559738199149165995480549188738219),
+    //     uint256(5841514956038981489672186264970094693930045609713312309929445225955171101947),
+    //     uint256(5021024840007099401420413415719005463562614305701472747429400657816854795888),
+    //     uint256(20774065911754029615648528083815650325450840922528127398846513310899898519818),
+    //     uint256(15033194806153309440324576121312701377491848712637707126378339071163915088607),
+    //     uint256(13797601081368067296147105517336555699959400728196376360418452678919689273357),
+    //     uint256(347536244405038501480645670232637364896709701574004323632284243300674648233),
+    //     uint256(14150985670258525975582637074878024272235049272474457475329855381177734047698),
+    //     uint256(2655786006985334435742353147654701867454007390061009682990360208958229883457),
+    //     uint256(19749978915220999581635876327451130211831443864540429941950424972239040718725),
+    //     uint256(18652734379260577017619098828238354228621932558467343220803598526754221068969),
+    //     uint256(19231643171984527412379363884712632725022106910875011856721870145973184299950),
+    //     uint256(11890584382703984881384687349129438589403848436060509080598302278432395889958),
+    //     uint256(19848703903105846067635106277601755727734486581037082434405934553883502968806),
+    //     uint256(7073067203970200196273245091229017314841577127190841947842173598530677375580),
+    //     uint256(11142795172845103846997117758219330284910812886430955732663385421662518242916)
+    // ];
+
+    uint256[6] Randoms = [
         uint256(21356640755055926883299664242251323519715676831624930462071588778907420237277),
         uint256(21284924740537517593391635090683107806948436131904811688892120057033464016678),
         uint256(21245863740537517593391635090683107806948436131465498421988152500056051919194), // z
-        uint256(21310127601857075097195740179019725106470167450176016701474654076975565675629), // alpha
-        uint256(21300179784197405894513072539865320928097398620497813074953097024203243212233) // beta
+        uint256(21310127601857075097195740179019725106470167450176016701474654076975565675629), // x
+        uint256(21300179784197405894513072539865320928097398620497813074953097024203243212233), // beta
+        uint256(21310127601857075097195740179019725106470167450176016701474654076975565675629)  // alpha
     ];
     // length of longest u,v,w, i.e. longest length of a,b,c, linear
     // uint256 N = 2994;
@@ -97,7 +130,7 @@ contract Verifier is Constants {
     });
     // g
     Pairing.G1Point g = Pairing.G1Point(1, 2);
-    // xCommit in verify(), I think it's h in SRS
+    // I think it's h in SRS
     Pairing.G2Point SRS_G2_1 = Pairing.G2Point({
         X: [ Constants.SRS_G2_X_0[1], Constants.SRS_G2_X_1[1] ],
         Y: [ Constants.SRS_G2_Y_0[1], Constants.SRS_G2_Y_1[1] ]
@@ -131,32 +164,33 @@ contract Verifier is Constants {
 
 
     // Sonic version - Verify a single-point evaluation of a polynominal
-    // function verify(
-    //     Pairing.G1Point memory _commitment, // F
-    //     Pairing.G1Point memory _proof, // W
-    //     uint256 _index,  // z
-    //     uint256 _value,  // F(z) or v
-    //     uint proofIndex
-    //     //bool isT
-    // ) public view returns (bool) {
-    //     // Make sure each parameter is less than the prime q
-    //     require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
-    //     require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
-    //     require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
-    //     require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
-    //     require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
-    //     require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
+    function verify(
+        Pairing.G1Point memory _commitment, // F
+        Pairing.G1Point memory _proof, // W
+        uint256 _index,  // z
+        uint256 _value,  // F(z) or v
+        uint proofIndex,
+        bool isT
+    ) public view returns (bool) {
+        // Make sure each parameter is less than the prime q
+        require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
+        require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
+        require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
+        require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
+        require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
+        require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
        
-    //     Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
-    //     Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(Constants.G1Gen(), _value), negProof);
-    //     Pairing.G1Point memory negCm = Pairing.negate(_commitment);
+        Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
+        Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(Constants.G1Gen(), _value), negProof);
+        Pairing.G1Point memory negCm = Pairing.negate(_commitment);
 
-    //     return Pairing.pairing(_proof, Constants.SRS_G2_hAlphaX1(proofIndex),
-    //                             mulProof, Constants.SRS_G2_hAlphaX0(proofIndex));
-    //                             //negCm, Constants.SRS_G2_hAlphaXdMax(proofIndex, isT)
-    // }
+        return Pairing.pairing_3point(_proof, Constants.SRS_G2_hAlphaX1(proofIndex),
+                                mulProof, Constants.SRS_G2_hAlphaX0(proofIndex),
+                                negCm, Constants.SRS_G2_hAlphaXdMax(proofIndex, isT));
+    }
 
-    // KZG version - Verify a single-point evaluation of a polynominal
+
+
     /*
      * Verifies a single-point evaluation of a polynominal using the KZG
      * commitment scheme.
@@ -172,62 +206,208 @@ contract Verifier is Constants {
      * @param _index The x-value at which to evaluate the polynominal.
      * @param _value The result of the polynominal evaluation.
      */
-    function verify(
-        Pairing.G1Point memory _commitment, // F
-        Pairing.G1Point memory _proof, // π
-        uint256 _index,  // z
-        uint256 _value  // F(z) or v
-        //uint proofIndex
-    ) public view returns (bool) {
-        // Make sure each parameter is less than the prime q
-        require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
-        require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
-        require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
-        require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
-        require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
-        require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
-        // Check that 
-        //     e(commitment - aCommit, G2.g) == e(proof, xCommit - zCommit)
-        //     e(commitment - aCommit, G2.g) / e(proof, xCommit - zCommit) == 1
-        //     e(commitment - aCommit, G2.g) * e(proof, xCommit - zCommit) ^ -1 == 1
-        //     e(commitment - aCommit, G2.g) * e(-proof, xCommit - zCommit) == 1
-        // where:
-        //     aCommit = commit([_value]) = SRS_G1_0 * _value
-        //     xCommit = commit([0, 1]) = SRS_G2_1
-        //     zCommit = commit([_index]) = SRS_G2_1 * _index
+    // KZG version - Verify a single-point evaluation of a polynominal
 
-        // To avoid having to perform an expensive operation in G2 to compute
-        // xCommit - zCommit, we instead check the equivalent equation:
-        //     e(commitment - aCommit, G2.g) * e(-proof, xCommit) * e(-proof, -zCommit) == 1
-        //     e(commitment - aCommit, G2.g) * e(-proof, xCommit) * e(proof, zCommit) == 1
-        //     e(commitment - aCommit, G2.g) * e(-proof, xCommit) * e(index * proof, G2.g) == 1
-        //     e((index * proof) + (commitment - aCommit), G2.g) * e(-proof, xCommit) == 1
+    // function verify(
+    //     Pairing.G1Point memory _commitment, // F
+    //     Pairing.G1Point memory _proof, // π
+    //     uint256 _index,  // z
+    //     uint256 _value  // F(z) or v
+    //     //uint proofIndex
+    // ) public view returns (bool) {
+    //     // Make sure each parameter is less than the prime q
+    //     require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
+    //     require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
+    //     require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
+    //     require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
+    //     require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
+    //     require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
+    //     // Check that 
+    //     //     e(commitment - aCommit, G2.g) == e(proof, xCommit - zCommit)
+    //     //     e(commitment - aCommit, G2.g) / e(proof, xCommit - zCommit) == 1
+    //     //     e(commitment - aCommit, G2.g) * e(proof, xCommit - zCommit) ^ -1 == 1
+    //     //     e(commitment - aCommit, G2.g) * e(-proof, xCommit - zCommit) == 1
+    //     // where:
+    //     //     aCommit = commit([_value]) = SRS_G1_0 * _value
+    //     //     xCommit = commit([0, 1]) = SRS_G2_1
+    //     //     zCommit = commit([_index]) = SRS_G2_1 * _index
 
-        // Compute commitment - aCommitment
-        Pairing.G1Point memory commitmentMinusA = Pairing.plus(
-            _commitment,
-            Pairing.negate(
-                Pairing.mulScalar(Constants.G1Gen(), _value)
-            )
-        );
+    //     // To avoid having to perform an expensive operation in G2 to compute
+    //     // xCommit - zCommit, we instead check the equivalent equation:
+    //     //     e(commitment - aCommit, G2.g) * e(-proof, xCommit) * e(-proof, -zCommit) == 1
+    //     //     e(commitment - aCommit, G2.g) * e(-proof, xCommit) * e(proof, zCommit) == 1
+    //     //     e(commitment - aCommit, G2.g) * e(-proof, xCommit) * e(index * proof, G2.g) == 1
+    //     //     e((index * proof) + (commitment - aCommit), G2.g) * e(-proof, xCommit) == 1
 
-        // Negate the proof
-        Pairing.G1Point memory negProof = Pairing.negate(_proof);
+    //     // Compute commitment - aCommitment
+    //     Pairing.G1Point memory commitmentMinusA = Pairing.plus(
+    //         _commitment,
+    //         Pairing.negate(
+    //             Pairing.mulScalar(Constants.G1Gen(), _value)
+    //         )
+    //     );
 
-        // Compute index * proof
-        Pairing.G1Point memory indexMulProof = Pairing.mulScalar(_proof, _index);
+    //     // Negate the proof
+    //     Pairing.G1Point memory negProof = Pairing.negate(_proof);
 
-        // Return true if and only if
-        // e((index * proof) + (commitment - aCommitment), G2.g) * e(-proof, xCommit) == 1
-        return Pairing.pairing(
-            Pairing.plus(indexMulProof, commitmentMinusA),
-            g2Generator, // 
-            negProof,
-            SRS_G2_1
-        );
-    }
+    //     // Compute index * proof
+    //     Pairing.G1Point memory indexMulProof = Pairing.mulScalar(_proof, _index);
 
-    // modified sonic verifier
+    //     // Return true if and only if
+    //     // e((index * proof) + (commitment - aCommitment), G2.g) * e(-proof, xCommit) == 1
+    //     return Pairing.pairing(
+    //         Pairing.plus(indexMulProof, commitmentMinusA),
+    //         g2Generator,
+    //         negProof,
+    //         SRS_G2_1 // it's h. original author of kzg commitment code call it 'xCommit' here
+    //     );
+    // }
+
+    // modified sonic verifier using KZG commitment
+
+    // function verifySonic_KZG(
+    //     // uint256[21] memory Proof,
+    //     // uint256[2] memory Randoms
+    // ) public returns (bool) {
+
+    //     // simulate calculating kY
+    //     // uint256 ky = evalKPoly();
+    //     // // // simulate calculating sXY
+    //     // uint256 sx = evalXPoly();
+    //     // uint256 sy = evalXPoly();
+
+    //     //uint256 yz = mulmod(Randoms[0], Randoms[1], Pairing.BABYJUB_P);
+
+    //     // y^N for halo implementation style
+    //     // uint256 y_n = expMod(Randoms[1], N, BABYJUB_P);
+    //     // t for halo implementation style
+    //     // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
+    //     //                           addmod(addmod(Proof[12], 
+    //     //                                         Proof[15], Pairing.BABYJUB_P), 
+    //     //                                  evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
+    //     //                     mulmod((BABYJUB_P - evalK), y_n, BABYJUB_P),
+    //     //                     BABYJUB_P);
+
+    //     uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
+    //                               addmod(addmod(Proof[12], 
+    //                                             Proof[15], Pairing.BABYJUB_P), 
+    //                                      evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
+    //                         (BABYJUB_P - evalK), BABYJUB_P);
+
+
+    //     bool verifySignature = recover(message, sig) == addr;
+    //     // bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
+    //     //               Pairing.G1Point(Proof[7], Proof[8]),
+    //     //               Randoms[1], 
+    //     //               Proof[6]) &&
+    //     //         verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
+    //     //               Pairing.G1Point(Proof[13], Proof[14]),
+    //     //               yz,
+    //     //               Proof[12]) &&
+    //     //         verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
+    //     //               Pairing.G1Point(Proof[10], Proof[11]),
+    //     //               Randoms[1],
+    //     //               Proof[9]) &&
+    //     //         verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
+    //     //               Pairing.G1Point(Proof[16], Proof[17]),
+    //     //               yz,
+    //     //               Proof[15]) &&
+    //     //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                               
+    //     //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+    //     //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+    //     //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+    //     //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+    //     //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+    //     //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+    //     //          verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //     //               Pairing.G1Point(Proof[18], Proof[19]),
+    //     //               Randoms[1],
+    //     //               t) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+    //     //         verifySignature &&
+    //     //         Proof[6] == Proof[7] && // c_old == s_old
+    //     //         Proof[8] == Proof[9] && // c_new == s_new
+    //     //         Proof[10] == Proof[11]; // c == s
+
+    //     // temporary code for estimating gas cost, the above is correct version
+    //     bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
+    //                   Pairing.G1Point(Proof[7], Proof[8]),
+    //                   Randoms[1], 
+    //                   Proof[6]);
+    //     result = verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
+    //                   Pairing.G1Point(Proof[13], Proof[14]),
+    //                   yz,
+    //                   Proof[12]);
+    //     result = verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
+    //                   Pairing.G1Point(Proof[10], Proof[11]),
+    //                   Randoms[1],
+    //                   Proof[9]);
+    //     result = verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
+    //                   Pairing.G1Point(Proof[16], Proof[17]),
+    //                   yz,
+    //                   Proof[15]);
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                              
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+    //     result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
+    //                   Pairing.G1Point(Proof[18], Proof[19]),
+    //                   Randoms[1],
+    //                   t);                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+    //     result = verifySignature;
+    //     result = Proof[6] == Proof[7]; // c_old == s_old
+    //     result = Proof[8] == Proof[9]; // c_new == s_new
+    //     result = Proof[10] == Proof[11]; // c == s
+    //     emit verifyResult(result);
+    //     return result;
+    // }
+
+    // sonic verifier
+
     function verifySonic(
         // uint256[21] memory Proof,
         // uint256[2] memory Randoms
@@ -262,51 +442,63 @@ contract Verifier is Constants {
         // bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
         //               Pairing.G1Point(Proof[7], Proof[8]),
         //               Randoms[1], 
-        //               Proof[6]) &&
+        //               Proof[6],
+        //               0, false) &&
         //         verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
         //               Pairing.G1Point(Proof[13], Proof[14]),
         //               yz,
-        //               Proof[12]) &&
+        //               Proof[12],
+        //               0, false) &&
         //         verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
         //               Pairing.G1Point(Proof[10], Proof[11]),
         //               Randoms[1],
-        //               Proof[9]) &&
+        //               Proof[9],
+        //               1, false) &&
         //         verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
         //               Pairing.G1Point(Proof[16], Proof[17]),
         //               yz,
-        //               Proof[15]) &&
+        //               Proof[15],
+        //               1, false) &&
         //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                               
+        //               t,
+        //               0, true) &&                               
         //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+        //               t,
+        //               0, true) &&                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
         //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+        //               t,
+        //               0, true) &&                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
         //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+        //               t,
+        //               0, true) &&                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
         //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+        //               t,
+        //               0, true) &&                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
         //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+        //               t,
+        //               0, true) &&                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
         //         verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+        //               t,
+        //               0, true) &&                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
         //          verify(Pairing.G1Point(Proof[4], Proof[5]), // t
         //               Pairing.G1Point(Proof[18], Proof[19]),
         //               Randoms[1],
-        //               t) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+        //               t,
+        //               0, true) &&                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
         //         verifySignature &&
         //         Proof[6] == Proof[7] && // c_old == s_old
         //         Proof[8] == Proof[9] && // c_new == s_new
@@ -316,51 +508,63 @@ contract Verifier is Constants {
         bool result = verify(Pairing.G1Point(Proof[0], Proof[1]), // aLocal
                       Pairing.G1Point(Proof[7], Proof[8]),
                       Randoms[1], 
-                      Proof[6]);
+                      Proof[6],
+                      0, false);
         result = verify(Pairing.G1Point(Proof[0], Proof[1]), // bLocal
                       Pairing.G1Point(Proof[13], Proof[14]),
                       yz,
-                      Proof[12]);
+                      Proof[12],
+                      0, false);
         result = verify(Pairing.G1Point(Proof[2], Proof[3]), // aRaw
                       Pairing.G1Point(Proof[10], Proof[11]),
                       Randoms[1],
-                      Proof[9]);
+                      Proof[9],
+                      1, false);
         result = verify(Pairing.G1Point(Proof[2], Proof[3]), // bRaw
                       Pairing.G1Point(Proof[16], Proof[17]),
                       yz,
-                      Proof[15]);
+                      Proof[15],
+                      1, false);
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                              
+                      t,
+                      0, true);                               
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
+                      t,
+                      0, true);                                            // pcV srsLocal (srsD srsLocal) commitK y (k, wk)
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
+                      t,
+                      0, true);                                            // pcV srsLocal (srsD srsLocal) commitC y (c, wc)
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                                            // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
+                      t,
+                      0, true);                                           // pcV srsLocal (srsD srsLocal) commitC yOld (cOld, wcOld)
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                                            //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
+                      t,
+                      0, true);                                           //, pcV srsLocal (srsD srsLocal) commitC yNew (cNew, wcNew)
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                                            //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
+                      t,
+                      0, true);                                          //, pcV srsLocal (srsD srsLocal) commitS z (s, ws)
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                                            //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
+                      t,
+                      0, true);                                           //, pcV srsLocal (srsD srsLocal) commitSOld z (sOld, wsOld)
         result = verify(Pairing.G1Point(Proof[4], Proof[5]), // t
                       Pairing.G1Point(Proof[18], Proof[19]),
                       Randoms[1],
-                      t);                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
+                      t,
+                      0, true);                                           //, pcV srsLocal (srsD srsLocal) commitSNew z (sNew, wsNew)
         result = verifySignature;
         result = Proof[6] == Proof[7]; // c_old == s_old
         result = Proof[8] == Proof[9]; // c_new == s_new
@@ -369,10 +573,164 @@ contract Verifier is Constants {
         return result;
     }
 
-    // add improvement for batched commitments
+    // add improvement for batched commitments of original KZG
     /*
-    we check e<g^w[α],h^α> e<g^w[α]g^-z,h> == RHS
+    we check e<g^w[α],h^α> e<(g^w[α])^-z,h> == RHS
      */
+    // function verifySonicBatchedOriginKZG(
+    //     // uint256[21] memory Proof,
+    //     // uint256[2] memory Randoms
+    // ) public returns (bool) {
+
+    //     // simulate calculating kY
+    //     // uint256 ky = evalKPoly();
+    //     // // // simulate calculating sXY
+    //     // uint256 sx = evalXPoly();
+    //     // uint256 sy = evalXPoly();
+
+        
+    //     // y^N for halo implementation style
+    //     // uint256 y_n = expMod(Randoms[1], N, BABYJUB_P);
+
+    //     // t for halo implementation style
+    //     // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
+    //     //                           addmod(addmod(Proof[12], 
+    //     //                                         Proof[15], Pairing.BABYJUB_P), 
+    //     //                                  evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
+    //     //                     mulmod((BABYJUB_P - evalK), y_n, BABYJUB_P),
+    //     //                     BABYJUB_P);
+
+    //     // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
+    //     //                           addmod(addmod(Proof[12], 
+    //     //                                         Proof[15], Pairing.BABYJUB_P), 
+    //     //                                  evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
+    //     //                     (BABYJUB_P - evalK), BABYJUB_P);
+
+
+    //     bool verifySignature = recover(message, sig) == addr;
+
+    //     // F
+    //     Pairing.G1Point[8] memory F = [
+    //                                 Pairing.G1Point(Proof[0], Proof[1]),//R0
+    //                                 Pairing.G1Point(Proof[2], Proof[3]), // Rj
+    //                                 Pairing.G1Point(Proof[4], Proof[5]), //T
+    //                                 Pairing.G1Point(Proof[6], Proof[7]), //C
+    //                                 Pairing.G1Point(Proof[8], Proof[9]), //Ck
+    //                                 Pairing.G1Point(Proof[10], Proof[11]), //S
+    //                                 Pairing.G1Point(Proof[12], Proof[13]), //Sold
+    //                                 Pairing.G1Point(Proof[14], Proof[15])  //Snew
+    //                                 ];
+    //     // Z(T / Si)[z] * β^(i-1)
+    //     uint256 Z_beta_1 = 1; // i = 1,  etc.
+    //     uint256 Z_beta_2 = Randoms[4];
+    //     uint256 Z_beta_3 = mulmod(Z_beta_2, Randoms[4], BABYJUB_P);
+    //     uint256 Z_beta_4 = mulmod(Z_beta_3, Randoms[4], BABYJUB_P);
+    //     uint256 Z_beta_5 = mulmod(Z_beta_4, Randoms[4], BABYJUB_P);
+    //     uint256 Z_beta_6 = mulmod(Z_beta_5, Randoms[4], BABYJUB_P);
+    //     uint256 Z_beta_7 = mulmod(Z_beta_6, Randoms[4], BABYJUB_P);
+    //     uint256 Z_beta_8 = mulmod(Z_beta_7, Randoms[4], BABYJUB_P);
+
+    //     Z_beta_1 = mulmod(Z_beta_1, z_calculation(1), BABYJUB_P);
+    //     Z_beta_2 = mulmod(Z_beta_2, z_calculation(2), BABYJUB_P);
+    //     Z_beta_3 = mulmod(Z_beta_3, z_calculation(3), BABYJUB_P);
+    //     Z_beta_4 = mulmod(Z_beta_4, z_calculation(4), BABYJUB_P);
+    //     Z_beta_5 = mulmod(Z_beta_5, z_calculation(5), BABYJUB_P);
+    //     Z_beta_6 = mulmod(Z_beta_6, z_calculation(6), BABYJUB_P);
+    //     Z_beta_7 = mulmod(Z_beta_7, z_calculation(7), BABYJUB_P);
+    //     Z_beta_8 = mulmod(Z_beta_8, z_calculation(8), BABYJUB_P);
+
+    //     // the prove, g^p[α], g^w[α]
+    //     Pairing.G1Point[2] memory pi = [
+    //         G1Gen(),
+    //         G1Gen()
+    //     ];
+    //     // product_result is the first G1 element of the RHS pairing
+    //     // first calculate the uppercase Pi product
+    //     Pairing.G1Point memory product_result = Pairing.mulScalar(Pairing.plus(F[0], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             addmod(gamma1[0], 
+    //                                                                             mulmod(gamma1[1], Randoms[2], BABYJUB_P), 
+    //                                                                             BABYJUB_P)))), Z_beta_1);
+    //     product_result = Pairing.plus(product_result, 
+    //                                 Pairing.mulScalar(Pairing.plus(F[1], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             addmod(gamma2[0], 
+    //                                                                             mulmod(gamma2[1], Randoms[2], BABYJUB_P), 
+    //                                                                             BABYJUB_P)))), Z_beta_2));
+    //     product_result = Pairing.plus(product_result, 
+    //                                 Pairing.mulScalar(Pairing.plus(F[2], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             gamma3[0]))), Z_beta_3));
+    //     product_result = Pairing.plus(product_result, 
+    //                                 Pairing.mulScalar(Pairing.plus(F[3], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             addmod(addmod(gamma4[0], 
+    //                                                                             mulmod(gamma4[1], Randoms[2], BABYJUB_P), 
+    //                                                                             BABYJUB_P),
+    //                                                                             mulmod(gamma4[2], 
+    //                                                                             mulmod(Randoms[2], Randoms[2], 
+    //                                                                             BABYJUB_P), 
+    //                                                                             BABYJUB_P),
+    //                                                                             BABYJUB_P)
+    //                                                                             )))
+    //                                                     , Z_beta_4)
+    //                                     );
+    //     product_result = Pairing.plus(product_result, 
+    //                                 Pairing.mulScalar(Pairing.plus(F[4], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             gamma5[0]))), Z_beta_5));
+    //     product_result = Pairing.plus(product_result, 
+    //                                 Pairing.mulScalar(Pairing.plus(F[5], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             gamma6[0]))), Z_beta_6));
+    //     product_result = Pairing.plus(product_result, 
+    //                                 Pairing.mulScalar(Pairing.plus(F[6], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             gamma7[0]))), Z_beta_7));
+    //     product_result = Pairing.plus(product_result, 
+    //                                 Pairing.mulScalar(Pairing.plus(F[7], 
+    //                                                             Pairing.negate(Pairing.mulScalar(g, 
+    //                                                                             gamma8[0]))), Z_beta_8));
+    //     // then add the first item before the uppercase Pi product
+    //     product_result = Pairing.plus(product_result,
+    //                                 Pairing.negate(Pairing.plus(pi[0],
+    //                                                 Pairing.mulScalar(g,
+    //                                                                 z_calculation(9)))));//zT[z]
+
+    //     // check e<g^w[α],h^α>e<g^w[α]g^-z,h> == RHS, then check others
+    //     // bool result = Pairing.pairing_3point(
+    //     //     pi[1],
+    //     //     SRS_G2_2, // h^α, see above
+    //     //     Pairing.negate(Pairing.mulScalar(pi[1], z)),
+    //     //     SRS_G2_1, // h, see above
+    //     //     Pairing.negate(product_result),
+    //     //     SRS_G2_1
+    //     //     )
+    //     //     && verifySignature
+    //     //     && Proof[6] == Proof[7] // c_old == s_old
+    //     //     && Proof[8] == Proof[9] // c_new == s_new
+    //     //     && Proof[10] == Proof[11]; // c == s
+
+    //     // temporary code for estimating gas cost, the above is correct version
+    //     // check e<g^w[α],h^α>e<(g^w[α])^-z,h> == RHS, then check others
+    //     bool result = Pairing.pairing_3point(
+    //         pi[1], // g^w[α]
+    //         SRS_G2_2, // h^α, see above
+    //         Pairing.negate(Pairing.mulScalar(pi[1], z)),
+    //         SRS_G2_1, // h, see above
+    //         Pairing.negate(product_result),
+    //         SRS_G2_1
+    //         );
+    //     result = verifySignature;
+    //     result = Proof[6] == Proof[7]; // c_old == s_old
+    //     result = Proof[8] == Proof[9]; // c_new == s_new
+    //     result = Proof[10] == Proof[11]; // c == s
+    //     emit verifyResult(result);
+    //     return result;
+    // }
+
+
+    // using batched commitments of sonic version of modified KZG
     function verifySonicBatched(
         // uint256[21] memory Proof,
         // uint256[2] memory Randoms
@@ -407,50 +765,62 @@ contract Verifier is Constants {
 
         // F
         Pairing.G1Point[8] memory F = [
-                                    Pairing.G1Point(Proof[0], Proof[1]),//R0
+                                    Pairing.G1Point(Proof[0], Proof[1]),// R0
                                     Pairing.G1Point(Proof[2], Proof[3]), // Rj
-                                    Pairing.G1Point(Proof[4], Proof[5]), //T
-                                    Pairing.G1Point(Proof[6], Proof[7]), //C
-                                    Pairing.G1Point(Proof[8], Proof[9]), //Ck
-                                    Pairing.G1Point(Proof[10], Proof[11]), //S
-                                    Pairing.G1Point(Proof[12], Proof[13]), //Sold
-                                    Pairing.G1Point(Proof[14], Proof[15])  //Snew
+                                    Pairing.G1Point(Proof[4], Proof[5]), // T
+                                    Pairing.G1Point(Proof[6], Proof[7]), // C
+                                    Pairing.G1Point(Proof[8], Proof[9]), // Ck
+                                    Pairing.G1Point(Proof[10], Proof[11]), // S
+                                    Pairing.G1Point(Proof[12], Proof[13]), // Sold
+                                    Pairing.G1Point(Proof[14], Proof[15])  // Snew
                                     ];
-        // Z(T / Si)[z]
-        uint256 Z1 = z_calculation(1); // i = 1
-        uint256 Z2 = z_calculation(2);
-        uint256 Z3 = z_calculation(3);
-        uint256 Z4 = z_calculation(4);
-        uint256 Z5 = z_calculation(5);
-        uint256 Z6 = z_calculation(6);
-        uint256 Z7 = z_calculation(7);
-        uint256 Z8 = z_calculation(8);
+        // Z(T / Si)[z] * β^(i-1)
+        uint256 Z_beta_1 = 1; // i = 1,  etc.
+        uint256 Z_beta_2 = Randoms[4];
+        uint256 Z_beta_3 = mulmod(Z_beta_2, Randoms[4], BABYJUB_P);
+        uint256 Z_beta_4 = mulmod(Z_beta_3, Randoms[4], BABYJUB_P);
+        uint256 Z_beta_5 = mulmod(Z_beta_4, Randoms[4], BABYJUB_P);
+        uint256 Z_beta_6 = mulmod(Z_beta_5, Randoms[4], BABYJUB_P);
+        uint256 Z_beta_7 = mulmod(Z_beta_6, Randoms[4], BABYJUB_P);
+        uint256 Z_beta_8 = mulmod(Z_beta_7, Randoms[4], BABYJUB_P);
 
-        // the prove, g^p[α], g^w[α]
+        Z_beta_1 = mulmod(Z_beta_1, z_calculation(1), BABYJUB_P);
+        Z_beta_2 = mulmod(Z_beta_2, z_calculation(2), BABYJUB_P);
+        Z_beta_3 = mulmod(Z_beta_3, z_calculation(3), BABYJUB_P);
+        Z_beta_4 = mulmod(Z_beta_4, z_calculation(4), BABYJUB_P);
+        Z_beta_5 = mulmod(Z_beta_5, z_calculation(5), BABYJUB_P);
+        Z_beta_6 = mulmod(Z_beta_6, z_calculation(6), BABYJUB_P);
+        Z_beta_7 = mulmod(Z_beta_7, z_calculation(7), BABYJUB_P);
+        Z_beta_8 = mulmod(Z_beta_8, z_calculation(8), BABYJUB_P);
+
+        // the committed prove, g^p[x], g^w[x]
         Pairing.G1Point[2] memory pi = [
             G1Gen(),
             G1Gen()
         ];
-        // product_result is the first G1 element of the RHS pairing
-        // first calculate the uppercase Pi product
-        Pairing.G1Point memory product_result = Pairing.mulScalar(Pairing.plus(F[0], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
+        // H
+        Pairing.G1Point memory H = Pairing.mulScalar(F[0], Z_beta_1);
+        H = Pairing.plus(H, Pairing.mulScalar(F[1], Z_beta_2));
+        H = Pairing.plus(H, Pairing.mulScalar(F[2], Z_beta_3));
+        H = Pairing.plus(H, Pairing.mulScalar(F[3], Z_beta_4));
+        H = Pairing.plus(H, Pairing.mulScalar(F[4], Z_beta_5));
+        H = Pairing.plus(H, Pairing.mulScalar(F[5], Z_beta_6));
+        H = Pairing.plus(H, Pairing.mulScalar(F[6], Z_beta_7));
+        H = Pairing.plus(H, Pairing.mulScalar(F[7], Z_beta_8));
+
+        // R
+        // first calculate PI
+        Pairing.G1Point memory R = Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
                                                                                 addmod(gamma1[0], 
                                                                                 mulmod(gamma1[1], Randoms[2], BABYJUB_P), 
-                                                                                BABYJUB_P)))), Z1);
-        product_result = Pairing.plus(product_result, 
-                                    Pairing.mulScalar(Pairing.plus(F[1], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
+                                                                                BABYJUB_P))), Z_beta_1);
+        R = Pairing.plus(R, Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
                                                                                 addmod(gamma2[0], 
                                                                                 mulmod(gamma2[1], Randoms[2], BABYJUB_P), 
-                                                                                BABYJUB_P)))), Z2));
-        product_result = Pairing.plus(product_result, 
-                                    Pairing.mulScalar(Pairing.plus(F[2], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma3[0]))), Z3));
-        product_result = Pairing.plus(product_result, 
-                                    Pairing.mulScalar(Pairing.plus(F[3], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
+                                                                                BABYJUB_P))), Z_beta_2));
+        R = Pairing.plus(R, Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
+                                                                                gamma3[0])), Z_beta_3));
+        R = Pairing.plus(R, Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
                                                                                 addmod(addmod(gamma4[0], 
                                                                                 mulmod(gamma4[1], Randoms[2], BABYJUB_P), 
                                                                                 BABYJUB_P),
@@ -459,36 +829,44 @@ contract Verifier is Constants {
                                                                                 BABYJUB_P), 
                                                                                 BABYJUB_P),
                                                                                 BABYJUB_P)
-                                                                                )))
-                                                        , Z4)
-                                        );
-        product_result = Pairing.plus(product_result, 
-                                    Pairing.mulScalar(Pairing.plus(F[4], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma5[0]))), Z5));
-        product_result = Pairing.plus(product_result, 
-                                    Pairing.mulScalar(Pairing.plus(F[5], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma6[0]))), Z6));
-        product_result = Pairing.plus(product_result, 
-                                    Pairing.mulScalar(Pairing.plus(F[6], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma7[0]))), Z7));
-        product_result = Pairing.plus(product_result, 
-                                    Pairing.mulScalar(Pairing.plus(F[7], 
-                                                                Pairing.negate(Pairing.mulScalar(g, 
-                                                                                gamma8[0]))), Z8));
+                                                                                ))
+                                                        , Z_beta_4));
+        R = Pairing.plus(R, Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
+                                                                                gamma5[0])), Z_beta_5));
+        R = Pairing.plus(R, Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
+                                                                                gamma6[0])), Z_beta_6));
+        R = Pairing.plus(R, Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
+                                                                                gamma7[0])), Z_beta_7));
+        R = Pairing.plus(R, Pairing.mulScalar(Pairing.negate(Pairing.mulScalar(g, 
+                                                                                gamma8[0])), Z_beta_8));
         // then add the first item before the uppercase Pi product
-        product_result = Pairing.plus(product_result,
-                                    Pairing.negate(Pairing.plus(pi[0],
+        //g^p[x]·zT[z]
+        R = Pairing.plus(R, Pairing.negate(Pairing.plus(pi[0],
                                                     Pairing.mulScalar(g,
-                                                                    z_calculation(9)))));//zT[z]
+                                                                    z_calculation(9)))));
+        //g^z·w[x]
+        R = Pairing.plus(R, Pairing.mulScalar(pi[1], Randoms[2]));
 
-        // check e<g^w[α],h^α>e<g^w[α]g^-z,h> == RHS, then check others
+        // check the equation, then check others
+        // bool result = Pairing.pairing_3point(
+        //     H,
+        //     SRS_G2_1, // h, see above
+        //     R,
+        //     Constants.t_hxdmax,
+        //     Pairing.negate(pi[1]),
+        //     Constants.t_hxdmaxplusone
+        //     )
+        //     && verifySignature
+        //     && Proof[6] == Proof[7] // c_old == s_old
+        //     && Proof[8] == Proof[9] // c_new == s_new
+        //     && Proof[10] == Proof[11]; // c == s
+
+        // former code, used for coding reference of above check
+        // check e<g^w[α],h^α>e<(g^w[α])^-z,h> == RHS, then check others
         // bool result = Pairing.pairing_3point(
         //     pi[1],
         //     SRS_G2_2, // h^α, see above
-        //     Pairing.plus(pi[1], Pairing.negate(Pairing.mulScalar(g, z))),
+        //     Pairing.negate(Pairing.mulScalar(pi[1], z)),
         //     SRS_G2_1, // h, see above
         //     Pairing.negate(product_result),
         //     SRS_G2_1
@@ -499,19 +877,19 @@ contract Verifier is Constants {
         //     && Proof[10] == Proof[11]; // c == s
 
         // temporary code for estimating gas cost, the above is correct version
-        // check e<g^w[α],h^α>e<g^w[α]g^-z,h> == RHS, then check others
         bool result = Pairing.pairing_3point(
-            pi[1],
-            SRS_G2_2, // h^α, see above
-            Pairing.plus(pi[1], Pairing.negate(Pairing.mulScalar(g, z))),
+            H,
             SRS_G2_1, // h, see above
-            Pairing.negate(product_result),
-            SRS_G2_1
+            R,
+            Constants.t_hxdmax,
+            Pairing.negate(pi[1]),
+            Constants.t_hxdmaxplusone
             );
-        result = verifySignature;
-        result = Proof[6] == Proof[7]; // c_old == s_old
-        result = Proof[8] == Proof[9]; // c_new == s_new
-        result = Proof[10] == Proof[11]; // c == s
+            result = verifySignature;
+            result = Proof[6] == Proof[7]; // c_old == s_old
+            result = Proof[8] == Proof[9]; // c_new == s_new
+            result = Proof[10] == Proof[11]; // c == s
+
         emit verifyResult(result);
         return result;
     }
