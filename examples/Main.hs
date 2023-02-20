@@ -8,7 +8,7 @@ import Data.Pairing.BN254 (Fr)
 -- import Data.Field.Galois (rnd)
 import Data.List.Split (divvy)
 
-import Sonic.SRS as SRS
+-- import Sonic.SRS as SRS
 import Sonic.Protocol
 import Sonic.Circuits
 -- import Sonic.CommitmentScheme (pcVShow)
@@ -41,52 +41,53 @@ import Data.Time
 outputProof:: ArithCircuit Fr -> Assignment Fr -> Fr -> Fr -> Fr -> Fr -> IO ()
 outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   -- Setup for an SRS
-  startSrs <- getCurrentTime
+  -- startSrs <- getCurrentTime
   -- srsRaw <- SRS.new <$> pure n <*> pure pXRaw <*> pure alphaRaw
-  srsLocal <- SRS.new <$> pure n <*> pure pXLocal <*> pure alphaLocal
+  -- srsLocal <- SRS.new <$> pure n <*> pure pXLocal <*> pure alphaLocal
 
-  print $ alphaRaw
-  print $ pXRaw
+  -- print $ alphaRaw
+  -- print $ pXRaw
   -- print $ alphaLocal
   -- print $ (srsD srsRaw)
-  print $ (srsD srsLocal)
-  print $ "writing SRSs"
+  -- print $ (srsD srsLocal)
+  -- print $ "writing SRSs"
   -- writeFile "output/srsRaw.txt" $ show $ srsRaw
-  writeFile "output/srsLocal.txt" $ show $ srsLocal
-  stopSrs <- getCurrentTime
-  print $ diffUTCTime stopSrs startSrs
+  -- writeFile "output/srsLocal.txt" $ show $ srsLocal
+  -- stopSrs <- getCurrentTime
+  -- print $ diffUTCTime stopSrs startSrs
   -- print $ pXRaw
   -- print $ pXLocal
   -- Prover
-  (proofOutsourced, rndOracle1) <- proveOutsourced srsLocal srsLocal 4 assignment circuit
-  putText $ "proofOutsourced: " <> show proofOutsourced
-  print $ "generating proof:"
+  -- (proofOutsourced, rndOracle1) <- proveOutsourced srsLocal srsLocal 4 assignment circuit
+  -- putText $ "proofOutsourced: " <> show proofOutsourced
+  -- print $ "generating proof:"
   start <- getCurrentTime
-  (proof, rndOracle@RndOracle{..}, verifierData) <- prove srsLocal srsLocal 4 proofOutsourced rndOracle1 assignment circuit
-  putText $ "proof: " <> show proof
-  putText $ "polys: " <> show verifierData
+  (proof) <- prove 4 n assignment circuit
+  -- putText $ "proof: " <> show proof
+  -- putText $ "polys: " <> show verifierData
+  writeFile "output/polys64.txt" $ show $ proof
   stop <- getCurrentTime
   print $ diffUTCTime stop start
-  print $ "verifying proof:"
-  startVer <- getCurrentTime
-  putText $ "success:" <> show (verify srsLocal srsLocal circuit proof proofOutsourced rndOracleY rndOracleZ rndOracleYZ)
-  stopVer <- getCurrentTime
-  print $ diffUTCTime stopVer startVer
+  -- print $ "verifying proof:"
+  -- startVer <- getCurrentTime
+  -- putText $ "success:" <> show (verify srsLocal srsLocal circuit proof proofOutsourced rndOracleY rndOracleZ rndOracleYZ)
+  -- stopVer <- getCurrentTime
+  -- print $ diffUTCTime stopVer startVer
 
   -- putText $ show (hscVerifyShow srsLocal sXY rndOracleYZs prHscProof)
 
   -- putText $ show (pcVShow srsRaw (fromIntegral nexample) prRRaw rndOracleZ (prARaw, prWaRaw))
   -- print $ "writing verify Hxi String"
   -- writeFile "output/verifyHxiString.txt" $ show (getverifyHxiString srsRaw srsLocal circuit proof rndOracleY rndOracleZ rndOracleYZs)
-  print $ "writing proof"
-  writeFile "output/proof.txt" $ show $ proof
-  print $ "writing rndOracle"
-  writeFile "output/rndOracle.txt" $ show $ rndOracle
+  -- print $ "writing proof"
+  -- writeFile "output/proof.txt" $ show $ proof
+  -- print $ "writing rndOracle"
+  -- writeFile "output/rndOracle.txt" $ show $ rndOracle
   -- print $ "writing verifier data"
   -- writeFile "output/verifierData.txt" $ show $ verifierData
   where
     -- n: Number of multiplication constraints
-    n = (length $ aL assignment) * 8
+    n = (length $ aL assignment) * 6
     -- nexample = 50
     -- sXY = sPoly (weights circuit)
     
@@ -107,13 +108,13 @@ runExample = do
       pXRaw = 12
       pXLocal = 13
 
-  wLS <- fmap Text.words (Text.readFile "input/sample_wL.txt")
-  wRS <- fmap Text.words (Text.readFile "input/sample_wR.txt")
-  wOS <- fmap Text.words (Text.readFile "input/sample_wO.txt")
-  csS <- fmap Text.words (Text.readFile "input/sample_cs.txt")
-  aLS <- fmap Text.words (Text.readFile "input/sample_aL.txt")
-  aRS <- fmap Text.words (Text.readFile "input/sample_aR.txt")
-  aOS <- fmap Text.words (Text.readFile "input/sample_aO.txt")
+  wLS <- fmap Text.words (Text.readFile "input/wL.txt")
+  wRS <- fmap Text.words (Text.readFile "input/wR.txt")
+  wOS <- fmap Text.words (Text.readFile "input/wO.txt")
+  csS <- fmap Text.words (Text.readFile "input/cs.txt")
+  aLS <- fmap Text.words (Text.readFile "input/aL.txt")
+  aRS <- fmap Text.words (Text.readFile "input/aR.txt")
+  aOS <- fmap Text.words (Text.readFile "input/aO.txt")
   let wLL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wLS))
       wRL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wRS))
       wOL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) wOS))
@@ -121,7 +122,7 @@ runExample = do
       aL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aLS))
       aR = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aRS))
       aO = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aOS))
-      inputSize = 2
+      inputSize = 2752
       -- wL = divvy 50 50 wLL
       -- wR = divvy 50 50 wRL
       -- wO = divvy 50 50 wOL

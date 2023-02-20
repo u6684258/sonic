@@ -22,11 +22,11 @@ import Data.Pairing.BN254 (Fr, G1, G2, BN254)
 import Control.Monad.Random (MonadRandom)
 import Bulletproofs.ArithmeticCircuit (ArithCircuit(..), GateWeights(..), Assignment(..)) --, GateWeights(..)
 import Data.Field.Galois (rnd)
-import Data.Poly.Sparse.Laurent (monomial, VLaurent) -- , eval
-import qualified GHC.Exts
+import Data.Poly.Sparse.Laurent (VLaurent) -- , eval
+-- import qualified GHC.Exts
 
 import Sonic.SRS (SRS(..))
-import Sonic.Constraints (rPoly, rPolyRaw, sPoly, tPoly, kPoly)
+import Sonic.Constraints (rPoly, tPoly, sPoly, kPoly) --rPolyRaw,  
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV) --, openPoly, pcV, pcVGetHxi
 -- import Sonic.Signature (HscProof(..), hscProve, hscVerify) -- 
 import Sonic.Utils (evalY, evalX, BiVLaurent)
@@ -53,12 +53,13 @@ data Proof = Proof
 data Polys = Polys
   {
     polyS :: BiVLaurent Fr
-  , polyR :: BiVLaurent Fr
-  , polyR1Raw :: VLaurent Fr
-  , polyR1Local :: VLaurent Fr
-  , polyR1 :: VLaurent Fr
+     , polyR :: BiVLaurent Fr
+  -- , polyR1Raw :: VLaurent Fr
+  -- , polyR1Local :: VLaurent Fr
+  -- , polyR1 :: VLaurent Fr
   , polyT :: BiVLaurent Fr
-  }
+  , polyK :: VLaurent Fr
+  }  deriving (Eq, Show, Generic, NFData)
 
 data ProofOutsourced = ProofOutsourced
   { prS :: Fr
@@ -102,31 +103,31 @@ data VerifierSRSHString = VerifierSRSHString
   , keval  :: Fr
   , teval  :: Fr
   } deriving (Eq, Show)
-
+-- proofOutsourced
   
 prove
   :: MonadRandom m
-  => SRS
-  -> SRS
+  => Int
   -> Int
-  -> ProofOutsourced
-  -> RndOracle
+  -- -> ProofOutsourced
+  -- -> RndOracle
   -> Assignment Fr
   -> ArithCircuit Fr
   -> m (Polys)
-prove srsRaw srsLocal upSize proofOutsourced@ProofOutsourced{..} rands@RndOracle{..} assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
-  if srsD srsLocal < 3*n
-    then panic $ "Parameter d is not large enough: " <> show (srsD srsLocal) <> " should be greater than " <>  show (7*n)
+prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
+  if 999999 < 3*n
+    -- then panic $ "Parameter d is not large enough: " <> show (srsD srsLocal) <> " should be greater than " <>  show (7*n)
+    then panic $ "NaN"
     else do
 
-    cns <- replicateM 4 rnd                 -- c_{n+1}, c_{n+2}, c_{n+3}, c_{n+4} <- F_p
-    let sumcXY :: BiVLaurent Fr             -- \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
-        sumcXY = GHC.Exts.fromList $
-          zipWith (\i cni -> (negate (2 * n + i), monomial (negate (2 * n + i)) cni)) [1..] cns
-        polyRRaw = evalY 1 (rPolyRaw assignment upSize)  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
-        polyR = rPoly assignment + sumcXY
-        polyRAll = evalY 1 polyR
-        polyRLocal = polyRAll - polyRRaw
+    -- cns <- replicateM 4 rnd                 -- c_{n+1}, c_{n+2}, c_{n+3}, c_{n+4} <- F_p
+    -- let sumcXY :: BiVLaurent Fr             -- \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
+    --     sumcXY = GHC.Exts.fromList $
+    --       zipWith (\i cni -> (negate (2 * n + i), monomial (negate (2 * n + i)) cni)) [1..] cns
+    let polyR = rPoly assignment
+        -- polyRRaw = evalY 1 (rPolyRaw assignment upSize)  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
+        -- polyRAll = evalY 1 polyR
+        -- polyRLocal = polyRAll - polyRRaw
         -- commitR = commitPoly srsLocal (fromIntegral n) polyRLocal -- R <- Commit(bp,srs,n,r(X,1))
         -- commitRRaw = commitPoly srsRaw (fromIntegral n) polyRRaw
         -- commitRAll = commitPoly srsLocal (fromIntegral n) polyRAll
@@ -173,11 +174,13 @@ prove srsRaw srsLocal upSize proofOutsourced@ProofOutsourced{..} rands@RndOracle
           --  , commitRAll = commitRAll
           --  , prT = commitT
            { polyS = sXY
-           , polyR = polyR
-           , polyR1Raw = polyRRaw
-           , polyR1Local = polyRLocal
-           , polyR1 = polyRAll
+             , polyR = polyR
+          --  , 
+          --  , polyR1Raw = polyRRaw
+          --  , polyR1Local = polyRLocal
+          --  , polyR1 = polyRAll
            , polyT = tXY
+           , polyK = kY
           --  , prA = a
           --  , prWa = wa
           --  , prB = b
