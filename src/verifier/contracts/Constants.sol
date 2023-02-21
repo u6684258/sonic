@@ -148,6 +148,12 @@ contract Constants {
         [4082367875863433681332203403145435568316851327593401208105741076214120093531,
         8495653923123431417604973247489272438418190587263600148770280649306958101930]
     );
+    // h
+    Pairing.G2Point SRS_G2_1 = Pairing.G2Point({
+        X: [ Constants.SRS_G2_X_0[1], Constants.SRS_G2_X_1[1] ],
+        Y: [ Constants.SRS_G2_Y_0[1], Constants.SRS_G2_Y_1[1] ]
+    });
+
     uint256 constant srsD = 251;
 
     
