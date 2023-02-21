@@ -26,7 +26,7 @@ import Data.Poly.Sparse.Laurent (VLaurent) -- , eval
 -- import qualified GHC.Exts
 
 import Sonic.SRS (SRS(..))
-import Sonic.Constraints (rPoly, tPoly, sPoly, kPoly) --rPolyRaw,  
+import Sonic.Constraints (rPoly, sPoly, tPoly, kPoly) --rPolyRaw,   
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV) --, openPoly, pcV, pcVGetHxi
 -- import Sonic.Signature (HscProof(..), hscProve, hscVerify) -- 
 import Sonic.Utils (evalY, evalX, BiVLaurent)
@@ -52,13 +52,13 @@ data Proof = Proof
 
 data Polys = Polys
   {
-    polyS :: BiVLaurent Fr
-     , polyR :: BiVLaurent Fr
+    -- polyS :: BiVLaurent Fr
+    --  , polyR :: BiVLaurent Fr
   -- , polyR1Raw :: VLaurent Fr
   -- , polyR1Local :: VLaurent Fr
   -- , polyR1 :: VLaurent Fr
-  , polyT :: BiVLaurent Fr
-  , polyK :: VLaurent Fr
+   polyT :: BiVLaurent Fr
+  -- , polyK :: VLaurent Fr
   }  deriving (Eq, Show, Generic, NFData)
 
 data ProofOutsourced = ProofOutsourced
@@ -173,14 +173,14 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
           --  , commitRRaw = commitRRaw
           --  , commitRAll = commitRAll
           --  , prT = commitT
-           { polyS = sXY
-             , polyR = polyR
+          --  { polyS = sXY
+            --  , polyR = polyR
           --  , 
           --  , polyR1Raw = polyRRaw
           --  , polyR1Local = polyRLocal
           --  , polyR1 = polyRAll
-           , polyT = tXY
-           , polyK = kY
+           { polyT = tXY
+          --  , polyK = kY
           --  , prA = a
           --  , prWa = wa
           --  , prB = b
