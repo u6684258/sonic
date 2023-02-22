@@ -26,7 +26,7 @@ import Data.Poly.Sparse.Laurent (VLaurent) -- , eval
 -- import qualified GHC.Exts
 
 import Sonic.SRS (SRS(..))
-import Sonic.Constraints (rPoly, sPoly, kPoly) --rPolyRaw,   tPoly, 
+import Sonic.Constraints (rPoly, sPoly, tPoly, kPoly) --rPolyRaw,   
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV) --, openPoly, pcV, pcVGetHxi
 -- import Sonic.Signature (HscProof(..), hscProve, hscVerify) -- 
 import Sonic.Utils (evalY, evalX, BiVLaurent)
@@ -57,7 +57,7 @@ data Polys = Polys
   -- , polyR1Raw :: VLaurent Fr
   -- , polyR1Local :: VLaurent Fr
   -- , polyR1 :: VLaurent Fr
-  --  polyT :: BiVLaurent Fr
+  , polyT :: BiVLaurent Fr
   , polyK :: VLaurent Fr
   }  deriving (Eq, Show, Generic, NFData)
 
@@ -138,7 +138,7 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
     -- zkP_2(y) -> T
     let kY = kPoly cs n                     -- k(Y)
         sXY = sPoly weights                 -- s(X, Y)
-        -- tXY = tPoly polyR sXY kY           -- t(X, Y)
+        tXY = tPoly polyR sXY kY           -- t(X, Y)
         -- tXy = evalY y tXY                   -- t(X, y)
         -- commitT = commitPoly srsLocal (srsD srsLocal) tXy   -- T
 
@@ -179,7 +179,7 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
           --  , polyR1Raw = polyRRaw
           --  , polyR1Local = polyRLocal
           --  , polyR1 = polyRAll
-          --  { polyT = tXY
+           , polyT = tXY
            , polyK = kY
           --  , prA = a
           --  , prWa = wa
