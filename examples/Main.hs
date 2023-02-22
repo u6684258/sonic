@@ -65,7 +65,7 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   (proof) <- prove 4 n assignment circuit
   -- putText $ "proof: " <> show proof
   -- putText $ "polys: " <> show verifierData
-  writeFile "output/polys-T-64.txt" $ show $ proof
+  writeFile "output/polys-128.txt" $ show $ proof
   stop <- getCurrentTime
   print $ diffUTCTime stop start
   -- print $ "verifying proof:"
@@ -122,7 +122,7 @@ runExample = do
       aL = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aLS))
       aR = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aRS))
       aO = foldr (\x acc -> (fst x):acc) [] (rights (map (signed decimal) aOS))
-      inputSize = 2752
+      inputSize = 5440
       -- wL = divvy 50 50 wLL
       -- wR = divvy 50 50 wRL
       -- wO = divvy 50 50 wOL
