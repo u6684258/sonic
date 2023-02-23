@@ -79,24 +79,24 @@ contract Verifier is Constants {
 
     // Sonic proofs
     // D_j when j=1
-    Pairing.G1Point pi_D = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_R_tilde = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_R1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_R2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_T = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_K = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_S_x1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_S_x2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    Pairing.G1Point pi_S_y = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_D = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_R_tilde = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_R1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_R2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_T = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_K = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_S_x1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_S_x2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    // Pairing.G1Point pi_S_y = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
 
 
 
@@ -177,29 +177,29 @@ contract Verifier is Constants {
     // });
 
     // Sonic version - Verify a single-point evaluation of a polynominal
-    function verify(
-        Pairing.G1Point memory _commitment, // F
-        Pairing.G1Point memory _proof, // W
-        uint256 _index,  // z
-        uint256 _value  // F(z) or v
-        // uint proofIndex,
-        // bool isT
-    ) public view returns (bool) {
-        // Make sure each parameter is less than the prime q
-        require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
-        require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
-        require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
-        require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
-        require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
-        require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
+    // function verify(
+    //     Pairing.G1Point memory _commitment, // F
+    //     Pairing.G1Point memory _proof, // W
+    //     uint256 _index,  // z
+    //     uint256 _value  // F(z) or v
+    //     // uint proofIndex,
+    //     // bool isT
+    // ) public view returns (bool) {
+    //     // Make sure each parameter is less than the prime q
+    //     require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
+    //     require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
+    //     require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
+    //     require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
+    //     require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
+    //     require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
        
-        Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
-        Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(Constants.G1Gen(), _value), negProof);
+    //     Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
+    //     Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(Constants.G1Gen(), _value), negProof);
 
-        return Pairing.pairing_3point(_proof, Constants.SRS_G2_hAlphaX1,
-                                mulProof, Constants.SRS_G2_hAlphaX0,
-                                _commitment, Constants.t_hxdmax);
-    }
+    //     return Pairing.pairing_3point(_proof, Constants.SRS_G2_hAlphaX1,
+    //                             mulProof, Constants.SRS_G2_hAlphaX0,
+    //                             _commitment, Constants.t_hxdmax);
+    // }
 
 
 
@@ -218,7 +218,7 @@ contract Verifier is Constants {
      * @param _index The x-value at which to evaluate the polynominal.
      * @param _value The result of the polynominal evaluation.
      */
-    // KZG version - Verify a single-point evaluation of a polynominal
+    //   - Verify a single-point evaluation of a polynominal
 
     // function verify(
     //     Pairing.G1Point memory _commitment, // F
@@ -420,123 +420,123 @@ contract Verifier is Constants {
 
     // sonic verifier
 
-    function verifySonic(
-        // uint256[21] memory Proof,
-        // uint256[2] memory Randoms
-    ) public returns (bool) {
+    // function verifySonic(
+    //     // uint256[21] memory Proof,
+    //     // uint256[2] memory Randoms
+    // ) public returns (bool) {
 
-        // simulate calculating kY
-        // uint256 ky = evalKPoly();
-        // // // simulate calculating sXY
-        // uint256 sx = evalXPoly();
-        // uint256 sy = evalXPoly();
+    //     // simulate calculating kY
+    //     // uint256 ky = evalKPoly();
+    //     // // // simulate calculating sXY
+    //     // uint256 sx = evalXPoly();
+    //     // uint256 sy = evalXPoly();
 
-        // uint256 yz = mulmod(y, z, Pairing.BABYJUB_P);
+    //     // uint256 yz = mulmod(y, z, Pairing.BABYJUB_P);
 
-        // y^N for halo implementation style
-        // uint256 y_n = expMod(z, N, BABYJUB_P);
-        // t for halo implementation style
-        // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
-        //                           addmod(addmod(Proof[12], 
-        //                                         Proof[15], Pairing.BABYJUB_P), 
-        //                                  evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
-        //                     mulmod((BABYJUB_P - evalK), y_n, BABYJUB_P),
-        //                     BABYJUB_P);
+    //     // y^N for halo implementation style
+    //     // uint256 y_n = expMod(z, N, BABYJUB_P);
+    //     // t for halo implementation style
+    //     // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], Pairing.BABYJUB_P), 
+    //     //                           addmod(addmod(Proof[12], 
+    //     //                                         Proof[15], Pairing.BABYJUB_P), 
+    //     //                                  evalS, Pairing.BABYJUB_P), Pairing.BABYJUB_P),
+    //     //                     mulmod((BABYJUB_P - evalK), y_n, BABYJUB_P),
+    //     //                     BABYJUB_P);
 
 
 
-        // bool result = verify(D,
-        //               pi_D,
-        //               z, 
-        //               d)
-        //     && verify(R_tilde,
-        //               pi_R_tilde,
-        //               z,
-        //               r_tilde)
-        //     && verify(R,
-        //               pi_R1,
-        //               z,
-        //               r_1)
-        //     && = verify(R,
-        //               pi_R2,
-        //               yz,
-        //               r_2)
-        //     && verify(T,
-        //               pi_T,
-        //               z,
-        //               t)
-        //     && verify(K,
-        //               pi_K,
-        //               y,
-        //               k)
-        //     && verify(S_x,
-        //               pi_S_x1,
-        //               z,
-        //               s_tilde)
-        //     && verify(S_x,
-        //               pi_S_x2,
-        //               1,
-        //               s_1_tilde)
-        //     && verify(S_y,
-        //               pi_S_y,
-        //               y,
-        //               s_2_tilde)
-        //     && recover(message, sig) == addr //verifySignature
-        //     && r_1 == addmod(r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
-        //     && t == addmod(mulmod(r_1, 
-        //                           addmod(r_2,
-        //                                  s_tilde, BABYJUB_P), BABYJUB_P),
-        //                     (BABYJUB_P - k), BABYJUB_P)
-        //     && s_1_tilde == s_2_tilde;
+    //     // bool result = verify(D,
+    //     //               pi_D,
+    //     //               z, 
+    //     //               d)
+    //     //     && verify(R_tilde,
+    //     //               pi_R_tilde,
+    //     //               z,
+    //     //               r_tilde)
+    //     //     && verify(R,
+    //     //               pi_R1,
+    //     //               z,
+    //     //               r_1)
+    //     //     && = verify(R,
+    //     //               pi_R2,
+    //     //               yz,
+    //     //               r_2)
+    //     //     && verify(T,
+    //     //               pi_T,
+    //     //               z,
+    //     //               t)
+    //     //     && verify(K,
+    //     //               pi_K,
+    //     //               y,
+    //     //               k)
+    //     //     && verify(S_x,
+    //     //               pi_S_x1,
+    //     //               z,
+    //     //               s_tilde)
+    //     //     && verify(S_x,
+    //     //               pi_S_x2,
+    //     //               1,
+    //     //               s_1_tilde)
+    //     //     && verify(S_y,
+    //     //               pi_S_y,
+    //     //               y,
+    //     //               s_2_tilde)
+    //     //     && recover(message, sig) == addr //verifySignature
+    //     //     && r_1 == addmod(r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
+    //     //     && t == addmod(mulmod(r_1, 
+    //     //                           addmod(r_2,
+    //     //                                  s_tilde, BABYJUB_P), BABYJUB_P),
+    //     //                     (BABYJUB_P - k), BABYJUB_P)
+    //     //     && s_1_tilde == s_2_tilde;
 
-        // temporary code for estimating gas cost, the above is correct version
-        bool result = verify(D,
-                      pi_D,
-                      z, 
-                      d);
-        result = verify(R_tilde,
-                      pi_R_tilde,
-                      z,
-                      r_tilde);
-        result = verify(R,
-                      pi_R1,
-                      z,
-                      r_1);
-        result = verify(R,
-                      pi_R2,
-                      yz,
-                      r_2);
-        result = verify(T,
-                      pi_T,
-                      z,
-                      t);
-        result = verify(K,
-                      pi_K,
-                      y,
-                      k);
-        result = verify(S_x,
-                      pi_S_x1,
-                      z,
-                      s_tilde);
-        result = verify(S_x,
-                      pi_S_x2,
-                      1,
-                      s_1_tilde);
-        result = verify(S_y,
-                      pi_S_y,
-                      y,
-                      s_2_tilde);
-        result = recover(message, sig) == addr; //verifySignature
-        result = r_1 == addmod(r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P);
-        result = t == addmod(mulmod(r_1, 
-                                  addmod(r_2,
-                                         s_tilde, BABYJUB_P), BABYJUB_P),
-                            (BABYJUB_P - k), BABYJUB_P);
-        result = s_1_tilde == s_2_tilde;
+    //     // temporary code for estimating gas cost, the above is correct version
+    //     bool result = verify(D,
+    //                   pi_D,
+    //                   z, 
+    //                   d);
+    //     result = verify(R_tilde,
+    //                   pi_R_tilde,
+    //                   z,
+    //                   r_tilde);
+    //     result = verify(R,
+    //                   pi_R1,
+    //                   z,
+    //                   r_1);
+    //     result = verify(R,
+    //                   pi_R2,
+    //                   yz,
+    //                   r_2);
+    //     result = verify(T,
+    //                   pi_T,
+    //                   z,
+    //                   t);
+    //     result = verify(K,
+    //                   pi_K,
+    //                   y,
+    //                   k);
+    //     result = verify(S_x,
+    //                   pi_S_x1,
+    //                   z,
+    //                   s_tilde);
+    //     result = verify(S_x,
+    //                   pi_S_x2,
+    //                   1,
+    //                   s_1_tilde);
+    //     result = verify(S_y,
+    //                   pi_S_y,
+    //                   y,
+    //                   s_2_tilde);
+    //     result = recover(message, sig) == addr; //verifySignature
+    //     result = r_1 == addmod(r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P);
+    //     result = t == addmod(mulmod(r_1, 
+    //                               addmod(r_2,
+    //                                      s_tilde, BABYJUB_P), BABYJUB_P),
+    //                         (BABYJUB_P - k), BABYJUB_P);
+    //     result = s_1_tilde == s_2_tilde;
 
-        emit verifyResult(result);
-        return result;
-    }
+    //     emit verifyResult(result);
+    //     return result;
+    // }
 
     // add improvement for batched commitments of original KZG
     /*
