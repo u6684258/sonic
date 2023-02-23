@@ -34,7 +34,7 @@ contract Constants {
     function G1Gen() pure internal returns (Pairing.G1Point memory) {
         return Pairing.G1Point(1, 2);
     }
-    // the G2Gen() doesn't work in verify() for unknown reason
+    // the G2Gen() doesn't work in KZG version verify() for unknown reason
     function G2Gen() pure internal returns (Pairing.G2Point memory) {
         return Pairing.G2Point(
             [10857046999023057135944570762232829481370756359578518086990519993285655852781,
