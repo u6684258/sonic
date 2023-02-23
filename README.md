@@ -6,6 +6,8 @@ Prover generated data has to be copied from output file to verifier code.
 
 For verifier, please notice that current code may be temporary code for cost estimation, and right version is annotated.
 
+Feasibility-check code is in ./src/RSP, and the dataset used is the ./data folder.
+
 
 
 ## Data source
