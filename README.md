@@ -55,3 +55,5 @@ We can estimate the transaction fee regarding US Dollars using 2023-02-23's data
 | Batched Verification                         | 452269   | 15.06960308   |
 | Original Verification                        | 1740170  | 57.9824644    |
 
+
+
