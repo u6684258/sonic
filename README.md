@@ -52,12 +52,12 @@ We can estimate the transaction fee regarding [ETH price by the end of 2022 (ETH
 
 | Transaction                                  | Gas Cost | Estimated USD  |
 | -------------------------------------------- | -------- | -------------- |
-| Contract Deployment                          | 3115256  | 74.7106924432  |
-| Contract Deployment (using batched verifier) | 2805490  | 67.281822278   |
+| Contract Deployment                          | 3194752  | 76.6171814144  |
+| Contract Deployment (using batched verifier) | 2884986  | 69.1883112492  |
 | Batched Verification                         | 437370   | 10.489094814   |
 | Original Verification                        | 1740170  | 41.733104974   |
-| Batched Contract & Verification              | 3242860  | 77.770917092   |
-| Original Contract & Verification             | 4855426  | 116.4437974172 |
+| Batched Contract & Verification              | 3322356  | 79.6774060632  |
+| Original Contract & Verification             | 4934922  | 118.3502863884 |
 
 
 

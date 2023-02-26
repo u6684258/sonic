@@ -1,27 +1,27 @@
 {
   "contractName": "Constants",
   "abi": [],
-  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Constants.sol\":\"Constants\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Constants.sol\":{\"keccak256\":\"0x562dd96a44005a14c45700dd200a2ba602c5922d732a586e095a704980a79a99\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://9a31548e5efa8be7306224efb5e4f056377a34e51812d6812f44948a7d1132bb\",\"dweb:/ipfs/QmUdQMYYjvnU33JUWvLrgZs5ELAhxcg9ksp2B6N7VZuRD4\"]},\"project:/contracts/Pairing.sol\":{\"keccak256\":\"0x70835f7cc32a6399955556756f314cec4d16508699715db0f29194ad49fc52df\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8e179803ca4369807d6733040613e647317aa8de9c6d7c1b3a8344aef3a8c234\",\"dweb:/ipfs/QmYvpymjNgEjc2zfvTFy1rGSNmSK283qF7VQhuY5pqJUQH\"]}},\"version\":1}",
-  "bytecode": "0x6080604052604051806040016040528060405180604001604052807f198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c281526020017f1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed815250815260200160405180604001604052807f090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b81526020017f12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa815250815250600080820151816000019060026100d99291906104ca565b506020820151816002019060026100f19291906104ca565b505050604051806040016040528060405180604001604052807f198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c281526020017f1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed815250815260200160405180604001604052807f090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b81526020017f12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa81525081525060046000820151816000019060026101ca9291906104ca565b506020820151816002019060026101e29291906104ca565b505050604051806040016040528060405180604001604052807f21a808dad5c50720fb7294745cf4c87812ce0ea76baa7df4e922615d1388f25a81526020017f04c5e74c85a87f008a2feb4b5c8a1e7f9ba9d8eb40eb02e70139c89fb1c505a9815250815260200160405180604001604052807f204b66d8e1fadc307c35187a6b813be0b46ba1cd720cd1c4ee5f68d13036b4ba81526020017f2d58022915fc6bc90e036e858fbc98055084ac7aff98ccceb0e3fde64bc1a08481525081525060086000820151816000019060026102bb9291906104ca565b506020820151816002019060026102d39291906104ca565b505050604051806040016040528060405180604001604052807f198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c281526020017f1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed815250815260200160405180604001604052807f090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b81526020017f12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa815250815250600c6000820151816000019060026103ac9291906104ca565b506020820151816002019060026103c49291906104ca565b505050604051806040016040528060405180604001604052807f198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c281526020017f1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed815250815260200160405180604001604052807f090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b81526020017f12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa815250815250601060008201518160000190600261049d9291906104ca565b506020820151816002019060026104b59291906104ca565b5050503480156104c457600080fd5b50610527565b82600281019282156104f9579160200282015b828111156104f85782518255916020019190600101906104dd565b5b509050610506919061050a565b5090565b5b8082111561052357600081600090555060010161050b565b5090565b603f806105356000396000f3fe6080604052600080fdfea26469706673582212206dc59f9a7f43ec8f2ad0618905d5793fef1424f9bcfe01a6768ef98cc13fff5564736f6c634300080d0033",
-  "deployedBytecode": "0x6080604052600080fdfea26469706673582212206dc59f9a7f43ec8f2ad0618905d5793fef1424f9bcfe01a6768ef98cc13fff5564736f6c634300080d0033",
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Constants.sol\":\"Constants\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/Constants.sol\":{\"keccak256\":\"0x00a8f9649107005b9519e7af84af0e6dd1901334de37d2e5c9b51b044da957b8\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://85f4b7580409577ec80ccdca7d7e23c5d0d62fdfd34ff3b1604252e0d383aacc\",\"dweb:/ipfs/QmNfAxSv7877wMJeMAvNFZn3SrrxNDdkwVyCFEJdS3WwEZ\"]},\"project:/contracts/Pairing.sol\":{\"keccak256\":\"0x70835f7cc32a6399955556756f314cec4d16508699715db0f29194ad49fc52df\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://8e179803ca4369807d6733040613e647317aa8de9c6d7c1b3a8344aef3a8c234\",\"dweb:/ipfs/QmYvpymjNgEjc2zfvTFy1rGSNmSK283qF7VQhuY5pqJUQH\"]}},\"version\":1}",
+  "bytecode": "0x6080604052604051806040016040528060405180604001604052807f198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c281526020017f1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed815250815260200160405180604001604052807f090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b81526020017f12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa815250815250600080820151816000019060026100d99291906102e8565b506020820151816002019060026100f19291906102e8565b505050604051806040016040528060405180604001604052807f198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c281526020017f1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed815250815260200160405180604001604052807f090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b81526020017f12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa81525081525060046000820151816000019060026101ca9291906102e8565b506020820151816002019060026101e29291906102e8565b505050604051806040016040528060405180604001604052807f21a808dad5c50720fb7294745cf4c87812ce0ea76baa7df4e922615d1388f25a81526020017f04c5e74c85a87f008a2feb4b5c8a1e7f9ba9d8eb40eb02e70139c89fb1c505a9815250815260200160405180604001604052807f204b66d8e1fadc307c35187a6b813be0b46ba1cd720cd1c4ee5f68d13036b4ba81526020017f2d58022915fc6bc90e036e858fbc98055084ac7aff98ccceb0e3fde64bc1a08481525081525060086000820151816000019060026102bb9291906102e8565b506020820151816002019060026102d39291906102e8565b5050503480156102e257600080fd5b50610345565b8260028101928215610317579160200282015b828111156103165782518255916020019190600101906102fb565b5b5090506103249190610328565b5090565b5b80821115610341576000816000905550600101610329565b5090565b603f806103536000396000f3fe6080604052600080fdfea2646970667358221220e66968ec20ae0e97a8fcd1b5a6e7eb9810c369b20f0d8559e5b2d91ab60adac364736f6c634300080d0033",
+  "deployedBytecode": "0x6080604052600080fdfea2646970667358221220e66968ec20ae0e97a8fcd1b5a6e7eb9810c369b20f0d8559e5b2d91ab60adac364736f6c634300080d0033",
   "immutableReferences": {},
   "generatedSources": [],
   "deployedGeneratedSources": [],
-  "sourceMap": "1049:7915:0:-:0;;;6827:376;;;;;;;;;;;;;;;;6854:77;6827:376;;;;6942:77;6827:376;;;;;;;;;;;;;;;7032:76;6827:376;;;;7119:76;6827:376;;;;;;6800:403;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;7268:376;;;;;;;;;;;;;;;;7295:77;7268:376;;;;7383:77;7268:376;;;;;;;;;;;;;;;7473:76;7268:376;;;;7560:76;7268:376;;;;;;7234:410;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;7688:364;;;;;;;;;;;;;;;;7728:66;7688:364;;;;7805:66;7688:364;;;;;;;;;;;;;;;7898:66;7688:364;;;;7975:66;7688:364;;;;;;7661:391;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;8106:376;;;;;;;;;;;;;;;;8133:77;8106:376;;;;8221:77;8106:376;;;;;;;;;;;;;;;8311:76;8106:376;;;;8398:76;8106:376;;;;;;8072:410;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;8537:376;;;;;;;;;;;;;;;;8564:77;8537:376;;;;8652:77;8537:376;;;;;;;;;;;;;;;8742:76;8537:376;;;;8829:76;8537:376;;;;;;8503:410;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;1049:7915;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
-  "deployedSourceMap": "1049:7915:0:-:0;;;;;",
-  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.4.22 <0.9.0;\r\n\r\nimport \"./Pairing.sol\";\r\n/*\r\n * The values in this file come from challenge file #46 of the Perpetual Powers\r\n * of Tau ceremony. The Blake2b hash of challenge file is:\r\n *\r\n * 939038cd 2dc5a1c0 20f368d2 bfad8686 \r\n * 950fdf7e c2d2e192 a7d59509 3068816b\r\n * becd914b a293dd8a cb6d18c7 b5116b66 \r\n * ea54d915 d47a89cc fbe2d5a3 444dfbed\r\n *\r\n * The challenge file can be retrieved at:\r\n * https://ppot.blob.core.windows.net/public/challenge_0046\r\n *\r\n * The ceremony transcript can be retrieved at:\r\n * https://github.com/weijiekoh/perpetualpowersoftau\r\n *\r\n * Anyone can verify the transcript to ensure that the values in the challenge\r\n * file have not been tampered with. Moreover, as long as one participant in\r\n * the ceremony has discarded their toxic waste, the whole ceremony is secure.\r\n * Please read the following for more information:\r\n * https://medium.com/coinmonks/announcing-the-perpetual-powers-of-tau-ceremony-to-benefit-all-zk-snark-projects-c3da86af8377\r\n */\r\n\r\ncontract Constants {\r\n\r\n    // uint256 constant PRIME_Q = 21888242871839275222246405745257275088696311157297823662689037894645226208583;\r\n    uint256 constant BABYJUB_P = 21888242871839275222246405745257275088548364400416034343698204186575808495617;\r\n\r\n    // The G1 generator\r\n    function G1Gen() pure internal returns (Pairing.G1Point memory) {\r\n        return Pairing.G1Point(1, 2);\r\n    }\r\n\r\n    // the G2Gen() doesn't work in KZG version verify() for unknown reason\r\n    // function G2Gen() pure internal returns (Pairing.G2Point memory) {\r\n    //     return Pairing.G2Point(\r\n    //         [10857046999023057135944570762232829481370756359578518086990519993285655852781,\r\n    //          11559732032986387107991004021392285783925812861821192530917403151452391805634],\r\n    //         [8495653923123431417604973247489272438418190587263600148770280649306958101930,\r\n    //          4082367875863433681332203403145435568316851327593401208105741076214120093531]\r\n    //     );\r\n    // }\r\n    // // index 0 for SRSLocal, 1..n for SRSRaw. In this instance n = 1.\r\n    // function SRS_G2_hAlphaX1(uint i) view internal returns (Pairing.G2Point memory) {\r\n    //     return Pairing.G2Point({\r\n    //         X: [ SRS_G2_X_0_Pos[2*i], SRS_G2_X_1_Pos[2*i] ],\r\n    //         Y: [ SRS_G2_Y_0_Pos[2*i], SRS_G2_Y_1_Pos[2*i] ]\r\n    //     });\r\n    // }\r\n    // // index 0 for SRSLocal, 1..n for SRSRaw. In this instance n = 1.\r\n    // function SRS_G2_hAlphaX0(uint i) view internal returns (Pairing.G2Point memory) {\r\n    //     return Pairing.G2Point({\r\n    //         X: [ SRS_G2_X_0_Pos[2*i+1], SRS_G2_X_1_Pos[2*i+1] ],\r\n    //         Y: [ SRS_G2_Y_0_Pos[2*i+1], SRS_G2_Y_1_Pos[2*i+1] ]\r\n    //     });\r\n    // }\r\n    // // index 0 for SRSLocal, 1..n for SRSRaw. In this instance n = 1.\r\n    // function SRS_G2_hAlphaXdMax(uint i, bool isT) view internal returns (Pairing.G2Point memory) {\r\n    //     if (isT) {\r\n    //         return t_hxdmax;\r\n    //     }\r\n    //     else if (i == 0){\r\n    //         return r_local_hxdmax;\r\n    //     } else {\r\n    //         return r_raw_hxdmax;\r\n    //     }\r\n        \r\n    // }\r\n\r\n    // uint256[] SRS_G2_X_0 = [\r\n    //     uint256(0x198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c2),\r\n    //     uint256(0x21a808dad5c50720fb7294745cf4c87812ce0ea76baa7df4e922615d1388f25a)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_X_1 = [\r\n    //     uint256(0x1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed),\r\n    //     uint256(0x04c5e74c85a87f008a2feb4b5c8a1e7f9ba9d8eb40eb02e70139c89fb1c505a9)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_0 = [\r\n    //     uint256(0x090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b),\r\n    //     uint256(0x204b66d8e1fadc307c35187a6b813be0b46ba1cd720cd1c4ee5f68d13036b4ba)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_1 = [\r\n    //     uint256(0x12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa),\r\n    //     uint256(0x2d58022915fc6bc90e036e858fbc98055084ac7aff98ccceb0e3fde64bc1a084)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_X_0_Pos = [\r\n    //     uint256(11918255060517660340153982215726798826640678374023024552644116046404414986453),\r\n    //     uint256(15624790064206502667756020446826209080711344272800176518784649088946231692936),\r\n    //     uint256(11268695302917653497930368204518419275811373844270095345017116270039580435706),\r\n    //     uint256(2443430939986969712743682923434644543094899517010817087050769422599268135103)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_X_1_Pos = [\r\n    //     uint256(14727727513753126219856215163660015034576342086845264359489607457590808060078),\r\n    //     uint256(8472151341754925747860535367990505955708751825377817860727104273184244800723),\r\n    //     uint256(9753532634097748217842057100292196132812913888453919348849716624821506442403),\r\n    //     uint256(14502447760486387799059318541209757040844770937862468921929310682431317530875)\r\n        \r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_0_Pos = [\r\n    //     uint256(1021740485891650940618786211510896476185198195365756893837573927220126603539),\r\n    //     uint256(19488077321171448217727198730828487286865984357780136663388739985720647978898),\r\n    //     uint256(14776274355700936137709623009318398493759214126639684828506188800357268553876),\r\n    //     uint256(4704672529862198727079301732358554332963871698433558481208245291096060730807)\r\n        \r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_1_Pos = [\r\n    //     uint256(9391419861535979107512398044543127125134834662773960663727860605307747847262),\r\n    //     uint256(1196137947243150610106053819405501111182787323156221967342356892090037828244),\r\n    //     uint256(18234420836750160252624653416906661873432457147248720023481962812575477763504),\r\n    //     uint256(11721331165636005533649329538372312212753336165656329339895621434122061690013)\r\n        \r\n    // ];\r\n\r\n    // Pairing.G2Point r_raw_hxdmax = Pairing.G2Point(\r\n    //     [11018496122438102807385926965630407879878991236962904047786654761679227167616,\r\n    //     6687397713294771832164093012092950408243252863676129125992435652325996730602],\r\n    //     [20298816527791824943274909266350631716562678769274418498194188929605815382657,\r\n    //     7799408864707847932939125741785731794468695101009851163957118440823802818871]\r\n    // );\r\n\r\n    // Pairing.G2Point r_local_hxdmax = Pairing.G2Point(\r\n    //     [7976430090925992890536185151910635582610031434267587807915311757199615446495,\r\n    //     13899531392144220320309619623911912477202262683091307457103109724600197587445],\r\n    //     [20411075118513893702806531153229965183145207612983771164765870508592897317695,\r\n    //     11168048083216765600717976206319300122875749432541522572231484400367147406267]\r\n    // );\r\n    // struct \r\n\r\n    \r\n    // h^αx^(d-max)\r\n    Pairing.G2Point t_hxdmax = Pairing.G2Point(\r\n        [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n        10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n        [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n        8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    );\r\n    // h^αx^(d-max+1)\r\n    Pairing.G2Point t_hxdmaxplusone = Pairing.G2Point(\r\n        [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n        10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n        [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n        8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    );\r\n    // h\r\n    Pairing.G2Point SRS_G2_1 = Pairing.G2Point({\r\n        X: [ uint256(0x21a808dad5c50720fb7294745cf4c87812ce0ea76baa7df4e922615d1388f25a), uint256(0x04c5e74c85a87f008a2feb4b5c8a1e7f9ba9d8eb40eb02e70139c89fb1c505a9) ],\r\n        Y: [ uint256(0x204b66d8e1fadc307c35187a6b813be0b46ba1cd720cd1c4ee5f68d13036b4ba), uint256(0x2d58022915fc6bc90e036e858fbc98055084ac7aff98ccceb0e3fde64bc1a084) ]\r\n    });\r\n    // h^α\r\n    Pairing.G2Point SRS_G2_hAlphaX0 = Pairing.G2Point(\r\n        [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n        10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n        [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n        8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    );\r\n    // h^αx\r\n    Pairing.G2Point SRS_G2_hAlphaX1 = Pairing.G2Point(\r\n        [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n        10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n        [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n        8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    );\r\n\r\n    // uint256 constant srsD = 251;\r\n\r\n    \r\n}",
+  "sourceMap": "1049:8007:0:-:0;;;6840:376;;;;;;;;;;;;;;;;6867:77;6840:376;;;;6955:77;6840:376;;;;;;;;;;;;;;;7045:76;6840:376;;;;7132:76;6840:376;;;;;;6813:403;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;7281:376;;;;;;;;;;;;;;;;7308:77;7281:376;;;;7396:77;7281:376;;;;;;;;;;;;;;;7486:76;7281:376;;;;7573:76;7281:376;;;;;;7247:410;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;7701:364;;;;;;;;;;;;;;;;7741:66;7701:364;;;;7818:66;7701:364;;;;;;;;;;;;;;;7911:66;7701:364;;;;7988:66;7701:364;;;;;;7674:391;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;:::i;:::-;;;;1049:8007;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;:::o;:::-;;;;;;;;;;;;;;;;;;;;;:::o;:::-;;;;;;;",
+  "deployedSourceMap": "1049:8007:0:-:0;;;;;",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity >=0.4.22 <0.9.0;\r\n\r\nimport \"./Pairing.sol\";\r\n/*\r\n * The values in this file come from challenge file #46 of the Perpetual Powers\r\n * of Tau ceremony. The Blake2b hash of challenge file is:\r\n *\r\n * 939038cd 2dc5a1c0 20f368d2 bfad8686 \r\n * 950fdf7e c2d2e192 a7d59509 3068816b\r\n * becd914b a293dd8a cb6d18c7 b5116b66 \r\n * ea54d915 d47a89cc fbe2d5a3 444dfbed\r\n *\r\n * The challenge file can be retrieved at:\r\n * https://ppot.blob.core.windows.net/public/challenge_0046\r\n *\r\n * The ceremony transcript can be retrieved at:\r\n * https://github.com/weijiekoh/perpetualpowersoftau\r\n *\r\n * Anyone can verify the transcript to ensure that the values in the challenge\r\n * file have not been tampered with. Moreover, as long as one participant in\r\n * the ceremony has discarded their toxic waste, the whole ceremony is secure.\r\n * Please read the following for more information:\r\n * https://medium.com/coinmonks/announcing-the-perpetual-powers-of-tau-ceremony-to-benefit-all-zk-snark-projects-c3da86af8377\r\n */\r\n\r\ncontract Constants {\r\n\r\n    // uint256 constant PRIME_Q = 21888242871839275222246405745257275088696311157297823662689037894645226208583;\r\n    \r\n\r\n    // The G1 generator\r\n    // function G1Gen() pure internal returns (Pairing.G1Point memory) {\r\n    //     return Pairing.G1Point(1, 2);\r\n    // }\r\n\r\n    // the G2Gen() doesn't work in KZG version verify() for unknown reason\r\n    // function G2Gen() pure internal returns (Pairing.G2Point memory) {\r\n    //     return Pairing.G2Point(\r\n    //         [10857046999023057135944570762232829481370756359578518086990519993285655852781,\r\n    //          11559732032986387107991004021392285783925812861821192530917403151452391805634],\r\n    //         [8495653923123431417604973247489272438418190587263600148770280649306958101930,\r\n    //          4082367875863433681332203403145435568316851327593401208105741076214120093531]\r\n    //     );\r\n    // }\r\n    // // index 0 for SRSLocal, 1..n for SRSRaw. In this instance n = 1.\r\n    // function SRS_G2_hAlphaX1(uint i) view internal returns (Pairing.G2Point memory) {\r\n    //     return Pairing.G2Point({\r\n    //         X: [ SRS_G2_X_0_Pos[2*i], SRS_G2_X_1_Pos[2*i] ],\r\n    //         Y: [ SRS_G2_Y_0_Pos[2*i], SRS_G2_Y_1_Pos[2*i] ]\r\n    //     });\r\n    // }\r\n    // // index 0 for SRSLocal, 1..n for SRSRaw. In this instance n = 1.\r\n    // function SRS_G2_hAlphaX0(uint i) view internal returns (Pairing.G2Point memory) {\r\n    //     return Pairing.G2Point({\r\n    //         X: [ SRS_G2_X_0_Pos[2*i+1], SRS_G2_X_1_Pos[2*i+1] ],\r\n    //         Y: [ SRS_G2_Y_0_Pos[2*i+1], SRS_G2_Y_1_Pos[2*i+1] ]\r\n    //     });\r\n    // }\r\n    // // index 0 for SRSLocal, 1..n for SRSRaw. In this instance n = 1.\r\n    // function SRS_G2_hAlphaXdMax(uint i, bool isT) view internal returns (Pairing.G2Point memory) {\r\n    //     if (isT) {\r\n    //         return t_hxdmax;\r\n    //     }\r\n    //     else if (i == 0){\r\n    //         return r_local_hxdmax;\r\n    //     } else {\r\n    //         return r_raw_hxdmax;\r\n    //     }\r\n        \r\n    // }\r\n\r\n    // uint256[] SRS_G2_X_0 = [\r\n    //     uint256(0x198e9393920d483a7260bfb731fb5d25f1aa493335a9e71297e485b7aef312c2),\r\n    //     uint256(0x21a808dad5c50720fb7294745cf4c87812ce0ea76baa7df4e922615d1388f25a)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_X_1 = [\r\n    //     uint256(0x1800deef121f1e76426a00665e5c4479674322d4f75edadd46debd5cd992f6ed),\r\n    //     uint256(0x04c5e74c85a87f008a2feb4b5c8a1e7f9ba9d8eb40eb02e70139c89fb1c505a9)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_0 = [\r\n    //     uint256(0x090689d0585ff075ec9e99ad690c3395bc4b313370b38ef355acdadcd122975b),\r\n    //     uint256(0x204b66d8e1fadc307c35187a6b813be0b46ba1cd720cd1c4ee5f68d13036b4ba)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_1 = [\r\n    //     uint256(0x12c85ea5db8c6deb4aab71808dcb408fe3d1e7690c43d37b4ce6cc0166fa7daa),\r\n    //     uint256(0x2d58022915fc6bc90e036e858fbc98055084ac7aff98ccceb0e3fde64bc1a084)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_X_0_Pos = [\r\n    //     uint256(11918255060517660340153982215726798826640678374023024552644116046404414986453),\r\n    //     uint256(15624790064206502667756020446826209080711344272800176518784649088946231692936),\r\n    //     uint256(11268695302917653497930368204518419275811373844270095345017116270039580435706),\r\n    //     uint256(2443430939986969712743682923434644543094899517010817087050769422599268135103)\r\n    // ];\r\n\r\n    // uint256[] SRS_G2_X_1_Pos = [\r\n    //     uint256(14727727513753126219856215163660015034576342086845264359489607457590808060078),\r\n    //     uint256(8472151341754925747860535367990505955708751825377817860727104273184244800723),\r\n    //     uint256(9753532634097748217842057100292196132812913888453919348849716624821506442403),\r\n    //     uint256(14502447760486387799059318541209757040844770937862468921929310682431317530875)\r\n        \r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_0_Pos = [\r\n    //     uint256(1021740485891650940618786211510896476185198195365756893837573927220126603539),\r\n    //     uint256(19488077321171448217727198730828487286865984357780136663388739985720647978898),\r\n    //     uint256(14776274355700936137709623009318398493759214126639684828506188800357268553876),\r\n    //     uint256(4704672529862198727079301732358554332963871698433558481208245291096060730807)\r\n        \r\n    // ];\r\n\r\n    // uint256[] SRS_G2_Y_1_Pos = [\r\n    //     uint256(9391419861535979107512398044543127125134834662773960663727860605307747847262),\r\n    //     uint256(1196137947243150610106053819405501111182787323156221967342356892090037828244),\r\n    //     uint256(18234420836750160252624653416906661873432457147248720023481962812575477763504),\r\n    //     uint256(11721331165636005533649329538372312212753336165656329339895621434122061690013)\r\n        \r\n    // ];\r\n\r\n    // Pairing.G2Point r_raw_hxdmax = Pairing.G2Point(\r\n    //     [11018496122438102807385926965630407879878991236962904047786654761679227167616,\r\n    //     6687397713294771832164093012092950408243252863676129125992435652325996730602],\r\n    //     [20298816527791824943274909266350631716562678769274418498194188929605815382657,\r\n    //     7799408864707847932939125741785731794468695101009851163957118440823802818871]\r\n    // );\r\n\r\n    // Pairing.G2Point r_local_hxdmax = Pairing.G2Point(\r\n    //     [7976430090925992890536185151910635582610031434267587807915311757199615446495,\r\n    //     13899531392144220320309619623911912477202262683091307457103109724600197587445],\r\n    //     [20411075118513893702806531153229965183145207612983771164765870508592897317695,\r\n    //     11168048083216765600717976206319300122875749432541522572231484400367147406267]\r\n    // );\r\n    // struct \r\n    uint256 constant BABYJUB_P = 21888242871839275222246405745257275088548364400416034343698204186575808495617;\r\n    \r\n    // h^αx^(d-max)\r\n    Pairing.G2Point t_hxdmax = Pairing.G2Point(\r\n        [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n        10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n        [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n        8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    );\r\n    // h^αx^(d-max+1)\r\n    Pairing.G2Point t_hxdmaxplusone = Pairing.G2Point(\r\n        [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n        10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n        [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n        8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    );\r\n    // h\r\n    Pairing.G2Point SRS_G2_1 = Pairing.G2Point({\r\n        X: [ uint256(0x21a808dad5c50720fb7294745cf4c87812ce0ea76baa7df4e922615d1388f25a), uint256(0x04c5e74c85a87f008a2feb4b5c8a1e7f9ba9d8eb40eb02e70139c89fb1c505a9) ],\r\n        Y: [ uint256(0x204b66d8e1fadc307c35187a6b813be0b46ba1cd720cd1c4ee5f68d13036b4ba), uint256(0x2d58022915fc6bc90e036e858fbc98055084ac7aff98ccceb0e3fde64bc1a084) ]\r\n    });\r\n    // Original Sonic verison uses:\r\n    // // h^α\r\n    // Pairing.G2Point SRS_G2_hAlphaX0 = Pairing.G2Point(\r\n    //     [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n    //     10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n    //     [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n    //     8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    // );\r\n    // // h^αx\r\n    // Pairing.G2Point SRS_G2_hAlphaX1 = Pairing.G2Point(\r\n    //     [11559732032986387107991004021392285783925812861821192530917403151452391805634,\r\n    //     10857046999023057135944570762232829481370756359578518086990519993285655852781],\r\n    //     [4082367875863433681332203403145435568316851327593401208105741076214120093531,\r\n    //     8495653923123431417604973247489272438418190587263600148770280649306958101930]\r\n    // );\r\n\r\n    // uint256 constant srsD = 251;\r\n\r\n    \r\n}",
   "sourcePath": "D:\\homework\\sonic\\src\\verifier\\contracts\\Constants.sol",
   "ast": {
     "absolutePath": "project:/contracts/Constants.sol",
     "exportedSymbols": {
       "Constants": [
-        91
+        54
       ],
       "Pairing": [
-        430
+        393
       ]
     },
-    "id": 92,
+    "id": 55,
     "license": "MIT",
     "nodeType": "SourceUnit",
     "nodes": [
@@ -45,8 +45,8 @@
         "id": 2,
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
-        "scope": 92,
-        "sourceUnit": 431,
+        "scope": 55,
+        "sourceUnit": 394,
         "src": "69:23:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -58,9 +58,9 @@
         "contractDependencies": [],
         "contractKind": "contract",
         "fullyImplemented": true,
-        "id": 91,
+        "id": 54,
         "linearizedBaseContracts": [
-          91
+          54
         ],
         "name": "Constants",
         "nameLocation": "1058:9:0",
@@ -71,10 +71,10 @@
             "id": 5,
             "mutability": "constant",
             "name": "BABYJUB_P",
-            "nameLocation": "1208:9:0",
+            "nameLocation": "6689:9:0",
             "nodeType": "VariableDeclaration",
-            "scope": 91,
-            "src": "1191:106:0",
+            "scope": 54,
+            "src": "6672:106:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
@@ -85,7 +85,7 @@
               "id": 3,
               "name": "uint256",
               "nodeType": "ElementaryTypeName",
-              "src": "1191:7:0",
+              "src": "6672:7:0",
               "typeDescriptions": {
                 "typeIdentifier": "t_uint256",
                 "typeString": "uint256"
@@ -100,7 +100,7 @@
               "kind": "number",
               "lValueRequested": false,
               "nodeType": "Literal",
-              "src": "1220:77:0",
+              "src": "6701:77:0",
               "typeDescriptions": {
                 "typeIdentifier": "t_rational_21888242871839275222246405745257275088548364400416034343698204186575808495617_by_1",
                 "typeString": "int_const 2188...(69 digits omitted)...5617"
@@ -110,195 +110,34 @@
             "visibility": "internal"
           },
           {
-            "body": {
-              "id": 17,
-              "nodeType": "Block",
-              "src": "1395:47:0",
-              "statements": [
-                {
-                  "expression": {
-                    "arguments": [
-                      {
-                        "hexValue": "31",
-                        "id": 13,
-                        "isConstant": false,
-                        "isLValue": false,
-                        "isPure": true,
-                        "kind": "number",
-                        "lValueRequested": false,
-                        "nodeType": "Literal",
-                        "src": "1429:1:0",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_rational_1_by_1",
-                          "typeString": "int_const 1"
-                        },
-                        "value": "1"
-                      },
-                      {
-                        "hexValue": "32",
-                        "id": 14,
-                        "isConstant": false,
-                        "isLValue": false,
-                        "isPure": true,
-                        "kind": "number",
-                        "lValueRequested": false,
-                        "nodeType": "Literal",
-                        "src": "1432:1:0",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_rational_2_by_1",
-                          "typeString": "int_const 2"
-                        },
-                        "value": "2"
-                      }
-                    ],
-                    "expression": {
-                      "argumentTypes": [
-                        {
-                          "typeIdentifier": "t_rational_1_by_1",
-                          "typeString": "int_const 1"
-                        },
-                        {
-                          "typeIdentifier": "t_rational_2_by_1",
-                          "typeString": "int_const 2"
-                        }
-                      ],
-                      "expression": {
-                        "id": 11,
-                        "name": "Pairing",
-                        "nodeType": "Identifier",
-                        "overloadedDeclarations": [],
-                        "referencedDeclaration": 430,
-                        "src": "1413:7:0",
-                        "typeDescriptions": {
-                          "typeIdentifier": "t_type$_t_contract$_Pairing_$430_$",
-                          "typeString": "type(library Pairing)"
-                        }
-                      },
-                      "id": 12,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": false,
-                      "lValueRequested": false,
-                      "memberName": "G1Point",
-                      "nodeType": "MemberAccess",
-                      "referencedDeclaration": 101,
-                      "src": "1413:15:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_type$_t_struct$_G1Point_$101_storage_ptr_$",
-                        "typeString": "type(struct Pairing.G1Point storage pointer)"
-                      }
-                    },
-                    "id": 15,
-                    "isConstant": false,
-                    "isLValue": false,
-                    "isPure": true,
-                    "kind": "structConstructorCall",
-                    "lValueRequested": false,
-                    "names": [],
-                    "nodeType": "FunctionCall",
-                    "src": "1413:21:0",
-                    "tryCall": false,
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_G1Point_$101_memory_ptr",
-                      "typeString": "struct Pairing.G1Point memory"
-                    }
-                  },
-                  "functionReturnParameters": 10,
-                  "id": 16,
-                  "nodeType": "Return",
-                  "src": "1406:28:0"
-                }
-              ]
-            },
-            "id": 18,
-            "implemented": true,
-            "kind": "function",
-            "modifiers": [],
-            "name": "G1Gen",
-            "nameLocation": "1340:5:0",
-            "nodeType": "FunctionDefinition",
-            "parameters": {
-              "id": 6,
-              "nodeType": "ParameterList",
-              "parameters": [],
-              "src": "1345:2:0"
-            },
-            "returnParameters": {
-              "id": 10,
-              "nodeType": "ParameterList",
-              "parameters": [
-                {
-                  "constant": false,
-                  "id": 9,
-                  "mutability": "mutable",
-                  "name": "",
-                  "nameLocation": "-1:-1:-1",
-                  "nodeType": "VariableDeclaration",
-                  "scope": 18,
-                  "src": "1371:22:0",
-                  "stateVariable": false,
-                  "storageLocation": "memory",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_struct$_G1Point_$101_memory_ptr",
-                    "typeString": "struct Pairing.G1Point"
-                  },
-                  "typeName": {
-                    "id": 8,
-                    "nodeType": "UserDefinedTypeName",
-                    "pathNode": {
-                      "id": 7,
-                      "name": "Pairing.G1Point",
-                      "nodeType": "IdentifierPath",
-                      "referencedDeclaration": 101,
-                      "src": "1371:15:0"
-                    },
-                    "referencedDeclaration": 101,
-                    "src": "1371:15:0",
-                    "typeDescriptions": {
-                      "typeIdentifier": "t_struct$_G1Point_$101_storage_ptr",
-                      "typeString": "struct Pairing.G1Point"
-                    }
-                  },
-                  "visibility": "internal"
-                }
-              ],
-              "src": "1370:24:0"
-            },
-            "scope": 91,
-            "src": "1331:111:0",
-            "stateMutability": "pure",
-            "virtual": false,
-            "visibility": "internal"
-          },
-          {
             "constant": false,
-            "id": 30,
+            "id": 17,
             "mutability": "mutable",
             "name": "t_hxdmax",
-            "nameLocation": "6816:8:0",
+            "nameLocation": "6829:8:0",
             "nodeType": "VariableDeclaration",
-            "scope": 91,
-            "src": "6800:403:0",
+            "scope": 54,
+            "src": "6813:403:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_G2Point_$110_storage",
+              "typeIdentifier": "t_struct$_G2Point_$73_storage",
               "typeString": "struct Pairing.G2Point"
             },
             "typeName": {
-              "id": 20,
+              "id": 7,
               "nodeType": "UserDefinedTypeName",
               "pathNode": {
-                "id": 19,
+                "id": 6,
                 "name": "Pairing.G2Point",
                 "nodeType": "IdentifierPath",
-                "referencedDeclaration": 110,
-                "src": "6800:15:0"
+                "referencedDeclaration": 73,
+                "src": "6813:15:0"
               },
-              "referencedDeclaration": 110,
-              "src": "6800:15:0",
+              "referencedDeclaration": 73,
+              "src": "6813:15:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_storage_ptr",
+                "typeIdentifier": "t_struct$_G2Point_$73_storage_ptr",
                 "typeString": "struct Pairing.G2Point"
               }
             },
@@ -308,6 +147,207 @@
                   "components": [
                     {
                       "hexValue": "3131353539373332303332393836333837313037393931303034303231333932323835373833393235383132383631383231313932353330393137343033313531343532333931383035363334",
+                      "id": 10,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "6867:77:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_11559732032986387107991004021392285783925812861821192530917403151452391805634_by_1",
+                        "typeString": "int_const 1155...(69 digits omitted)...5634"
+                      },
+                      "value": "11559732032986387107991004021392285783925812861821192530917403151452391805634"
+                    },
+                    {
+                      "hexValue": "3130383537303436393939303233303537313335393434353730373632323332383239343831333730373536333539353738353138303836393930353139393933323835363535383532373831",
+                      "id": 11,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "6955:77:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_10857046999023057135944570762232829481370756359578518086990519993285655852781_by_1",
+                        "typeString": "int_const 1085...(69 digits omitted)...2781"
+                      },
+                      "value": "10857046999023057135944570762232829481370756359578518086990519993285655852781"
+                    }
+                  ],
+                  "id": 12,
+                  "isConstant": false,
+                  "isInlineArray": true,
+                  "isLValue": false,
+                  "isPure": true,
+                  "lValueRequested": false,
+                  "nodeType": "TupleExpression",
+                  "src": "6866:167:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
+                    "typeString": "uint256[2] memory"
+                  }
+                },
+                {
+                  "components": [
+                    {
+                      "hexValue": "34303832333637383735383633343333363831333332323033343033313435343335353638333136383531333237353933343031323038313035373431303736323134313230303933353331",
+                      "id": 13,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "7045:76:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_4082367875863433681332203403145435568316851327593401208105741076214120093531_by_1",
+                        "typeString": "int_const 4082...(68 digits omitted)...3531"
+                      },
+                      "value": "4082367875863433681332203403145435568316851327593401208105741076214120093531"
+                    },
+                    {
+                      "hexValue": "38343935363533393233313233343331343137363034393733323437343839323732343338343138313930353837323633363030313438373730323830363439333036393538313031393330",
+                      "id": 14,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "7132:76:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_8495653923123431417604973247489272438418190587263600148770280649306958101930_by_1",
+                        "typeString": "int_const 8495...(68 digits omitted)...1930"
+                      },
+                      "value": "8495653923123431417604973247489272438418190587263600148770280649306958101930"
+                    }
+                  ],
+                  "id": 15,
+                  "isConstant": false,
+                  "isInlineArray": true,
+                  "isLValue": false,
+                  "isPure": true,
+                  "lValueRequested": false,
+                  "nodeType": "TupleExpression",
+                  "src": "7044:165:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
+                    "typeString": "uint256[2] memory"
+                  }
+                }
+              ],
+              "expression": {
+                "argumentTypes": [
+                  {
+                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
+                    "typeString": "uint256[2] memory"
+                  },
+                  {
+                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
+                    "typeString": "uint256[2] memory"
+                  }
+                ],
+                "expression": {
+                  "id": 8,
+                  "name": "Pairing",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 393,
+                  "src": "6840:7:0",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Pairing_$393_$",
+                    "typeString": "type(library Pairing)"
+                  }
+                },
+                "id": 9,
+                "isConstant": false,
+                "isLValue": false,
+                "isPure": false,
+                "lValueRequested": false,
+                "memberName": "G2Point",
+                "nodeType": "MemberAccess",
+                "referencedDeclaration": 73,
+                "src": "6840:15:0",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_type$_t_struct$_G2Point_$73_storage_ptr_$",
+                  "typeString": "type(struct Pairing.G2Point storage pointer)"
+                }
+              },
+              "id": 16,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "structConstructorCall",
+              "lValueRequested": false,
+              "names": [],
+              "nodeType": "FunctionCall",
+              "src": "6840:376:0",
+              "tryCall": false,
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_G2Point_$73_memory_ptr",
+                "typeString": "struct Pairing.G2Point memory"
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "constant": false,
+            "id": 29,
+            "mutability": "mutable",
+            "name": "t_hxdmaxplusone",
+            "nameLocation": "7263:15:0",
+            "nodeType": "VariableDeclaration",
+            "scope": 54,
+            "src": "7247:410:0",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_G2Point_$73_storage",
+              "typeString": "struct Pairing.G2Point"
+            },
+            "typeName": {
+              "id": 19,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 18,
+                "name": "Pairing.G2Point",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 73,
+                "src": "7247:15:0"
+              },
+              "referencedDeclaration": 73,
+              "src": "7247:15:0",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_G2Point_$73_storage_ptr",
+                "typeString": "struct Pairing.G2Point"
+              }
+            },
+            "value": {
+              "arguments": [
+                {
+                  "components": [
+                    {
+                      "hexValue": "3131353539373332303332393836333837313037393931303034303231333932323835373833393235383132383631383231313932353330393137343033313531343532333931383035363334",
+                      "id": 22,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "7308:77:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_11559732032986387107991004021392285783925812861821192530917403151452391805634_by_1",
+                        "typeString": "int_const 1155...(69 digits omitted)...5634"
+                      },
+                      "value": "11559732032986387107991004021392285783925812861821192530917403151452391805634"
+                    },
+                    {
+                      "hexValue": "3130383537303436393939303233303537313335393434353730373632323332383239343831333730373536333539353738353138303836393930353139393933323835363535383532373831",
                       "id": 23,
                       "isConstant": false,
                       "isLValue": false,
@@ -315,23 +355,7 @@
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "6854:77:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_11559732032986387107991004021392285783925812861821192530917403151452391805634_by_1",
-                        "typeString": "int_const 1155...(69 digits omitted)...5634"
-                      },
-                      "value": "11559732032986387107991004021392285783925812861821192530917403151452391805634"
-                    },
-                    {
-                      "hexValue": "3130383537303436393939303233303537313335393434353730373632323332383239343831333730373536333539353738353138303836393930353139393933323835363535383532373831",
-                      "id": 24,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "6942:77:0",
+                      "src": "7396:77:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_10857046999023057135944570762232829481370756359578518086990519993285655852781_by_1",
                         "typeString": "int_const 1085...(69 digits omitted)...2781"
@@ -339,14 +363,14 @@
                       "value": "10857046999023057135944570762232829481370756359578518086990519993285655852781"
                     }
                   ],
-                  "id": 25,
+                  "id": 24,
                   "isConstant": false,
                   "isInlineArray": true,
                   "isLValue": false,
                   "isPure": true,
                   "lValueRequested": false,
                   "nodeType": "TupleExpression",
-                  "src": "6853:167:0",
+                  "src": "7307:167:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
                     "typeString": "uint256[2] memory"
@@ -356,6 +380,22 @@
                   "components": [
                     {
                       "hexValue": "34303832333637383735383633343333363831333332323033343033313435343335353638333136383531333237353933343031323038313035373431303736323134313230303933353331",
+                      "id": 25,
+                      "isConstant": false,
+                      "isLValue": false,
+                      "isPure": true,
+                      "kind": "number",
+                      "lValueRequested": false,
+                      "nodeType": "Literal",
+                      "src": "7486:76:0",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_rational_4082367875863433681332203403145435568316851327593401208105741076214120093531_by_1",
+                        "typeString": "int_const 4082...(68 digits omitted)...3531"
+                      },
+                      "value": "4082367875863433681332203403145435568316851327593401208105741076214120093531"
+                    },
+                    {
+                      "hexValue": "38343935363533393233313233343331343137363034393733323437343839323732343338343138313930353837323633363030313438373730323830363439333036393538313031393330",
                       "id": 26,
                       "isConstant": false,
                       "isLValue": false,
@@ -363,23 +403,7 @@
                       "kind": "number",
                       "lValueRequested": false,
                       "nodeType": "Literal",
-                      "src": "7032:76:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_4082367875863433681332203403145435568316851327593401208105741076214120093531_by_1",
-                        "typeString": "int_const 4082...(68 digits omitted)...3531"
-                      },
-                      "value": "4082367875863433681332203403145435568316851327593401208105741076214120093531"
-                    },
-                    {
-                      "hexValue": "38343935363533393233313233343331343137363034393733323437343839323732343338343138313930353837323633363030313438373730323830363439333036393538313031393330",
-                      "id": 27,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "7119:76:0",
+                      "src": "7573:76:0",
                       "typeDescriptions": {
                         "typeIdentifier": "t_rational_8495653923123431417604973247489272438418190587263600148770280649306958101930_by_1",
                         "typeString": "int_const 8495...(68 digits omitted)...1930"
@@ -387,14 +411,14 @@
                       "value": "8495653923123431417604973247489272438418190587263600148770280649306958101930"
                     }
                   ],
-                  "id": 28,
+                  "id": 27,
                   "isConstant": false,
                   "isInlineArray": true,
                   "isLValue": false,
                   "isPure": true,
                   "lValueRequested": false,
                   "nodeType": "TupleExpression",
-                  "src": "7031:165:0",
+                  "src": "7485:165:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
                     "typeString": "uint256[2] memory"
@@ -413,32 +437,32 @@
                   }
                 ],
                 "expression": {
-                  "id": 21,
+                  "id": 20,
                   "name": "Pairing",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 430,
-                  "src": "6827:7:0",
+                  "referencedDeclaration": 393,
+                  "src": "7281:7:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Pairing_$430_$",
+                    "typeIdentifier": "t_type$_t_contract$_Pairing_$393_$",
                     "typeString": "type(library Pairing)"
                   }
                 },
-                "id": 22,
+                "id": 21,
                 "isConstant": false,
                 "isLValue": false,
                 "isPure": false,
                 "lValueRequested": false,
                 "memberName": "G2Point",
                 "nodeType": "MemberAccess",
-                "referencedDeclaration": 110,
-                "src": "6827:15:0",
+                "referencedDeclaration": 73,
+                "src": "7281:15:0",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_type$_t_struct$_G2Point_$110_storage_ptr_$",
+                  "typeIdentifier": "t_type$_t_struct$_G2Point_$73_storage_ptr_$",
                   "typeString": "type(struct Pairing.G2Point storage pointer)"
                 }
               },
-              "id": 29,
+              "id": 28,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -446,10 +470,10 @@
               "lValueRequested": false,
               "names": [],
               "nodeType": "FunctionCall",
-              "src": "6827:376:0",
+              "src": "7281:376:0",
               "tryCall": false,
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_memory_ptr",
+                "typeIdentifier": "t_struct$_G2Point_$73_memory_ptr",
                 "typeString": "struct Pairing.G2Point memory"
               }
             },
@@ -457,218 +481,33 @@
           },
           {
             "constant": false,
-            "id": 42,
-            "mutability": "mutable",
-            "name": "t_hxdmaxplusone",
-            "nameLocation": "7250:15:0",
-            "nodeType": "VariableDeclaration",
-            "scope": 91,
-            "src": "7234:410:0",
-            "stateVariable": true,
-            "storageLocation": "default",
-            "typeDescriptions": {
-              "typeIdentifier": "t_struct$_G2Point_$110_storage",
-              "typeString": "struct Pairing.G2Point"
-            },
-            "typeName": {
-              "id": 32,
-              "nodeType": "UserDefinedTypeName",
-              "pathNode": {
-                "id": 31,
-                "name": "Pairing.G2Point",
-                "nodeType": "IdentifierPath",
-                "referencedDeclaration": 110,
-                "src": "7234:15:0"
-              },
-              "referencedDeclaration": 110,
-              "src": "7234:15:0",
-              "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_storage_ptr",
-                "typeString": "struct Pairing.G2Point"
-              }
-            },
-            "value": {
-              "arguments": [
-                {
-                  "components": [
-                    {
-                      "hexValue": "3131353539373332303332393836333837313037393931303034303231333932323835373833393235383132383631383231313932353330393137343033313531343532333931383035363334",
-                      "id": 35,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "7295:77:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_11559732032986387107991004021392285783925812861821192530917403151452391805634_by_1",
-                        "typeString": "int_const 1155...(69 digits omitted)...5634"
-                      },
-                      "value": "11559732032986387107991004021392285783925812861821192530917403151452391805634"
-                    },
-                    {
-                      "hexValue": "3130383537303436393939303233303537313335393434353730373632323332383239343831333730373536333539353738353138303836393930353139393933323835363535383532373831",
-                      "id": 36,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "7383:77:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_10857046999023057135944570762232829481370756359578518086990519993285655852781_by_1",
-                        "typeString": "int_const 1085...(69 digits omitted)...2781"
-                      },
-                      "value": "10857046999023057135944570762232829481370756359578518086990519993285655852781"
-                    }
-                  ],
-                  "id": 37,
-                  "isConstant": false,
-                  "isInlineArray": true,
-                  "isLValue": false,
-                  "isPure": true,
-                  "lValueRequested": false,
-                  "nodeType": "TupleExpression",
-                  "src": "7294:167:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                },
-                {
-                  "components": [
-                    {
-                      "hexValue": "34303832333637383735383633343333363831333332323033343033313435343335353638333136383531333237353933343031323038313035373431303736323134313230303933353331",
-                      "id": 38,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "7473:76:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_4082367875863433681332203403145435568316851327593401208105741076214120093531_by_1",
-                        "typeString": "int_const 4082...(68 digits omitted)...3531"
-                      },
-                      "value": "4082367875863433681332203403145435568316851327593401208105741076214120093531"
-                    },
-                    {
-                      "hexValue": "38343935363533393233313233343331343137363034393733323437343839323732343338343138313930353837323633363030313438373730323830363439333036393538313031393330",
-                      "id": 39,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "7560:76:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_8495653923123431417604973247489272438418190587263600148770280649306958101930_by_1",
-                        "typeString": "int_const 8495...(68 digits omitted)...1930"
-                      },
-                      "value": "8495653923123431417604973247489272438418190587263600148770280649306958101930"
-                    }
-                  ],
-                  "id": 40,
-                  "isConstant": false,
-                  "isInlineArray": true,
-                  "isLValue": false,
-                  "isPure": true,
-                  "lValueRequested": false,
-                  "nodeType": "TupleExpression",
-                  "src": "7472:165:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                }
-              ],
-              "expression": {
-                "argumentTypes": [
-                  {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  },
-                  {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                ],
-                "expression": {
-                  "id": 33,
-                  "name": "Pairing",
-                  "nodeType": "Identifier",
-                  "overloadedDeclarations": [],
-                  "referencedDeclaration": 430,
-                  "src": "7268:7:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Pairing_$430_$",
-                    "typeString": "type(library Pairing)"
-                  }
-                },
-                "id": 34,
-                "isConstant": false,
-                "isLValue": false,
-                "isPure": false,
-                "lValueRequested": false,
-                "memberName": "G2Point",
-                "nodeType": "MemberAccess",
-                "referencedDeclaration": 110,
-                "src": "7268:15:0",
-                "typeDescriptions": {
-                  "typeIdentifier": "t_type$_t_struct$_G2Point_$110_storage_ptr_$",
-                  "typeString": "type(struct Pairing.G2Point storage pointer)"
-                }
-              },
-              "id": 41,
-              "isConstant": false,
-              "isLValue": false,
-              "isPure": true,
-              "kind": "structConstructorCall",
-              "lValueRequested": false,
-              "names": [],
-              "nodeType": "FunctionCall",
-              "src": "7268:376:0",
-              "tryCall": false,
-              "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_memory_ptr",
-                "typeString": "struct Pairing.G2Point memory"
-              }
-            },
-            "visibility": "internal"
-          },
-          {
-            "constant": false,
-            "id": 66,
+            "id": 53,
             "mutability": "mutable",
             "name": "SRS_G2_1",
-            "nameLocation": "7677:8:0",
+            "nameLocation": "7690:8:0",
             "nodeType": "VariableDeclaration",
-            "scope": 91,
-            "src": "7661:391:0",
+            "scope": 54,
+            "src": "7674:391:0",
             "stateVariable": true,
             "storageLocation": "default",
             "typeDescriptions": {
-              "typeIdentifier": "t_struct$_G2Point_$110_storage",
+              "typeIdentifier": "t_struct$_G2Point_$73_storage",
               "typeString": "struct Pairing.G2Point"
             },
             "typeName": {
-              "id": 44,
+              "id": 31,
               "nodeType": "UserDefinedTypeName",
               "pathNode": {
-                "id": 43,
+                "id": 30,
                 "name": "Pairing.G2Point",
                 "nodeType": "IdentifierPath",
-                "referencedDeclaration": 110,
-                "src": "7661:15:0"
+                "referencedDeclaration": 73,
+                "src": "7674:15:0"
               },
-              "referencedDeclaration": 110,
-              "src": "7661:15:0",
+              "referencedDeclaration": 73,
+              "src": "7674:15:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_storage_ptr",
+                "typeIdentifier": "t_struct$_G2Point_$73_storage_ptr",
                 "typeString": "struct Pairing.G2Point"
               }
             },
@@ -680,14 +519,14 @@
                       "arguments": [
                         {
                           "hexValue": "307832316138303864616435633530373230666237323934373435636634633837383132636530656137366261613764663465393232363135643133383866323561",
-                          "id": 49,
+                          "id": 36,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "7728:66:0",
+                          "src": "7741:66:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_15223215423882277827489258157680548717173096645903736788338668604020025258586_by_1",
                             "typeString": "int_const 1522...(69 digits omitted)...8586"
@@ -702,26 +541,26 @@
                             "typeString": "int_const 1522...(69 digits omitted)...8586"
                           }
                         ],
-                        "id": 48,
+                        "id": 35,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "lValueRequested": false,
                         "nodeType": "ElementaryTypeNameExpression",
-                        "src": "7720:7:0",
+                        "src": "7733:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_uint256_$",
                           "typeString": "type(uint256)"
                         },
                         "typeName": {
-                          "id": 47,
+                          "id": 34,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
-                          "src": "7720:7:0",
+                          "src": "7733:7:0",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 50,
+                      "id": 37,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -729,7 +568,7 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "7720:75:0",
+                      "src": "7733:75:0",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -740,14 +579,14 @@
                       "arguments": [
                         {
                           "hexValue": "307830346335653734633835613837663030386132666562346235633861316537663962613964386562343065623032653730313339633839666231633530356139",
-                          "id": 53,
+                          "id": 40,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "7805:66:0",
+                          "src": "7818:66:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_2158916632532312657950285342025644416236585918394060012747867098051841951145_by_1",
                             "typeString": "int_const 2158...(68 digits omitted)...1145"
@@ -762,26 +601,26 @@
                             "typeString": "int_const 2158...(68 digits omitted)...1145"
                           }
                         ],
-                        "id": 52,
+                        "id": 39,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "lValueRequested": false,
                         "nodeType": "ElementaryTypeNameExpression",
-                        "src": "7797:7:0",
+                        "src": "7810:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_uint256_$",
                           "typeString": "type(uint256)"
                         },
                         "typeName": {
-                          "id": 51,
+                          "id": 38,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
-                          "src": "7797:7:0",
+                          "src": "7810:7:0",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 54,
+                      "id": 41,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -789,7 +628,7 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "7797:75:0",
+                      "src": "7810:75:0",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -797,14 +636,14 @@
                       }
                     }
                   ],
-                  "id": 55,
+                  "id": 42,
                   "isConstant": false,
                   "isInlineArray": true,
                   "isLValue": false,
                   "isPure": true,
                   "lValueRequested": false,
                   "nodeType": "TupleExpression",
-                  "src": "7718:156:0",
+                  "src": "7731:156:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
                     "typeString": "uint256[2] memory"
@@ -816,14 +655,14 @@
                       "arguments": [
                         {
                           "hexValue": "307832303462363664386531666164633330376333353138376136623831336265306234366261316364373230636431633465653566363864313330333662346261",
-                          "id": 58,
+                          "id": 45,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "7898:66:0",
+                          "src": "7911:66:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_14607234509797219485683753795842501413656733273318406354027065741771235833018_by_1",
                             "typeString": "int_const 1460...(69 digits omitted)...3018"
@@ -838,26 +677,26 @@
                             "typeString": "int_const 1460...(69 digits omitted)...3018"
                           }
                         ],
-                        "id": 57,
+                        "id": 44,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "lValueRequested": false,
                         "nodeType": "ElementaryTypeNameExpression",
-                        "src": "7890:7:0",
+                        "src": "7903:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_uint256_$",
                           "typeString": "type(uint256)"
                         },
                         "typeName": {
-                          "id": 56,
+                          "id": 43,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
-                          "src": "7890:7:0",
+                          "src": "7903:7:0",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 59,
+                      "id": 46,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -865,7 +704,7 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "7890:75:0",
+                      "src": "7903:75:0",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -876,14 +715,14 @@
                       "arguments": [
                         {
                           "hexValue": "307832643538303232393135666336626339306530333665383538666263393830353530383461633761666639386363636562306533666465363462633161303834",
-                          "id": 62,
+                          "id": 49,
                           "isConstant": false,
                           "isLValue": false,
                           "isPure": true,
                           "kind": "number",
                           "lValueRequested": false,
                           "nodeType": "Literal",
-                          "src": "7975:66:0",
+                          "src": "7988:66:0",
                           "typeDescriptions": {
                             "typeIdentifier": "t_rational_20509575639113390348669452960631787339247452379373053204971775740053098176644_by_1",
                             "typeString": "int_const 2050...(69 digits omitted)...6644"
@@ -898,26 +737,26 @@
                             "typeString": "int_const 2050...(69 digits omitted)...6644"
                           }
                         ],
-                        "id": 61,
+                        "id": 48,
                         "isConstant": false,
                         "isLValue": false,
                         "isPure": true,
                         "lValueRequested": false,
                         "nodeType": "ElementaryTypeNameExpression",
-                        "src": "7967:7:0",
+                        "src": "7980:7:0",
                         "typeDescriptions": {
                           "typeIdentifier": "t_type$_t_uint256_$",
                           "typeString": "type(uint256)"
                         },
                         "typeName": {
-                          "id": 60,
+                          "id": 47,
                           "name": "uint256",
                           "nodeType": "ElementaryTypeName",
-                          "src": "7967:7:0",
+                          "src": "7980:7:0",
                           "typeDescriptions": {}
                         }
                       },
-                      "id": 63,
+                      "id": 50,
                       "isConstant": false,
                       "isLValue": false,
                       "isPure": true,
@@ -925,7 +764,7 @@
                       "lValueRequested": false,
                       "names": [],
                       "nodeType": "FunctionCall",
-                      "src": "7967:75:0",
+                      "src": "7980:75:0",
                       "tryCall": false,
                       "typeDescriptions": {
                         "typeIdentifier": "t_uint256",
@@ -933,14 +772,14 @@
                       }
                     }
                   ],
-                  "id": 64,
+                  "id": 51,
                   "isConstant": false,
                   "isInlineArray": true,
                   "isLValue": false,
                   "isPure": true,
                   "lValueRequested": false,
                   "nodeType": "TupleExpression",
-                  "src": "7888:156:0",
+                  "src": "7901:156:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
                     "typeString": "uint256[2] memory"
@@ -959,32 +798,32 @@
                   }
                 ],
                 "expression": {
-                  "id": 45,
+                  "id": 32,
                   "name": "Pairing",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 430,
-                  "src": "7688:7:0",
+                  "referencedDeclaration": 393,
+                  "src": "7701:7:0",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Pairing_$430_$",
+                    "typeIdentifier": "t_type$_t_contract$_Pairing_$393_$",
                     "typeString": "type(library Pairing)"
                   }
                 },
-                "id": 46,
+                "id": 33,
                 "isConstant": false,
                 "isLValue": false,
                 "isPure": false,
                 "lValueRequested": false,
                 "memberName": "G2Point",
                 "nodeType": "MemberAccess",
-                "referencedDeclaration": 110,
-                "src": "7688:15:0",
+                "referencedDeclaration": 73,
+                "src": "7701:15:0",
                 "typeDescriptions": {
-                  "typeIdentifier": "t_type$_t_struct$_G2Point_$110_storage_ptr_$",
+                  "typeIdentifier": "t_type$_t_struct$_G2Point_$73_storage_ptr_$",
                   "typeString": "type(struct Pairing.G2Point storage pointer)"
                 }
               },
-              "id": 65,
+              "id": 52,
               "isConstant": false,
               "isLValue": false,
               "isPure": true,
@@ -995,392 +834,22 @@
                 "Y"
               ],
               "nodeType": "FunctionCall",
-              "src": "7688:364:0",
+              "src": "7701:364:0",
               "tryCall": false,
               "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_memory_ptr",
-                "typeString": "struct Pairing.G2Point memory"
-              }
-            },
-            "visibility": "internal"
-          },
-          {
-            "constant": false,
-            "id": 78,
-            "mutability": "mutable",
-            "name": "SRS_G2_hAlphaX0",
-            "nameLocation": "8088:15:0",
-            "nodeType": "VariableDeclaration",
-            "scope": 91,
-            "src": "8072:410:0",
-            "stateVariable": true,
-            "storageLocation": "default",
-            "typeDescriptions": {
-              "typeIdentifier": "t_struct$_G2Point_$110_storage",
-              "typeString": "struct Pairing.G2Point"
-            },
-            "typeName": {
-              "id": 68,
-              "nodeType": "UserDefinedTypeName",
-              "pathNode": {
-                "id": 67,
-                "name": "Pairing.G2Point",
-                "nodeType": "IdentifierPath",
-                "referencedDeclaration": 110,
-                "src": "8072:15:0"
-              },
-              "referencedDeclaration": 110,
-              "src": "8072:15:0",
-              "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_storage_ptr",
-                "typeString": "struct Pairing.G2Point"
-              }
-            },
-            "value": {
-              "arguments": [
-                {
-                  "components": [
-                    {
-                      "hexValue": "3131353539373332303332393836333837313037393931303034303231333932323835373833393235383132383631383231313932353330393137343033313531343532333931383035363334",
-                      "id": 71,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8133:77:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_11559732032986387107991004021392285783925812861821192530917403151452391805634_by_1",
-                        "typeString": "int_const 1155...(69 digits omitted)...5634"
-                      },
-                      "value": "11559732032986387107991004021392285783925812861821192530917403151452391805634"
-                    },
-                    {
-                      "hexValue": "3130383537303436393939303233303537313335393434353730373632323332383239343831333730373536333539353738353138303836393930353139393933323835363535383532373831",
-                      "id": 72,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8221:77:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_10857046999023057135944570762232829481370756359578518086990519993285655852781_by_1",
-                        "typeString": "int_const 1085...(69 digits omitted)...2781"
-                      },
-                      "value": "10857046999023057135944570762232829481370756359578518086990519993285655852781"
-                    }
-                  ],
-                  "id": 73,
-                  "isConstant": false,
-                  "isInlineArray": true,
-                  "isLValue": false,
-                  "isPure": true,
-                  "lValueRequested": false,
-                  "nodeType": "TupleExpression",
-                  "src": "8132:167:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                },
-                {
-                  "components": [
-                    {
-                      "hexValue": "34303832333637383735383633343333363831333332323033343033313435343335353638333136383531333237353933343031323038313035373431303736323134313230303933353331",
-                      "id": 74,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8311:76:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_4082367875863433681332203403145435568316851327593401208105741076214120093531_by_1",
-                        "typeString": "int_const 4082...(68 digits omitted)...3531"
-                      },
-                      "value": "4082367875863433681332203403145435568316851327593401208105741076214120093531"
-                    },
-                    {
-                      "hexValue": "38343935363533393233313233343331343137363034393733323437343839323732343338343138313930353837323633363030313438373730323830363439333036393538313031393330",
-                      "id": 75,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8398:76:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_8495653923123431417604973247489272438418190587263600148770280649306958101930_by_1",
-                        "typeString": "int_const 8495...(68 digits omitted)...1930"
-                      },
-                      "value": "8495653923123431417604973247489272438418190587263600148770280649306958101930"
-                    }
-                  ],
-                  "id": 76,
-                  "isConstant": false,
-                  "isInlineArray": true,
-                  "isLValue": false,
-                  "isPure": true,
-                  "lValueRequested": false,
-                  "nodeType": "TupleExpression",
-                  "src": "8310:165:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                }
-              ],
-              "expression": {
-                "argumentTypes": [
-                  {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  },
-                  {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                ],
-                "expression": {
-                  "id": 69,
-                  "name": "Pairing",
-                  "nodeType": "Identifier",
-                  "overloadedDeclarations": [],
-                  "referencedDeclaration": 430,
-                  "src": "8106:7:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Pairing_$430_$",
-                    "typeString": "type(library Pairing)"
-                  }
-                },
-                "id": 70,
-                "isConstant": false,
-                "isLValue": false,
-                "isPure": false,
-                "lValueRequested": false,
-                "memberName": "G2Point",
-                "nodeType": "MemberAccess",
-                "referencedDeclaration": 110,
-                "src": "8106:15:0",
-                "typeDescriptions": {
-                  "typeIdentifier": "t_type$_t_struct$_G2Point_$110_storage_ptr_$",
-                  "typeString": "type(struct Pairing.G2Point storage pointer)"
-                }
-              },
-              "id": 77,
-              "isConstant": false,
-              "isLValue": false,
-              "isPure": true,
-              "kind": "structConstructorCall",
-              "lValueRequested": false,
-              "names": [],
-              "nodeType": "FunctionCall",
-              "src": "8106:376:0",
-              "tryCall": false,
-              "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_memory_ptr",
-                "typeString": "struct Pairing.G2Point memory"
-              }
-            },
-            "visibility": "internal"
-          },
-          {
-            "constant": false,
-            "id": 90,
-            "mutability": "mutable",
-            "name": "SRS_G2_hAlphaX1",
-            "nameLocation": "8519:15:0",
-            "nodeType": "VariableDeclaration",
-            "scope": 91,
-            "src": "8503:410:0",
-            "stateVariable": true,
-            "storageLocation": "default",
-            "typeDescriptions": {
-              "typeIdentifier": "t_struct$_G2Point_$110_storage",
-              "typeString": "struct Pairing.G2Point"
-            },
-            "typeName": {
-              "id": 80,
-              "nodeType": "UserDefinedTypeName",
-              "pathNode": {
-                "id": 79,
-                "name": "Pairing.G2Point",
-                "nodeType": "IdentifierPath",
-                "referencedDeclaration": 110,
-                "src": "8503:15:0"
-              },
-              "referencedDeclaration": 110,
-              "src": "8503:15:0",
-              "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_storage_ptr",
-                "typeString": "struct Pairing.G2Point"
-              }
-            },
-            "value": {
-              "arguments": [
-                {
-                  "components": [
-                    {
-                      "hexValue": "3131353539373332303332393836333837313037393931303034303231333932323835373833393235383132383631383231313932353330393137343033313531343532333931383035363334",
-                      "id": 83,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8564:77:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_11559732032986387107991004021392285783925812861821192530917403151452391805634_by_1",
-                        "typeString": "int_const 1155...(69 digits omitted)...5634"
-                      },
-                      "value": "11559732032986387107991004021392285783925812861821192530917403151452391805634"
-                    },
-                    {
-                      "hexValue": "3130383537303436393939303233303537313335393434353730373632323332383239343831333730373536333539353738353138303836393930353139393933323835363535383532373831",
-                      "id": 84,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8652:77:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_10857046999023057135944570762232829481370756359578518086990519993285655852781_by_1",
-                        "typeString": "int_const 1085...(69 digits omitted)...2781"
-                      },
-                      "value": "10857046999023057135944570762232829481370756359578518086990519993285655852781"
-                    }
-                  ],
-                  "id": 85,
-                  "isConstant": false,
-                  "isInlineArray": true,
-                  "isLValue": false,
-                  "isPure": true,
-                  "lValueRequested": false,
-                  "nodeType": "TupleExpression",
-                  "src": "8563:167:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                },
-                {
-                  "components": [
-                    {
-                      "hexValue": "34303832333637383735383633343333363831333332323033343033313435343335353638333136383531333237353933343031323038313035373431303736323134313230303933353331",
-                      "id": 86,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8742:76:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_4082367875863433681332203403145435568316851327593401208105741076214120093531_by_1",
-                        "typeString": "int_const 4082...(68 digits omitted)...3531"
-                      },
-                      "value": "4082367875863433681332203403145435568316851327593401208105741076214120093531"
-                    },
-                    {
-                      "hexValue": "38343935363533393233313233343331343137363034393733323437343839323732343338343138313930353837323633363030313438373730323830363439333036393538313031393330",
-                      "id": 87,
-                      "isConstant": false,
-                      "isLValue": false,
-                      "isPure": true,
-                      "kind": "number",
-                      "lValueRequested": false,
-                      "nodeType": "Literal",
-                      "src": "8829:76:0",
-                      "typeDescriptions": {
-                        "typeIdentifier": "t_rational_8495653923123431417604973247489272438418190587263600148770280649306958101930_by_1",
-                        "typeString": "int_const 8495...(68 digits omitted)...1930"
-                      },
-                      "value": "8495653923123431417604973247489272438418190587263600148770280649306958101930"
-                    }
-                  ],
-                  "id": 88,
-                  "isConstant": false,
-                  "isInlineArray": true,
-                  "isLValue": false,
-                  "isPure": true,
-                  "lValueRequested": false,
-                  "nodeType": "TupleExpression",
-                  "src": "8741:165:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                }
-              ],
-              "expression": {
-                "argumentTypes": [
-                  {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  },
-                  {
-                    "typeIdentifier": "t_array$_t_uint256_$2_memory_ptr",
-                    "typeString": "uint256[2] memory"
-                  }
-                ],
-                "expression": {
-                  "id": 81,
-                  "name": "Pairing",
-                  "nodeType": "Identifier",
-                  "overloadedDeclarations": [],
-                  "referencedDeclaration": 430,
-                  "src": "8537:7:0",
-                  "typeDescriptions": {
-                    "typeIdentifier": "t_type$_t_contract$_Pairing_$430_$",
-                    "typeString": "type(library Pairing)"
-                  }
-                },
-                "id": 82,
-                "isConstant": false,
-                "isLValue": false,
-                "isPure": false,
-                "lValueRequested": false,
-                "memberName": "G2Point",
-                "nodeType": "MemberAccess",
-                "referencedDeclaration": 110,
-                "src": "8537:15:0",
-                "typeDescriptions": {
-                  "typeIdentifier": "t_type$_t_struct$_G2Point_$110_storage_ptr_$",
-                  "typeString": "type(struct Pairing.G2Point storage pointer)"
-                }
-              },
-              "id": 89,
-              "isConstant": false,
-              "isLValue": false,
-              "isPure": true,
-              "kind": "structConstructorCall",
-              "lValueRequested": false,
-              "names": [],
-              "nodeType": "FunctionCall",
-              "src": "8537:376:0",
-              "tryCall": false,
-              "typeDescriptions": {
-                "typeIdentifier": "t_struct$_G2Point_$110_memory_ptr",
+                "typeIdentifier": "t_struct$_G2Point_$73_memory_ptr",
                 "typeString": "struct Pairing.G2Point memory"
               }
             },
             "visibility": "internal"
           }
         ],
-        "scope": 92,
-        "src": "1049:7915:0",
+        "scope": 55,
+        "src": "1049:8007:0",
         "usedErrors": []
       }
     ],
-    "src": "33:8931:0"
+    "src": "33:9023:0"
   },
   "compiler": {
     "name": "solc",
@@ -1388,7 +857,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.8",
-  "updatedAt": "2023-02-26T07:53:23.191Z",
+  "updatedAt": "2023-02-26T09:40:52.533Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},
