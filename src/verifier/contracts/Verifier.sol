@@ -27,118 +27,118 @@ contract Verifier is Constants {
     uint256 N = 21;
     uint256 z_n = expMod(z, N, BABYJUB_P);
 
-    struct UserCommitments{
+    // struct UserCommitments{
 
-        // ECDSA signature
-        bytes32 message;
-        bytes sig;
-        address addr;
+    //     // ECDSA signature
+    //     bytes32 message;
+    //     bytes sig;
+    //     address addr;
 
-        // d_j when j=1
+    //     // d_j when j=1
 
-        // S
+    //     // S
 
-        // gamma(z) = gamma[0] + gamma[1]*z + gamma[2]*z^2 + ...
-        uint256[1] gamma1;
-        uint256[1] gamma2;
-        uint256[2] gamma3;
-        uint256[1] gamma4;
-        uint256[1] gamma5;
-        uint256[2] gamma6;
-        uint256[1] gamma7;
-        // the committed prove, g^p[x], g^w[x]
-        Pairing.G1Point pi_1;
-        Pairing.G1Point pi_2;
+    //     // gamma(z) = gamma[0] + gamma[1]*z + gamma[2]*z^2 + ...
+    //     uint256[1] gamma1;
+    //     uint256[1] gamma2;
+    //     uint256[2] gamma3;
+    //     uint256[1] gamma4;
+    //     uint256[1] gamma5;
+    //     uint256[2] gamma6;
+    //     uint256[1] gamma7;
+    //     // the committed prove, g^p[x], g^w[x]
+    //     Pairing.G1Point pi_1;
+    //     Pairing.G1Point pi_2;
 
 
-        // other prover submitted variables
-        uint256 r_1;
-        uint256 r_tilde;
-        uint256 t;
-        uint256 k;
-        uint256 s_tilde;
-        uint256 r_2;
-        uint256 s_1_tilde;
-        uint256 s_2_tilde;
+    //     // other prover submitted variables
+    //     uint256 r_1;
+    //     uint256 r_tilde;
+    //     uint256 t;
+    //     uint256 k;
+    //     uint256 s_tilde;
+    //     uint256 r_2;
+    //     uint256 s_1_tilde;
+    //     uint256 s_2_tilde;
 
-        // poly commitments, Fs
-        Pairing.G1Point D;
-        Pairing.G1Point R_tilde;
-        Pairing.G1Point R;
-        Pairing.G1Point T;
-        Pairing.G1Point K;
-        Pairing.G1Point S_x;
-        Pairing.G1Point S_y;
-    }
-    // too many local variables, so create a struct
-    struct verification_variables{
-        // Z(T / Si)[z] * β^(i-1)
-        uint256 Z_beta_1; // i = 1,  etc.
-        uint256 Z_beta_2;
-        uint256 Z_beta_3;
-        uint256 Z_beta_4;
-        // uint256 Z_beta_5;
-        // uint256 Z_beta_6;
-        // uint256 Z_beta_7;
+    //     // poly commitments, Fs
+    //     Pairing.G1Point D;
+    //     Pairing.G1Point R_tilde;
+    //     Pairing.G1Point R;
+    //     Pairing.G1Point T;
+    //     Pairing.G1Point K;
+    //     Pairing.G1Point S_x;
+    //     Pairing.G1Point S_y;
+    // }
+    // // too many local variables, so create a struct
+    // struct verification_variables{
+    //     // Z(T / Si)[z] * β^(i-1)
+    //     uint256 Z_beta_1; // i = 1,  etc.
+    //     uint256 Z_beta_2;
+    //     uint256 Z_beta_3;
+    //     uint256 Z_beta_4;
+    //     // uint256 Z_beta_5;
+    //     // uint256 Z_beta_6;
+    //     // uint256 Z_beta_7;
 
-        // H calculation
-        // Pairing.G1Point H;
+    //     // H calculation
+    //     // Pairing.G1Point H;
 
-        // R calculation, denoted RR because already have a R for one Fcommitment
-        // first calculate the PI product, and to do this first calculate the power of g after product to reduce gas cost
-        // calculate the PI product
-        // Pairing.G1Point RR;
+    //     // R calculation, denoted RR because already have a R for one Fcommitment
+    //     // first calculate the PI product, and to do this first calculate the power of g after product to reduce gas cost
+    //     // calculate the PI product
+    //     // Pairing.G1Point RR;
 
-        // check the equation, then check others
-        // bool result;
-    }
+    //     // check the equation, then check others
+    //     // bool result;
+    // }
 
     // Sonic proofs
     // D_j when j=1
-    // Pairing.G1Point pi_D = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_R_tilde = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_R1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_R2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_T = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_K = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_S_x1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_S_x2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point pi_S_y = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // uint256 r_1 = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
-    // uint256 r_tilde = uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225);
-    // uint256 t = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
-    // uint256 k = uint256(11598511819595573397693757683043215863237090817957830497519701049476846220233);
-    // uint256 s_tilde = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
-    // uint256 r_2 = uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225);
-    // uint256 s_1_tilde = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
-    // uint256 s_2_tilde = uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225);
-    // // poly commitments, Fs
-    // Pairing.G1Point D = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point R_tilde = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point R = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point T = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point K = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point S_x = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // Pairing.G1Point S_y = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
-    //     uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
-    // bytes32 message = ethMessageHash("20900429899291009073299289469660149716785596251491300692035681492016939179257, 433691023568696153828599652727177493671905883454953868604074871528381220097");
-    // bytes sig = hex"19ec5dc5aa05a220cd210a113352596ebf80d06a6f776b8e0c656e50a5c5567f1e8a7f23fb27f77ea5b5d42f0e2384facdebebd85f026e2a73e94d4690a40a6801";
-    // address addr = 0xE448992FdEaF94784bBD8f432d781C061D907985;
+    Pairing.G1Point pi_D = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_R_tilde = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_R1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_R2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_T = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_K = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_S_x1 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_S_x2 = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point pi_S_y = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    uint256 r_1 = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
+    uint256 r_tilde = uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225);
+    uint256 t = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
+    uint256 k = uint256(11598511819595573397693757683043215863237090817957830497519701049476846220233);
+    uint256 s_tilde = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
+    uint256 r_2 = uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225);
+    uint256 s_1_tilde = uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986);
+    uint256 s_2_tilde = uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225);
+    // poly commitments, Fs
+    Pairing.G1Point D = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point R_tilde = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point R = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point T = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point K = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point S_x = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    Pairing.G1Point S_y = Pairing.G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
+        uint256(7613038940582986439878577004424311309737615170791456916446723479068371769225));
+    bytes32 message = ethMessageHash("20900429899291009073299289469660149716785596251491300692035681492016939179257, 433691023568696153828599652727177493671905883454953868604074871528381220097");
+    bytes sig = hex"19ec5dc5aa05a220cd210a113352596ebf80d06a6f776b8e0c656e50a5c5567f1e8a7f23fb27f77ea5b5d42f0e2384facdebebd85f026e2a73e94d4690a40a6801";
+    address addr = 0xE448992FdEaF94784bBD8f432d781C061D907985;
 
     // formerly used variables:
 
@@ -204,8 +204,8 @@ contract Verifier is Constants {
     // The G2 generator
     // why it's here? because the G2Gen() doesn't work in verify() for unknown reason
     // Pairing.G2Point g2Generator = Pairing.G2Point({
-    //     X: [ Constants.SRS_G2_X_0[0], Constants.SRS_G2_X_1[0] ],
-    //     Y: [ Constants.SRS_G2_Y_0[0], Constants.SRS_G2_Y_1[0] ]
+    //     X: [ SRS_G2_X_0[0], SRS_G2_X_1[0] ],
+    //     Y: [ SRS_G2_Y_0[0], SRS_G2_Y_1[0] ]
     // });
     // g
     // Pairing.G1Point g = Pairing.G1Point(1, 2);
@@ -217,29 +217,29 @@ contract Verifier is Constants {
     // });
 
     // Sonic version - Verify a single-point evaluation of a polynominal
-    // function verify(
-    //     Pairing.G1Point memory _commitment, // F
-    //     Pairing.G1Point memory _proof, // W
-    //     uint256 _index,  // z
-    //     uint256 _value  // F(z) or v
-    //     // uint proofIndex,
-    //     // bool isT
-    // ) public view returns (bool) {
-    //     // Make sure each parameter is less than the prime q
-    //     require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
-    //     require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
-    //     require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
-    //     require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
-    //     require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
-    //     require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
+    function verify(
+        Pairing.G1Point memory _commitment, // F
+        Pairing.G1Point memory _proof, // W
+        uint256 _index,  // z
+        uint256 _value  // F(z) or v
+        // uint proofIndex,
+        // bool isT
+    ) public view returns (bool) {
+        // Make sure each parameter is less than the prime q
+        require(_commitment.X < BABYJUB_P, "Verifier.verifyKZG: _commitment.X is out of range");
+        require(_commitment.Y < BABYJUB_P, "Verifier.verifyKZG: _commitment.Y is out of range");
+        require(_proof.X < BABYJUB_P, "Verifier.verifyKZG: _proof.X is out of range");
+        require(_proof.Y < BABYJUB_P, "Verifier.verifyKZG: _proof.Y is out of range");
+        require(_index < BABYJUB_P, "Verifier.verifyKZG: _index is out of range");
+        require(_value < BABYJUB_P, "Verifier.verifyKZG: _value is out of range");
        
-    //     Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
-    //     Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(G1Gen(), _value), negProof);
+        Pairing.G1Point memory negProof = Pairing.negate(Pairing.mulScalar(_proof, _index));
+        Pairing.G1Point memory mulProof = Pairing.plus(Pairing.mulScalar(G1Gen(), _value), negProof);
 
-    //     return Pairing.pairing_3point(_proof, Constants.SRS_G2_hAlphaX1,
-    //                             mulProof, Constants.SRS_G2_hAlphaX0,
-    //                             _commitment, Constants.t_hxdmax);
-    // }
+        return Pairing.pairing_3point(_proof, SRS_G2_hAlphaX1,
+                                mulProof, SRS_G2_hAlphaX0,
+                                _commitment, t_hxdmax);
+    }
 
 
 
@@ -295,7 +295,7 @@ contract Verifier is Constants {
     //     Pairing.G1Point memory commitmentMinusA = Pairing.plus(
     //         _commitment,
     //         Pairing.negate(
-    //             Pairing.mulScalar(Constants.Pairing.G1Point(1, 2), _value)
+    //             Pairing.mulScalar(Pairing.G1Point(1, 2), _value)
     //         )
     //     );
 
@@ -854,152 +854,152 @@ contract Verifier is Constants {
     //     ));
     // }
 
-    function verifySonicBatchedImpl(
-        UserCommitments memory cm
-    ) public returns (bool) {
+    // function verifySonicBatchedImpl(
+    //     UserCommitments memory cm
+    // ) public returns (bool) {
 
-        // simulate calculating kY
-        // uint256 ky = evalKPoly();
-        // // // simulate calculating sXY
-        // uint256 sx = evalXPoly();
-        // uint256 sy = evalXPoly();
+    //     // simulate calculating kY
+    //     // uint256 ky = evalKPoly();
+    //     // // // simulate calculating sXY
+    //     // uint256 sx = evalXPoly();
+    //     // uint256 sy = evalXPoly();
 
         
-        // y^N for halo implementation style
-        // uint256 y_n = expMod(z, N, BABYJUB_P);
+    //     // y^N for halo implementation style
+    //     // uint256 y_n = expMod(z, N, BABYJUB_P);
 
-        // t for halo implementation style
-        // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], BABYJUB_P), 
-        //                           addmod(addmod(Proof[12], 
-        //                                         Proof[15], BABYJUB_P), 
-        //                                  evalS, BABYJUB_P), BABYJUB_P),
-        //                     mulmod((BABYJUB_P - evalK), y_n, BABYJUB_P),
-        //                     BABYJUB_P);
+    //     // t for halo implementation style
+    //     // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], BABYJUB_P), 
+    //     //                           addmod(addmod(Proof[12], 
+    //     //                                         Proof[15], BABYJUB_P), 
+    //     //                                  evalS, BABYJUB_P), BABYJUB_P),
+    //     //                     mulmod((BABYJUB_P - evalK), y_n, BABYJUB_P),
+    //     //                     BABYJUB_P);
 
-        // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], BABYJUB_P), 
-        //                           addmod(addmod(Proof[12], 
-        //                                         Proof[15], BABYJUB_P), 
-        //                                  evalS, BABYJUB_P), BABYJUB_P),
-        //                     (BABYJUB_P - evalK), BABYJUB_P);
-        verification_variables memory vars;
-        // Z(T / Si)[z] * β^(i-1)
-        vars.Z_beta_1 = mulmod(1, z_calculation(1), BABYJUB_P); // i = 1,  etc.
-        vars.Z_beta_2 = mulmod(beta, z_calculation(2), BABYJUB_P);
-        vars.Z_beta_3 = mulmod(mulmod(vars.Z_beta_2, beta, BABYJUB_P), z_calculation(3), BABYJUB_P);
-        vars.Z_beta_4 = mulmod(mulmod(vars.Z_beta_3, beta, BABYJUB_P), z_calculation(4), BABYJUB_P);
-        uint256 Z_beta_5 = mulmod(mulmod(vars.Z_beta_4, beta, BABYJUB_P), z_calculation(5), BABYJUB_P);
-        uint256 Z_beta_6 = mulmod(mulmod(Z_beta_5, beta, BABYJUB_P), z_calculation(6), BABYJUB_P);
-        uint256 Z_beta_7 = mulmod(mulmod(Z_beta_6, beta, BABYJUB_P), z_calculation(7), BABYJUB_P);
+    //     // uint256 t = addmod(mulmod(addmod(Proof[6], Proof[9], BABYJUB_P), 
+    //     //                           addmod(addmod(Proof[12], 
+    //     //                                         Proof[15], BABYJUB_P), 
+    //     //                                  evalS, BABYJUB_P), BABYJUB_P),
+    //     //                     (BABYJUB_P - evalK), BABYJUB_P);
+    //     verification_variables memory vars;
+    //     // Z(T / Si)[z] * β^(i-1)
+    //     vars.Z_beta_1 = mulmod(1, z_calculation(1), BABYJUB_P); // i = 1,  etc.
+    //     vars.Z_beta_2 = mulmod(beta, z_calculation(2), BABYJUB_P);
+    //     vars.Z_beta_3 = mulmod(mulmod(vars.Z_beta_2, beta, BABYJUB_P), z_calculation(3), BABYJUB_P);
+    //     vars.Z_beta_4 = mulmod(mulmod(vars.Z_beta_3, beta, BABYJUB_P), z_calculation(4), BABYJUB_P);
+    //     uint256 Z_beta_5 = mulmod(mulmod(vars.Z_beta_4, beta, BABYJUB_P), z_calculation(5), BABYJUB_P);
+    //     uint256 Z_beta_6 = mulmod(mulmod(Z_beta_5, beta, BABYJUB_P), z_calculation(6), BABYJUB_P);
+    //     uint256 Z_beta_7 = mulmod(mulmod(Z_beta_6, beta, BABYJUB_P), z_calculation(7), BABYJUB_P);
         
-        // H calculation
-        Pairing.G1Point memory H = Pairing.plus(Pairing.plus(Pairing.mulScalar(cm.D, vars.Z_beta_1), Pairing.mulScalar(cm.R_tilde, vars.Z_beta_2)), Pairing.mulScalar(cm.R, vars.Z_beta_3));
-        H = Pairing.plus(H, Pairing.mulScalar(cm.T, vars.Z_beta_4));
-        H = Pairing.plus(H, Pairing.mulScalar(cm.K, Z_beta_5));
-        H = Pairing.plus(H, Pairing.mulScalar(cm.S_x, Z_beta_6));
-        H = Pairing.plus(H, Pairing.mulScalar(cm.S_y, Z_beta_7));
+    //     // H calculation
+    //     Pairing.G1Point memory H = Pairing.plus(Pairing.plus(Pairing.mulScalar(cm.D, vars.Z_beta_1), Pairing.mulScalar(cm.R_tilde, vars.Z_beta_2)), Pairing.mulScalar(cm.R, vars.Z_beta_3));
+    //     H = Pairing.plus(H, Pairing.mulScalar(cm.T, vars.Z_beta_4));
+    //     H = Pairing.plus(H, Pairing.mulScalar(cm.K, Z_beta_5));
+    //     H = Pairing.plus(H, Pairing.mulScalar(cm.S_x, Z_beta_6));
+    //     H = Pairing.plus(H, Pairing.mulScalar(cm.S_y, Z_beta_7));
 
-        // R calculation, denoted  RR because already have a R for one Fcommitment
-        // first calculate the PI product, and to do this first calculate the power of g after product to reduce gas cost
-        uint256 power = mulmod(vars.Z_beta_1, BABYJUB_P - cm.gamma1[0], BABYJUB_P);
-        power = addmod(power, mulmod(vars.Z_beta_2, BABYJUB_P - cm.gamma2[0], BABYJUB_P), BABYJUB_P);
-        power = addmod(power, mulmod(vars.Z_beta_3, BABYJUB_P - addmod(cm.gamma3[0], mulmod(cm.gamma3[1], z, BABYJUB_P), 
-                                                                BABYJUB_P), BABYJUB_P), BABYJUB_P);
-        power = addmod(power, mulmod(vars.Z_beta_4, BABYJUB_P - cm.gamma4[0], BABYJUB_P), BABYJUB_P);
-        // power = addmod(power, mulmod(Z_beta_4, BABYJUB_P - addmod(addmod(gamma4[0], 
-        //                                                                         mulmod(gamma4[1], z, BABYJUB_P), 
-        //                                                                         BABYJUB_P),
-        //                                                                         mulmod(gamma4[2], 
-        //                                                                         mulmod(z, z, 
-        //                                                                         BABYJUB_P), 
-        //                                                         BABYJUB_P),
-        //                                                     BABYJUB_P),
-        //                             BABYJUB_P), BABYJUB_P);
-        power = addmod(power, mulmod(Z_beta_5, BABYJUB_P - cm.gamma5[0], BABYJUB_P), BABYJUB_P);
-        power = addmod(power, mulmod(Z_beta_6, BABYJUB_P - addmod(cm.gamma6[0], mulmod(cm.gamma6[1], z, BABYJUB_P), 
-                                                                BABYJUB_P), BABYJUB_P), BABYJUB_P);
-        power = addmod(power, mulmod(Z_beta_7, BABYJUB_P - cm.gamma7[0], BABYJUB_P), BABYJUB_P);
-        // calculate the PI product
-        Pairing.G1Point memory RR = Pairing.mulScalar(Pairing.G1Point(1, 2), power);
+    //     // R calculation, denoted  RR because already have a R for one Fcommitment
+    //     // first calculate the PI product, and to do this first calculate the power of g after product to reduce gas cost
+    //     uint256 power = mulmod(vars.Z_beta_1, BABYJUB_P - cm.gamma1[0], BABYJUB_P);
+    //     power = addmod(power, mulmod(vars.Z_beta_2, BABYJUB_P - cm.gamma2[0], BABYJUB_P), BABYJUB_P);
+    //     power = addmod(power, mulmod(vars.Z_beta_3, BABYJUB_P - addmod(cm.gamma3[0], mulmod(cm.gamma3[1], z, BABYJUB_P), 
+    //                                                             BABYJUB_P), BABYJUB_P), BABYJUB_P);
+    //     power = addmod(power, mulmod(vars.Z_beta_4, BABYJUB_P - cm.gamma4[0], BABYJUB_P), BABYJUB_P);
+    //     // power = addmod(power, mulmod(Z_beta_4, BABYJUB_P - addmod(addmod(gamma4[0], 
+    //     //                                                                         mulmod(gamma4[1], z, BABYJUB_P), 
+    //     //                                                                         BABYJUB_P),
+    //     //                                                                         mulmod(gamma4[2], 
+    //     //                                                                         mulmod(z, z, 
+    //     //                                                                         BABYJUB_P), 
+    //     //                                                         BABYJUB_P),
+    //     //                                                     BABYJUB_P),
+    //     //                             BABYJUB_P), BABYJUB_P);
+    //     power = addmod(power, mulmod(Z_beta_5, BABYJUB_P - cm.gamma5[0], BABYJUB_P), BABYJUB_P);
+    //     power = addmod(power, mulmod(Z_beta_6, BABYJUB_P - addmod(cm.gamma6[0], mulmod(cm.gamma6[1], z, BABYJUB_P), 
+    //                                                             BABYJUB_P), BABYJUB_P), BABYJUB_P);
+    //     power = addmod(power, mulmod(Z_beta_7, BABYJUB_P - cm.gamma7[0], BABYJUB_P), BABYJUB_P);
+    //     // calculate the PI product
+    //     Pairing.G1Point memory RR = Pairing.mulScalar(Pairing.G1Point(1, 2), power);
 
-        // then add the first item before the uppercase Pi product
-        //g^p[x]·zT[z]
-        RR = Pairing.plus(RR, Pairing.negate(Pairing.plus(cm.pi_1,
-                                                        Pairing.mulScalar(Pairing.G1Point(1, 2),
-                                                                        z_calculation(9)))));
-        //g^z·w[x]
-        RR = Pairing.plus(RR, Pairing.mulScalar(cm.pi_2, z));
+    //     // then add the first item before the uppercase Pi product
+    //     //g^p[x]·zT[z]
+    //     RR = Pairing.plus(RR, Pairing.negate(Pairing.plus(cm.pi_1,
+    //                                                     Pairing.mulScalar(Pairing.G1Point(1, 2),
+    //                                                                     z_calculation(9)))));
+    //     //g^z·w[x]
+    //     RR = Pairing.plus(RR, Pairing.mulScalar(cm.pi_2, z));
         
-        // check the equation, then check others
-        // bool result = Pairing.pairing_3point(
-        //     H,
-        //     Constants.SRS_G2_1, // h, see above
-        //     R,
-        //     Constants.t_hxdmax,
-        //     Pairing.negate(pi_2),
-        //     Constants.t_hxdmaxplusone
-        //     )
-        //     && recover(message, sig) == addr //verifySignature
-        //     && r_1 == addmod(r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
-        //     && t == addmod(mulmod(r_1, 
-        //                           addmod(r_2,
-        //                                  s_tilde, BABYJUB_P), BABYJUB_P),
-        //                     (BABYJUB_P - k), BABYJUB_P)
-        //     && s_1_tilde == s_2_tilde;
+    //     // check the equation, then check others
+    //     // bool result = Pairing.pairing_3point(
+    //     //     H,
+    //     //     SRS_G2_1, // h, see above
+    //     //     R,
+    //     //     t_hxdmax,
+    //     //     Pairing.negate(pi_2),
+    //     //     t_hxdmaxplusone
+    //     //     )
+    //     //     && recover(message, sig) == addr //verifySignature
+    //     //     && r_1 == addmod(r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
+    //     //     && t == addmod(mulmod(r_1, 
+    //     //                           addmod(r_2,
+    //     //                                  s_tilde, BABYJUB_P), BABYJUB_P),
+    //     //                     (BABYJUB_P - k), BABYJUB_P)
+    //     //     && s_1_tilde == s_2_tilde;
 
-        // temporary code for estimating gas cost, the above is correct version
-        bool result = Pairing.pairing_3point(
-            H,
-            Constants.SRS_G2_1,
-            RR,
-            Constants.t_hxdmax,
-            Pairing.negate(cm.pi_2),
-            Constants.t_hxdmaxplusone
-            );
-        result = recover(cm.message, cm.sig) == cm.addr; //verifySignature
-        result = cm.r_1 == addmod(cm.r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P);
-        result = cm.t == addmod(mulmod(cm.r_1, 
-                                  addmod(cm.r_2,
-                                         cm.s_tilde, BABYJUB_P), BABYJUB_P),
-                            (BABYJUB_P - cm.k), BABYJUB_P);
-        result = cm.s_1_tilde == cm.s_2_tilde;
+    //     // temporary code for estimating gas cost, the above is correct version
+    //     bool result = Pairing.pairing_3point(
+    //         H,
+    //         SRS_G2_1,
+    //         RR,
+    //         t_hxdmax,
+    //         Pairing.negate(cm.pi_2),
+    //         t_hxdmaxplusone
+    //         );
+    //     result = recover(cm.message, cm.sig) == cm.addr; //verifySignature
+    //     result = cm.r_1 == addmod(cm.r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P);
+    //     result = cm.t == addmod(mulmod(cm.r_1, 
+    //                               addmod(cm.r_2,
+    //                                      cm.s_tilde, BABYJUB_P), BABYJUB_P),
+    //                         (BABYJUB_P - cm.k), BABYJUB_P);
+    //     result = cm.s_1_tilde == cm.s_2_tilde;
 
-        emit verifyResult(result);
-        return result;
-    }
+    //     emit verifyResult(result);
+    //     return result;
+    // }
     
 
-    function z_calculation (uint256 i)
-                            internal view returns (uint256){
+    // function z_calculation (uint256 i)
+    //                         internal view returns (uint256){
         
-        uint256 result = 1;
-        if (i != 1){
-            result = mulmod(result, addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
-        }
-        if (i != 2){
-            result = mulmod(result, addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
-        }
-        if (i != 3){
-            result = mulmod(mulmod(result, addmod(z, BABYJUB_P - [z, yz][1], BABYJUB_P), BABYJUB_P)
-                            , addmod(z, BABYJUB_P - [z, yz][0], BABYJUB_P), BABYJUB_P);
-        }
-        if (i != 4){
-            result = mulmod(result, addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
-            // result = mulmod(mulmod(mulmod(result, addmod(z, BABYJUB_P - [z][2], BABYJUB_P), BABYJUB_P)
-            //                 , addmod(z, BABYJUB_P - [z][1], BABYJUB_P), BABYJUB_P)
-            //                 , addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
-        }
-        if (i != 5){
-            result = mulmod(result, addmod(z, BABYJUB_P - [y][0], BABYJUB_P), BABYJUB_P);
-        }
-        if (i != 6){
-            result = mulmod(mulmod(result, addmod(z, BABYJUB_P - [z, 1][1], BABYJUB_P), BABYJUB_P)
-                            , addmod(z, BABYJUB_P - [z, 1][0], BABYJUB_P), BABYJUB_P);
-        }
-        if (i != 7){
-            result = mulmod(result, addmod(z, BABYJUB_P - [y][0], BABYJUB_P), BABYJUB_P);
-        }
-        return result;
-    }
+    //     uint256 result = 1;
+    //     if (i != 1){
+    //         result = mulmod(result, addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
+    //     }
+    //     if (i != 2){
+    //         result = mulmod(result, addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
+    //     }
+    //     if (i != 3){
+    //         result = mulmod(mulmod(result, addmod(z, BABYJUB_P - [z, yz][1], BABYJUB_P), BABYJUB_P)
+    //                         , addmod(z, BABYJUB_P - [z, yz][0], BABYJUB_P), BABYJUB_P);
+    //     }
+    //     if (i != 4){
+    //         result = mulmod(result, addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
+    //         // result = mulmod(mulmod(mulmod(result, addmod(z, BABYJUB_P - [z][2], BABYJUB_P), BABYJUB_P)
+    //         //                 , addmod(z, BABYJUB_P - [z][1], BABYJUB_P), BABYJUB_P)
+    //         //                 , addmod(z, BABYJUB_P - [z][0], BABYJUB_P), BABYJUB_P);
+    //     }
+    //     if (i != 5){
+    //         result = mulmod(result, addmod(z, BABYJUB_P - [y][0], BABYJUB_P), BABYJUB_P);
+    //     }
+    //     if (i != 6){
+    //         result = mulmod(mulmod(result, addmod(z, BABYJUB_P - [z, 1][1], BABYJUB_P), BABYJUB_P)
+    //                         , addmod(z, BABYJUB_P - [z, 1][0], BABYJUB_P), BABYJUB_P);
+    //     }
+    //     if (i != 7){
+    //         result = mulmod(result, addmod(z, BABYJUB_P - [y][0], BABYJUB_P), BABYJUB_P);
+    //     }
+    //     return result;
+    // }
 
     /**
      * @dev Recover signer address from a message by using their signature
@@ -1059,7 +1059,7 @@ contract Verifier is Constants {
     //     uint baseOrder = 204;
     //     uint length = 64;
     //     uint256 _index = y;
-    //     uint256 m = Constants.BABYJUB_P;
+    //     uint256 m = BABYJUB_P;
     //     uint256 result = 0;
     //     uint256 powerOfX = 1;
 
