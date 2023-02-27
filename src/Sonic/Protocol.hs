@@ -26,7 +26,7 @@ import Data.Poly.Sparse.Laurent (VLaurent) -- , eval
 -- import qualified GHC.Exts
 
 import Sonic.SRS (SRS(..))
-import Sonic.Constraints (rPoly, sPoly, tPoly, kPoly) --rPolyRaw,   
+import Sonic.Constraints (rPoly, tPoly, rPolyRaw,  sPoly, kPoly) --
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV) --, openPoly, pcV, pcVGetHxi
 -- import Sonic.Signature (HscProof(..), hscProve, hscVerify) -- 
 import Sonic.Utils (evalY, evalX, BiVLaurent)
@@ -54,9 +54,9 @@ data Polys = Polys
   {
     polyS :: BiVLaurent Fr
   , polyR :: BiVLaurent Fr
-  -- , polyR1Raw :: VLaurent Fr
-  -- , polyR1Local :: VLaurent Fr
-  -- , polyR1 :: VLaurent Fr
+  , polyR1Raw :: VLaurent Fr
+  , polyR1Local :: VLaurent Fr
+  , polyR1 :: VLaurent Fr
   , polyT :: BiVLaurent Fr
   , polyK :: VLaurent Fr
   }  deriving (Eq, Show, Generic, NFData)
@@ -125,9 +125,9 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
     --     sumcXY = GHC.Exts.fromList $
     --       zipWith (\i cni -> (negate (2 * n + i), monomial (negate (2 * n + i)) cni)) [1..] cns
     let polyR = rPoly assignment
-        -- polyRRaw = evalY 1 (rPolyRaw assignment upSize)  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
-        -- polyRAll = evalY 1 polyR
-        -- polyRLocal = polyRAll - polyRRaw
+        polyRRaw = evalY 1 (rPolyRaw assignment upSize)  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
+        polyRAll = evalY 1 polyR
+        polyRLocal = polyRAll - polyRRaw
         -- commitR = commitPoly srsLocal (fromIntegral n) polyRLocal -- R <- Commit(bp,srs,n,r(X,1))
         -- commitRRaw = commitPoly srsRaw (fromIntegral n) polyRRaw
         -- commitRAll = commitPoly srsLocal (fromIntegral n) polyRAll
@@ -176,9 +176,9 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
            { polyS = sXY
              , polyR = polyR
           --  , 
-          --  , polyR1Raw = polyRRaw
-          --  , polyR1Local = polyRLocal
-          --  , polyR1 = polyRAll
+           , polyR1Raw = polyRRaw
+           , polyR1Local = polyRLocal
+           , polyR1 = polyRAll
            , polyT = tXY
            , polyK = kY
           --  , prA = a

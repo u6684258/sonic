@@ -65,7 +65,7 @@ outputProof circuit assignment pXRaw pXLocal alphaRaw alphaLocal = do
   (proof) <- prove 4 n assignment circuit
   -- putText $ "proof: " <> show proof
   -- putText $ "polys: " <> show verifierData
-  writeFile "output/polys-64.txt" $ show $ proof
+  writeFile "output/polys-T-64.txt" $ show $ proof
   stop <- getCurrentTime
   print $ diffUTCTime stop start
   -- print $ "verifying proof:"
