@@ -53,7 +53,7 @@ data Proof = Proof
 data Polys = Polys
   {
     polyS :: BiVLaurent Fr
-     , polyR :: BiVLaurent Fr
+  , polyR :: BiVLaurent Fr
   -- , polyR1Raw :: VLaurent Fr
   -- , polyR1Local :: VLaurent Fr
   -- , polyR1 :: VLaurent Fr
