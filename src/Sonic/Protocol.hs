@@ -26,7 +26,7 @@ import Data.Poly.Sparse.Laurent (VLaurent) -- , eval
 -- import qualified GHC.Exts
 
 import Sonic.SRS (SRS(..))
-import Sonic.Constraints (rPoly, tPoly, rPolyRaw,  sPoly, kPoly) --
+import Sonic.Constraints (rPoly, rPolyRaw, tPoly, sPoly, kPoly) --
 import Sonic.CommitmentScheme (commitPoly, openPoly, pcV) --, openPoly, pcV, pcVGetHxi
 -- import Sonic.Signature (HscProof(..), hscProve, hscVerify) -- 
 import Sonic.Utils (evalY, evalX, BiVLaurent)
