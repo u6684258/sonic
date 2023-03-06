@@ -128,6 +128,7 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
         polyRRaw = evalY 1 (rPolyRaw assignment upSize)  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
         polyRAll = evalY 1 polyR
         polyRLocal = polyRAll - polyRRaw
+        polyRRaw = polyRRaw * monomial (-upSize) 1
         -- commitR = commitPoly srsLocal (fromIntegral n) polyRLocal -- R <- Commit(bp,srs,n,r(X,1))
         -- commitRRaw = commitPoly srsRaw (fromIntegral n) polyRRaw
         -- commitRAll = commitPoly srsLocal (fromIntegral n) polyRAll
