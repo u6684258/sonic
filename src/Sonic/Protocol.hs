@@ -22,7 +22,7 @@ import Data.Pairing.BN254 (Fr, G1, G2, BN254)
 import Control.Monad.Random (MonadRandom)
 import Bulletproofs.ArithmeticCircuit (ArithCircuit(..), GateWeights(..), Assignment(..)) --, GateWeights(..)
 import Data.Field.Galois (rnd)
-import Data.Poly.Sparse.Laurent (VLaurent) -- , eval
+import Data.Poly.Sparse.Laurent (VLaurent, monomial) -- , eval
 -- import qualified GHC.Exts
 
 import Sonic.SRS (SRS(..))
@@ -128,7 +128,7 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
         polyRRaw = evalY 1 (rPolyRaw assignment upSize)  -- r(X, Y) <- r(X, Y) + \sum_{i=1}^4 c_{n+i}X^{-2n-i}Y^{-2n-i}
         polyRAll = evalY 1 polyR
         polyRLocal = polyRAll - polyRRaw
-        polyRRaw = polyRRaw * monomial (-upSize) 1
+        polyRRawShift = polyRRaw * monomial (-upSize) 1
         -- commitR = commitPoly srsLocal (fromIntegral n) polyRLocal -- R <- Commit(bp,srs,n,r(X,1))
         -- commitRRaw = commitPoly srsRaw (fromIntegral n) polyRRaw
         -- commitRAll = commitPoly srsLocal (fromIntegral n) polyRAll
@@ -177,7 +177,7 @@ prove upSize n assignment@Assignment{..} arithCircuit@ArithCircuit{..} =
            { polyS = sXY
              , polyR = polyR
           --  , 
-           , polyR1Raw = polyRRaw
+           , polyR1Raw = polyRRawShift
            , polyR1Local = polyRLocal
            , polyR1 = polyRAll
            , polyT = tXY
