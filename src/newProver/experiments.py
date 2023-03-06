@@ -1074,11 +1074,15 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=True):
     if save:
         with open(f"sXY_{size}.txt", 'wb') as f:
             pickle.dump(sXY, f)
-        # with open(f"sXY_{size}.txt", 'rb') as f:
-        #     sXY = pickle.load(f)
                 
         with open(f"neg_kXY_{size}.txt", 'wb') as f:
             pickle.dump(neg_kXY, f)
+
+    if load:
+        with open(f"sXY_{size}.txt", 'rb') as f:
+            sXY = pickle.load(f)
+        with open(f"neg_kXY_{size}.txt", 'rb') as f:
+            neg_kXY = pickle.dump(f)
 
     st = time.process_time()
 
@@ -1106,6 +1110,18 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=True):
         #     pickle.dump(cX, f)
         with open(f"tXY_{size}.txt", 'wb') as f:
             pickle.dump(tXY, f)
+
+    if load:
+        with open(f"rXY_{size}.txt", 'rb') as f:
+            rXY = pickle.dump(f)
+        # with open(f"r_dash_XY_{size}.txt", 'wb') as f:
+        #     pickle.dump(r_dash_XY, f)
+        with open(f"rX1_{size}.txt", 'rb') as f:
+            rX1 = pickle.dump(f)
+        # with open(f"cX_{size}.txt", 'wb') as f:
+        #     pickle.dump(cX, f)
+        with open(f"tXY_{size}.txt", 'rb') as f:
+            tXY = pickle.dump(f)
         
     st = time.process_time()
 
@@ -1174,6 +1190,20 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=True):
     k = fz_o[2][0]
     s1 = fz_o[1][1]
     s2 = fz_o[0][0]
+
+    print(f"r1: {r1} \n \
+            t: {t} \n \
+            k: {k} \n \
+            s_tilde: {s} \n \
+            r2: {r2} \n \
+            s1_tilde: {s1} \n \
+            s2_tilde: {s2} \n \
+            R: {commitR} \n \
+            T: {commitT} \n \
+            K: {list_of_c_o[2]} \n \
+            S_x: {list_of_c_o[1]} \n \
+            S_y: {list_of_c_o[0]} \n \
+        ")
 
     return cmScheme.verify(list_of_c, *opens) and cmScheme.verify(list_of_c_o, *openOutsource) and t == field.sub(field.mul(r1, field.add(r2, s)), k) and s1 == s2
 
