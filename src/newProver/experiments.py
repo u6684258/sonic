@@ -1043,7 +1043,7 @@ def setup_data(size):
 
     return aL, aR, aO, k, u, v, w, n, q
 
-def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=True):
+def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False):
     
     cmScheme = KZGBatchCommitment(n, srsX, srsAlpha, field)
     
