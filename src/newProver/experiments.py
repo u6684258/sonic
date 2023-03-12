@@ -143,6 +143,8 @@ class PrimeField():
     def sub_polys(self, a, b, init_order_a = 0, init_order_b = 0):
         neg_b = self.mul_by_const([b,init_order_b], -1)
         return self.add_polys(a, neg_b[0], init_order_a, neg_b[1])
+    
+    
         
         
         # Arithmetic for polynomials
@@ -160,6 +162,9 @@ class PrimeField():
     
     def mul_by_const(self, a, c):
         return [(x*c) % self.modulus for x in a[0]], a[1]
+    
+    def mul_by_const_bivar(self, a, c):
+        return [self.mul_by_const(x, c) for x in a[0]], a[1]
     
     def mul_polys(self, a, b, init_order_a = 0, init_order_b = 0):
         o = [0] * (len(a) + len(b) - 1)
@@ -741,7 +746,7 @@ class KZGBatchCommitment():
     def __init__(self, n, srsX, srsAlpha, field):
         self.G1 = bn128_curve.G1
         self.G2 = bn128_curve.G2
-        self.srsD = n * 6
+        self.srsD = n * 8
         srss = load_srs(self.srsD, srsX)
         self.gNegativeX = srss[0]
         self.gPositiveX = srss[1]
@@ -814,7 +819,7 @@ class KZGBatchCommitment():
         fx = [[0],0]
         fxz = [[0],0]
         beta = 1
-        rand_z = 1
+        rand_z = 2
         for i, p in enumerate(list_of_p):
             list_of_fz_p = []
             # compute all p(z) for z \in S_i
@@ -1046,17 +1051,6 @@ def setup_data(size):
 def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False):
     
     cmScheme = KZGBatchCommitment(n, srsX, srsAlpha, field)
-    
-    with open(f"../../output/polys{size}.txt", "r") as f:
-        polys = f.readline()
-        polys = polys.split("=")[1:]
-        last = polys[-1]
-        polys = [x.rsplit(',', 1)[0].strip() for x in polys[:-1]]
-        polys.append(last[:-1])
-
-    sXY = read_poly(polys[0])
-    rXY = read_poly(polys[1])
-    tXY = read_poly(polys[-2])
 
     # with open(f"../../output/polys-rsk-{size}.txt", "r") as f:
     #     polys = f.readline()
@@ -1070,17 +1064,46 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False)
     # tXY = read_poly(polys[-2])
 
     # sXY = sPoly(u,v,w,n,q)
-    neg_kXY = kPoly(k, n, q)
+    
     if save:
+        with open(f"../../output/polys{size}.txt", "r") as f:
+            polys = f.readline()
+            polys = polys.split("=")[1:]
+            last = polys[-1]
+            polys = [x.rsplit(',', 1)[0].strip() for x in polys[:-1]]
+            polys.append(last[:-1])
+
+        sXY = read_poly(polys[0])
+        rXY = read_poly(polys[1])
+        # r1Raw = read_poly(polys[2])
+        # r1Local = read_poly(polys[3])
+        tXY = read_poly(polys[-2])
+
+        neg_kXY = kPoly(k, n, q)
         with open(f"sXY_{size}.txt", 'wb') as f:
             pickle.dump(sXY, f)
+
+        with open(f"rXY_{size}.txt", 'wb') as f:
+            pickle.dump(rXY, f)
+
+        with open(f"tXY_{size}.txt", 'wb') as f:
+            pickle.dump(tXY, f)
                 
         with open(f"neg_kXY_{size}.txt", 'wb') as f:
             pickle.dump(neg_kXY, f)
 
+        
+
     if load:
         with open(f"sXY_{size}.txt", 'rb') as f:
             sXY = pickle.load(f)
+
+        with open(f"rXY_{size}.txt", 'rb') as f:
+            rXY = pickle.dump(f)
+
+        with open(f"tXY_{size}.txt", 'rb') as f:
+            tXY = pickle.dump(f)
+
         with open(f"neg_kXY_{size}.txt", 'rb') as f:
             neg_kXY = pickle.dump(f)
 
@@ -1090,42 +1113,57 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False)
     # print(rXY)
     # r_dash_XY = field.add_polys_bivar(rXY[0], sXY[0], rXY[1], sXY[1])
 
-    rX1 = field.eval_poly_Y(rXY[0], rXY[1], 1)
+    
     # cX = field.mul_polys_bivar(rX1[0], r_dash_XY[0], rX1[1], r_dash_XY[1])
 
     # tXY = field.add_polys_bivar(cX[0], neg_kXY[0], cX[1], neg_kXY[1])
     # print(tXY)
-    et = time.process_time()
-    res = et - st
-    print('CPU Execution time-poly construction:', res, 'seconds')
+    
     
     if save:
-        with open(f"rXY_{size}.txt", 'wb') as f:
-            pickle.dump(rXY, f)
+        rX1 = field.eval_poly_Y(rXY[0], rXY[1], 1)
+        rX1 = field.dimension_change(rX1[0], rX1[1])
+
+        r1Raw = [rX1[0][:len(rX1)-n//2], rX1[1]]
+        r1Local = field.sub_polys(rX1[0], r1Raw[0], rX1[1], r1Raw[1])
+        print(f"N: {n}")
+        r1Local = field.mul_polys(r1Local[0], [1], r1Local[1], n)
+
         # with open(f"r_dash_XY_{size}.txt", 'wb') as f:
         #     pickle.dump(r_dash_XY, f)
         with open(f"rX1_{size}.txt", 'wb') as f:
             pickle.dump(rX1, f)
+
+        with open(f"r1Raw_{size}.txt", 'wb') as f:
+            pickle.dump(r1Raw, f)
+
+        with open(f"r1Local_{size}.txt", 'wb') as f:
+            pickle.dump(r1Local, f)
         # with open(f"cX_{size}.txt", 'wb') as f:
         #     pickle.dump(cX, f)
-        with open(f"tXY_{size}.txt", 'wb') as f:
-            pickle.dump(tXY, f)
 
     if load:
-        with open(f"rXY_{size}.txt", 'rb') as f:
-            rXY = pickle.dump(f)
         # with open(f"r_dash_XY_{size}.txt", 'wb') as f:
         #     pickle.dump(r_dash_XY, f)
         with open(f"rX1_{size}.txt", 'rb') as f:
             rX1 = pickle.dump(f)
+
+        with open(f"r1Raw_{size}.txt", 'b') as f:
+            r1Raw = pickle.dump(f)
+
+        with open(f"r1Local_{size}.txt", 'rb') as f:
+            r1Local = pickle.dump(f)
         # with open(f"cX_{size}.txt", 'wb') as f:
         #     pickle.dump(cX, f)
-        with open(f"tXY_{size}.txt", 'rb') as f:
-            tXY = pickle.dump(f)
         
+    et = time.process_time()
+    res = et - st
+    print('CPU Execution time-poly construction:', res, 'seconds')
+
+
     st = time.process_time()
 
-    g_max = 6 * n
+    g_max = 8 * n
 
     s1Y = field.eval_poly_X(sXY[0], sXY[1], 1)
     kY = field.mul_by_const(neg_kXY[0][0], -1)
@@ -1134,9 +1172,13 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False)
     commitSetup = cmScheme.commita([s1Y[0], kY[0]], [s1Y[1], kY[1]], g_max)
 
     # commit R
-    rX1_changed = field.dimension_change(rX1[0], rX1[1])
-    commitR = cmScheme.commita([rX1_changed[0]], [rX1_changed[1]], g_max)[0]
+    # rX1_changed = field.dimension_change(rX1[0], rX1[1])
+    commitR = cmScheme.commita([rX1[0]], [rX1[1]], g_max)[0]
     commitR
+
+    commitRRaw = cmScheme.commita([r1Raw[0]], [r1Raw[1]], g_max)[0]
+    commitRLocal = cmScheme.commita([r1Local[0]], [r1Local[1]], g_max)[0]
+
 
     # y
     y = 3
@@ -1157,25 +1199,36 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False)
 
     # opens
 
-    list_of_c = [commitR, commitT] 
-    list_of_z_for_p = [[z, z*y], [z]]
-    list_of_p = [rX1_changed[0], tXy[0]]
-    list_of_init_order = [rX1_changed[1], tXy[1]]
+    # list_of_c = [commitR, commitRRaw, commitRLocal, commitT] 
+    # list_of_z_for_p = [[z, z*y], [z], [z], [z]]
+    # list_of_p = [rX1[0], r1Raw[0], r1Local[0], tXy[0]]
+    # list_of_init_order = [rX1[1], r1Raw[1], r1Local[1], tXy[1]]
+
+    # opens = cmScheme.openC(list_of_c, list_of_z_for_p, list_of_p, list_of_init_order, g_max)
+
+    # fz = opens[4]
+
+    # # opens outsourced
+
+    # list_of_c_o = [commitSetup[0], commitSx, commitSetup[1]] 
+    # list_of_z_for_p_o = [[y], [z, 1], [y]]
+    # list_of_p_o = [s1Y[0], sXy[0], kY[0]]
+    # list_of_init_order_o = [s1Y[1], sXy[1], kY[1]]
+
+    # openOutsource = cmScheme.openC(list_of_c_o, list_of_z_for_p_o, list_of_p_o, list_of_init_order_o, g_max)
+
+    # fz_o = openOutsource[4]
+
+    #open all together
+
+    list_of_c = [commitR, commitRRaw, commitRLocal, commitT, commitSetup[0], commitSx, commitSetup[1]] 
+    list_of_z_for_p = [[z, z*y], [z], [z], [z], [y], [z, 1], [y]]
+    list_of_p = [rX1[0], r1Raw[0], r1Local[0], tXy[0], s1Y[0], sXy[0], kY[0]]
+    list_of_init_order = [rX1[1], r1Raw[1], r1Local[1], tXy[1], s1Y[1], sXy[1], kY[1]]
 
     opens = cmScheme.openC(list_of_c, list_of_z_for_p, list_of_p, list_of_init_order, g_max)
 
     fz = opens[4]
-
-    # opens outsourced
-
-    list_of_c_o = [commitSetup[0], commitSx, commitSetup[1]] 
-    list_of_z_for_p_o = [[y], [z, 1], [y]]
-    list_of_p_o = [s1Y[0], sXy[0], kY[0]]
-    list_of_init_order_o = [s1Y[1], sXy[1], kY[1]]
-
-    openOutsource = cmScheme.openC(list_of_c_o, list_of_z_for_p_o, list_of_p_o, list_of_init_order_o, g_max)
-
-    fz_o = openOutsource[4]
 
     et = time.process_time()
     
@@ -1183,30 +1236,47 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False)
     print('CPU Execution time - proof generation:', res, 'seconds')
 
     # verify
-    t = fz[1][0]
+    t = fz[3][0]
+    dj = fz[2][0]
+    r_tilde = fz[1][0]
     r1 = fz[0][0]
     r2 = fz[0][1]
-    s = fz_o[1][0]
-    k = fz_o[2][0]
-    s1 = fz_o[1][1]
-    s2 = fz_o[0][0]
+    s = fz[5][0]
+    k_fz = fz[6][0]
+    s1 = fz[5][1]
+    s2 = fz[4][0]
+    # s = fz_o[1][0]
+    # k_fz = fz_o[2][0]
+    # s1 = fz_o[1][1]
+    # s2 = fz_o[0][0]
 
-    print(f"r1: {r1} \n \
+    print(f"\
+            dj: {dj} \n \
+            pi_1: {opens[0]} \n \
+            pi_2: {opens[1]} \n \
+            r1: {r1} \n \
+            r1_tilde: {r_tilde} \n \
             t: {t} \n \
-            k: {k} \n \
+            k: {k_fz} \n \
             s_tilde: {s} \n \
             r2: {r2} \n \
             s1_tilde: {s1} \n \
             s2_tilde: {s2} \n \
+            D: {commitRLocal} \n \
+            R_tilde: {commitRRaw} \n \
             R: {commitR} \n \
             T: {commitT} \n \
-            K: {list_of_c_o[2]} \n \
-            S_x: {list_of_c_o[1]} \n \
-            S_y: {list_of_c_o[0]} \n \
+            K: {list_of_c[6]} \n \
+            S_x: {list_of_c[5]} \n \
+            S_y: {list_of_c[4]} \n \
         ")
+    
+    # K: {list_of_c_o[2]} \n \
+    # S_x: {list_of_c_o[1]} \n \
+    # S_y: {list_of_c_o[0]} \n \
 
-    return cmScheme.verify(list_of_c, *opens) and cmScheme.verify(list_of_c_o, *openOutsource) and t == field.sub(field.mul(r1, field.add(r2, s)), k) and s1 == s2
-
+    return cmScheme.verify(list_of_c, *opens) and t == field.sub(field.mul(r1, field.add(r2, s)), k_fz) and s1 == s2
+#cmScheme.verify(list_of_c_o, *openOutsource) and
 size = 4
 aL, aR, aO, k, u, v, w, n, q = setup_data(size)
 print(sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, True))
