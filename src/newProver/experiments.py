@@ -788,8 +788,8 @@ class KZGBatchCommitment():
             c = None
             init_order = list_of_init_order[j]
             for i in range(len(p)):
-                # index = init_order + i + self.srsD - g_max
-                index = init_order + i
+                index = init_order + i + self.srsD - g_max
+                # index = init_order + i
                 if index < 0:
                     if c is None:
                         c = bn128_curve.multiply(self.gNegativeAlphaX[abs(index)-1], p[i])
@@ -917,14 +917,24 @@ class KZGBatchCommitment():
         # f = bn128_curve.add(cm_poly, w_poly)
         
         non_a_part = bn128_curve.neg(bn128_curve.add(w_poly, bn128_curve.multiply(bn128_curve.G1, ga_poly)))
-            
-        non_a_part_w_a = bn128_curve.multiply(bn128_curve.add(non_a_part, bn128_curve.multiply(wDash, rand_z)), srsAlpha)
-        left1right = self.hPositiveX[self.srsD - g_max].astype(FQ2)
+        
+        rr = bn128_curve.add(non_a_part, bn128_curve.multiply(wDash, rand_z))
+        non_a_part_w_a = bn128_curve.multiply(rr, srsAlpha*srsX**(self.srsD - g_max))
+        left1right = self.hPositiveX[0].astype(FQ2)
         # alpha_part = bn128_curve.multiply(bn128_curve.G1, 1)
         left2left = bn128_curve.add(cm_poly, non_a_part_w_a)
         # left2right = self.hPositiveAlphaX[self.srsD - g_max]
         rightleft = wDash
         rightright = self.hPositiveAlphaX[1 + self.srsD - g_max].astype(FQ2)
+
+        print(f""
+              f"H: {cm_poly}\n"
+              f"RR: {rr}\n"
+              f"gwx: {wDash}\n"
+              f"h: {left1right}\n"
+              f"h_alpha_d-max: {self.hPositiveAlphaX[self.srsD - g_max].astype(FQ2)}\n"
+              f"h_alpha_d-max+1: {rightright}\n"
+              )
         
         e_left = bn128_pairing.pairing(left1right, left2left)
         e_right = bn128_pairing.pairing(rightright, rightleft)
@@ -1252,6 +1262,8 @@ def sonic_experiment(size, aL, aR, aO, k, u, v, w, n, q, save=False, load=False)
 
     print(f"\
             dj: {dj} \n \
+            z: {z} \n \
+            y: {y} \n \
             pi_1: {opens[0]} \n \
             pi_2: {opens[1]} \n \
             r1: {r1} \n \
