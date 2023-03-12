@@ -15,6 +15,7 @@ contract Verifier is Constants {
     using Pairing for *;
 
     event verifyResult(bool result);
+    // event checkData(uint256 H);
 
     // d_j when j=1
     uint256 d = uint256(5935276955487653023739309505454236985420338951434412891728899533829623384892);
@@ -189,9 +190,6 @@ contract Verifier is Constants {
                                                                         z_calculation(9)))));
         //g^z·w[x]
         RR = Pairing.plus(RR, Pairing.mulScalar(cm.pi_2, z));
-
-        emit(H);
-        emit(RR);
         
         // check the equation, then check others
         bool result = Pairing.pairing_3point(
@@ -201,14 +199,14 @@ contract Verifier is Constants {
             t_hxdmax,
             Pairing.negate(cm.pi_2),
             t_hxdmaxplusone
-            )
+            );
             // && recover(cm.message, cm.sig) == cm.addr //verifySignature
-            && cm.r_1 == addmod(cm.r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
-            && cm.t == addmod(mulmod(cm.r_1, 
-                                  addmod(cm.r_2,
-                                         cm.s_tilde, BABYJUB_P), BABYJUB_P),
-                            (BABYJUB_P - cm.k), BABYJUB_P)
-            && cm.s_1_tilde == cm.s_2_tilde;
+            // && cm.r_1 == addmod(cm.r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
+            // && cm.t == addmod(mulmod(cm.r_1, 
+            //                       addmod(cm.r_2,
+            //                              cm.s_tilde, BABYJUB_P), BABYJUB_P),
+            //                 (BABYJUB_P - cm.k), BABYJUB_P)
+            // && cm.s_1_tilde == cm.s_2_tilde;
 
         // temporary code for estimating gas cost, the above is correct version
         // bool result = Pairing.pairing_3point(
@@ -228,6 +226,8 @@ contract Verifier is Constants {
         // result = cm.s_1_tilde == cm.s_2_tilde;
 
         emit verifyResult(result);
+        // emit checkData(H.X);
+        
         return result;
     }
     
