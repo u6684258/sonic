@@ -196,14 +196,14 @@ contract Verifier is Constants {
             t_hxdmax,
             Pairing.negate(cm.pi_2),
             t_hxdmaxplusone
-            );
+            )
             // && recover(cm.message, cm.sig) == cm.addr //verifySignature
-            // && cm.r_1 == addmod(cm.r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
-            // && cm.t == addmod(mulmod(cm.r_1, 
-            //                       addmod(cm.r_2,
-            //                              cm.s_tilde, BABYJUB_P), BABYJUB_P),
-            //                 (BABYJUB_P - cm.k), BABYJUB_P)
-            // && cm.s_1_tilde == cm.s_2_tilde;
+            && cm.r_1 == addmod(cm.r_tilde, mulmod(d, z_n, BABYJUB_P), BABYJUB_P)
+            && cm.t == addmod(mulmod(cm.r_1, 
+                                  addmod(cm.r_2,
+                                         cm.s_tilde, BABYJUB_P), BABYJUB_P),
+                            (BABYJUB_P - cm.k), BABYJUB_P)
+            && cm.s_1_tilde == cm.s_2_tilde;
 
         // temporary code for estimating gas cost, the above is correct version
         // bool result = Pairing.pairing_3point(
