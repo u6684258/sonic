@@ -1,3 +1,7 @@
+Full codes and the dataset will be published as long as the paper *Privacy-preserving Blockchain-enabled Parametric Insurance via Remote Sensing and IoT* is published.
+
+
+
 ## Running tips
 
 
@@ -24,25 +28,47 @@ Digital Earth Australia is a project powered by Geoscience Australia. It is a di
 
 Deployment for sonic verifier:
 
-![2](2.png)
+![2](graphs//2.png)
 
 
 
-Deployment for batched verifier:
+Deployment for Enhanced verifier:
 
-![2](4.png)
-
-
-
-Batched verification:
-
-![3](3.png)
+![2](graphs//4.png)
 
 
 
-Unbatched verification:
+Enhanced verification:
 
-![1](1.png)
+![3](graphs//3.png)
+
+
+
+Sonic verification:
+
+![1](graphs//1.png)
+
+
+
+If we assume that Necessary SRS elements are not stored on chain during deployment, but obtained from trusted third-party during verification, then:
+
+
+
+Deployment for Enhanced+ verifier:
+
+![1](graphs//5.png)
+
+
+
+Enhanced+ verification:
+
+![1](graphs//6.png)
+
+
+
+If we apply a general Master contract and deploy slave contract for each insuree, then Deployment for Slave Contract:
+
+![1](graphs//7.png)
 
 
 
@@ -50,14 +76,19 @@ We can estimate the transaction fee regarding [ETH price by the end of 2022 (ETH
 
 
 
-| Transaction                                  | Gas Cost | Estimated USD  |
-| -------------------------------------------- | -------- | -------------- |
-| Contract Deployment                          | 3194644  | 76.6145913368  |
-| Contract Deployment (using batched verifier) | 2884986  | 69.1883112492  |
-| Batched Verification                         | 437370   | 10.489094814   |
-| Original Verification                        | 1740170  | 41.733104974   |
-| Batched Contract & Verification              | 3322356  | 79.6774060632  |
-| Original Contract & Verification             | 4934814  | 118.3476963108 |
+| Transaction                                | Gas Cost | Estimated USD |
+| ------------------------------------------ | -------- | ------------- |
+| Contract Deployment (Sonic)                | 2667196  | 63.96523      |
+| Sonic Verification                         | 1622349  | 38.9075       |
+| Contract Deployment (Enhanced Verifier)    | 2677451  | 64.21117      |
+| Enhanced Verification                      | 341299   | 8.185101      |
+| Contract Deployment (Enhanced+ Verifier)   | 2334127  | 55.9775       |
+| Enhanced+ Verification                     | 315206   | 7.559333      |
+| Subcontract Deployment (Enhanced Verifier) | 155786   | 3.736091      |
 
-.
+
+
+
+
+
 
