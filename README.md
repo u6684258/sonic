@@ -76,17 +76,17 @@ We can estimate the transaction fee regarding [ETH price by the end of 2022 (ETH
 
 
 
-| Transaction                                | Gas Cost | Estimated USD |
-| ------------------------------------------ | -------- | ------------- |
-| Contract Deployment (Sonic)                | 2667196  | 63.96523      |
-| Sonic Verification                         | 1622349  | 38.9075       |
-| Contract Deployment (Enhanced Verifier)    | 2677451  | 64.21117      |
-| Enhanced Verification                      | 341299   | 8.185101      |
-| Contract Deployment (Enhanced+ Verifier)   | 2334127  | 55.9775       |
-| Enhanced+ Verification                     | 315206   | 7.559333      |
-| Subcontract Deployment (Enhanced Verifier) | 155786   | 3.736091      |
+| Transaction                                  | Gas Cost | Estimated USD |
+| -------------------------------------------- | -------- | ------------- |
+| Contract Deployment (Sonic)                  | 2667196  | 63.96523      |
+| Sonic Verification                           | 1622349  | 38.9075       |
+| Contract Deployment (Enhanced Verifier)      | 2677451  | 64.21117      |
+| Enhanced Verification                        | 341299   | 8.185101      |
+| Contract Deployment (Enhanced+ Verifier)     | 2334127  | 55.9775       |
+| Enhanced+ Verification                       | 315206   | 7.559333      |
+| Subcontract Deployment (Enhanced Verifier) * | 155786   | 3.736091      |
 
-
+\* If we apply Fiat-Shamir heuristic, then gas cost of Subcontract Deployment can be further reduced to 111434.
 
 
 
