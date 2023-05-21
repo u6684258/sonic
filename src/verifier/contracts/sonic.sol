@@ -765,10 +765,10 @@ contract Pairing {
 
     // using sonic commitments of sonic version of modified KZG
     // used for test convenience only
-    function verifySonic(
+    function verifySonicImpl(
     ) public{
         
-        verifySonicImpl(UserCommitments(
+        verifySonic(UserCommitments(
             // Sonic proofs
             // D_j when j=1
             G1Point(uint256(20435686948508171234472206488737953800505595616105823290561271581793730135986),
@@ -823,7 +823,7 @@ contract Pairing {
 
     // sonic verifier
 
-    function verifySonicImpl(
+    function verifySonic(
         // uint256[21] memory Proof,
         // uint256[2] memory Randoms
         UserCommitments memory cm

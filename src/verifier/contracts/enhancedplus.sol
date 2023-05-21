@@ -295,10 +295,10 @@ contract Pairing {
 
     // using batched commitments of sonic version of modified KZG
     // used for test convenience only
-    function verifySonicBatched(
+    function verifySonicBatchedImpl(
     ) public{
         
-        verifySonicBatchedImpl(UserCommitments(
+        verifySonicBatched(UserCommitments(
 
             // ECDSA signature
             ethMessageHash("20900429899291009073299289469660149716785596251491300692035681492016939179257, 433691023568696153828599652727177493671905883454953868604074871528381220097"),
@@ -368,7 +368,7 @@ contract Pairing {
         ));
     }
 
-    function verifySonicBatchedImpl(
+    function verifySonicBatched(
         UserCommitments memory cm
     ) public returns (bool) {
 
