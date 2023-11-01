@@ -13,6 +13,26 @@ For verifier, please notice that current code may be temporary code for cost est
 Feasibility-check code is in ./src/RSP, and the dataset used is the ./data folder.
 
 
+### Running Sonic Proof Generation
+1. set up the repoitory. key packages:
+    - pip install galois
+    - pip install py_ecc
+    - numpy, scipy, sklearn
+    - haskell stack project builder
+    
+2. Run experiment-dt.py
+    - setup decision tree parameters in the "setup_data" function before running the script.
+    - stop the script once constraints are generated (i.e. once you see "constraints generation completed", interrupt the script).
+    
+3. Setup haskell scripts
+    - in examples/Main.hs line 125, set inputSize = abc length
+    - run "stack build"
+    - run "stack exec sonic-example"
+    
+4. Rerun experiment-dt.py
+    - if the script returns true, done!
+
+
 
 ## Data source
 
@@ -87,7 +107,6 @@ We can estimate the transaction fee regarding [ETH price by the end of 2022 (ETH
 | Subcontract Deployment (Enhanced Verifier) * | 155786   | 3.736091      |
 
 \* If we apply Fiat-Shamir heuristic, then gas cost of Subcontract Deployment can be further reduced to 111434.
-
 
 
 
